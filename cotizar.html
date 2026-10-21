@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cotiza tu invitación · Invitia atelier</title>
+<meta name="description" content="Arma la cotización de tu invitación digital en 2 minutos, desde tu celular, y mándala por WhatsApp a Invitia atelier.">
+<meta name="theme-color" content="#F1EBE0">
+<style>
+  :root{
+    --beige:#F1EBE0;
+    --beige-2:#E6DDCD;
+    --tan:#B3A288;
+    --cream:#D1C8B8;
+    --paper:#FAF7F1;
+    --ink:#2F2F2E;
+    --ink-2:#57544E;
+    --muted:#8A857B;
+    --line:#DBD1C0;
+    --moss:#5F6B45;
+    --moss-d:#4A5435;
+    --mustard:#C79A2E;
+    --mustard-l:#EAD7A4;
+    --serif: Georgia, "Times New Roman", "Iowan Old Style", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --r: 18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--beige);color:var(--ink);line-height:1.5;font-size:16px;overflow-x:hidden;min-height:100vh}
+  button,input{font:inherit;color:inherit}
+  button{cursor:pointer;border:0;background:none}
+  a{color:inherit}
+  [hidden]{display:none!important}
+  :focus-visible{outline:3px solid var(--moss);outline-offset:2px}
+  .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px}
+
+  .app{max-width:560px;margin:0 auto;padding:0 16px calc(176px + env(safe-area-inset-bottom))}
+  .app.sin-nav{padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+
+  /* ---------- Encabezado ---------- */
+  .top{display:flex;align-items:center;gap:12px;padding:20px 0 12px}
+  .top img{height:34px;width:auto}
+  .top .t{font-family:var(--serif);font-size:1.15rem;line-height:1.2}
+  .prog{margin-bottom:6px}
+  .bar{height:6px;background:var(--beige-2);border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--mustard);border-radius:99px;transition:width .35s ease}
+  .prog-l{font-size:.78rem;letter-spacing:.06em;color:var(--ink-2);margin-top:6px}
+  .ref{display:flex;align-items:center;max-width:100%;margin-top:12px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding-left:16px;font-size:.88rem;min-height:48px}
+  .ref span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ref button{flex:none;width:48px;height:48px;border-radius:50%;font-size:1rem;color:var(--ink-2)}
+
+  /* ---------- Pasos ---------- */
+  .step{display:none}
+  .step.on{display:block;animation:entra .28s ease both}
+  .step.on.atras{animation-name:entraAtras}
+  @keyframes entra{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+  @keyframes entraAtras{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+  .h{font-family:var(--serif);font-weight:400;font-size:1.8rem;line-height:1.15;letter-spacing:-.01em;margin:20px 0 6px}
+  .h:focus{outline:none}
+  .h:focus-visible{outline:3px solid var(--moss);outline-offset:4px}
+  .lead{color:var(--ink-2);margin-bottom:20px}
+
+  fieldset{border:0;margin:0 0 24px;min-width:0}
+  legend,.lbl{display:block;font-weight:600;font-size:1rem;margin-bottom:10px;padding:0}
+  .opc{font-weight:400;color:var(--muted);font-size:.85rem}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opts.uno{grid-template-columns:1fr}
+
+  .opt{position:relative;display:block}
+  .opt input{position:absolute;opacity:0;width:1px;height:1px;left:12px;top:12px}
+  .opt .b{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:52px;height:100%;padding:11px 40px 11px 14px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;cursor:pointer;transition:border-color .15s,background .15s;line-height:1.3}
+  .opt .b::after{content:"";position:absolute;right:13px;top:50%;width:18px;height:18px;margin-top:-9px;border:1.5px solid var(--tan);border-radius:50%;background:var(--paper) center/12px no-repeat}
+  .opt input[type=checkbox] + .b::after{border-radius:6px}
+  .opt input:checked + .b{border-color:var(--moss);background:var(--mustard-l)}
+  .opt input:checked + .b::after{border-color:var(--moss);background-color:var(--moss);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+  .opt input:focus-visible + .b{outline:3px solid var(--moss);outline-offset:2px}
+  .opt input:disabled + .b{opacity:.45;cursor:not-allowed}
+  .b .sub{display:block;font-size:.8rem;color:var(--ink-2);margin-top:2px}
+
+  .field{margin:0 0 22px}
+  .in{display:block;width:100%;min-height:50px;padding:12px 14px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;font-size:1rem;-webkit-appearance:none;appearance:none}
+  .in:focus{border-color:var(--moss);outline:none;box-shadow:0 0 0 3px rgba(95,107,69,.25)}
+  .in[type=date]{min-width:0}
+  .extra-in{margin-top:10px}
+  .hint{font-size:.85rem;color:var(--ink-2);margin-top:8px}
+  .err{color:#8B3A2E;font-size:.9rem;font-weight:600;margin:-8px 0 18px}
+  .err:empty{display:none}
+
+  /* Paquetes */
+  .pkg{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--r);margin-bottom:12px;transition:border-color .15s,background .15s}
+  .pkg.sel{border-color:var(--moss);background:var(--mustard-l)}
+  .pkg label{display:block;position:relative;cursor:pointer;border-radius:var(--r)}
+  .pkg input{position:absolute;opacity:0;width:1px;height:1px;left:16px;top:16px}
+  .pkg-b{display:block;padding:18px 18px 12px;border-radius:var(--r)}
+  .pkg input:focus-visible + .pkg-b{outline:3px solid var(--moss);outline-offset:2px}
+  .pkg-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .pkg-n{font-family:var(--serif);font-size:1.3rem;line-height:1.2}
+  .pkg-p{font-weight:600;color:var(--moss-d);white-space:nowrap}
+  .pkg-f{display:block;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--moss);margin:4px 0 8px}
+  .pkg-r{display:block;color:var(--ink-2);font-size:.95rem}
+  .pkg-s{display:inline-block;margin-top:10px;font-size:.82rem;padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--beige)}
+  .pkg details{padding:0 18px 8px}
+  .pkg summary{display:flex;align-items:center;min-height:48px;cursor:pointer;color:var(--moss-d);font-weight:600;font-size:.92rem;list-style:none}
+  .pkg summary::-webkit-details-marker{display:none}
+  .pkg summary::after{content:"+";margin-left:8px;font-size:1.1rem}
+  .pkg details[open] summary::after{content:"–"}
+  .pkg ul{list-style:none;padding:0 0 10px}
+  .pkg li{position:relative;padding:3px 0 3px 22px;font-size:.92rem;color:var(--ink-2)}
+  .pkg li::before{content:"";position:absolute;left:3px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--mustard)}
+  .ayuda .b{background:transparent;border-style:dashed}
+  .ayuda-l{font-size:.9rem;color:var(--ink-2);margin:16px 0 24px;padding:12px 14px;border-left:3px solid var(--mustard);background:rgba(250,247,241,.6);border-radius:0 12px 12px 0}
+
+  /* Interruptores */
+  .sw{position:relative;display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 14px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,background .15s}
+  .sw input{position:absolute;opacity:0;width:1px;height:1px}
+  .sw-t{flex:1;min-width:0;line-height:1.3}
+  .sw-t b{font-weight:600}
+  .sw-t small{display:block;font-size:.82rem;color:var(--ink-2);margin-top:2px}
+  .sw-p{font-size:.85rem;color:var(--moss-d);font-weight:600;white-space:nowrap}
+  .track{flex:none;position:relative;width:46px;height:28px;border-radius:99px;background:var(--cream);transition:background .2s}
+  .track::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+  .sw.sel{border-color:var(--moss);background:var(--mustard-l)}
+  .sw.sel .track{background:var(--moss)}
+  .sw.sel .track::after{transform:translateX(18px)}
+  .sw.foco{outline:3px solid var(--moss);outline-offset:2px}
+
+  /* Entrega */
+  .aviso{display:flex;gap:8px;align-items:flex-start;font-size:.92rem;padding:12px 14px;border-radius:14px;background:var(--paper);border:1px solid var(--line);margin-bottom:10px}
+  .aviso.normal{color:var(--moss-d)}
+  .aviso.expres{background:var(--mustard);border-color:var(--mustard);color:var(--ink);font-weight:600}
+  .aviso.suave{background:transparent;border-style:dashed;color:var(--ink-2)}
+  .nota-foto{font-size:.92rem;color:var(--moss-d);margin-top:10px}
+
+  /* ---------- Barra inferior ---------- */
+  .nav{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(241,235,224,.97);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px -18px rgba(47,47,46,.5)}
+  .nav-in{max-width:560px;margin:0 auto}
+  .total{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:8px 14px;margin-bottom:10px}
+  .total .k{font-size:.8rem;color:var(--ink-2);line-height:1.2}
+  .total .vv{text-align:right;min-width:0}
+  .total .v{display:block;font-family:var(--serif);font-size:1.2rem;line-height:1.2}
+  .total .p{display:block;font-size:.72rem;color:var(--ink-2);line-height:1.3;overflow-wrap:anywhere}
+  .btns{display:flex;gap:10px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:52px;padding:0 22px;border-radius:999px;font-weight:600;font-size:1rem;text-decoration:none;text-align:center;line-height:1.2;transition:background .2s,transform .15s}
+  .btn:active{transform:scale(.97)}
+  .btn-moss{background:var(--moss);color:#fff}
+  .btn-moss:hover{background:var(--moss-d)}
+  .btn-ghost{border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+  .btns .btn-moss{flex:1}
+  .btn-full{display:flex;width:100%}
+
+  /* ---------- Resumen ---------- */
+  .recibo{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:22px 18px;box-shadow:0 18px 40px -30px rgba(47,47,46,.6)}
+  .rc-head{display:flex;align-items:center;gap:10px;padding-bottom:14px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+  .rc-head img{height:28px;width:auto}
+  .rc-head span{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--moss)}
+  .rc-head time{margin-left:auto;font-size:.8rem;color:var(--muted)}
+  .ln{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .ln small{display:block;font-size:.8rem;color:var(--ink-2)}
+  .ln > span:last-child{white-space:nowrap;font-weight:600}
+  .ln .ac{color:var(--ink-2);font-weight:400;font-style:italic}
+  .tot{padding:16px 0 6px;text-align:right}
+  .tot .k{display:block;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+  .tot .v{display:block;font-family:var(--serif);font-size:2.2rem;line-height:1.15}
+  .tot .p{display:block;font-size:.85rem;color:var(--ink-2);margin-top:4px}
+  .ln.ant{border-bottom:0;border-top:1px solid var(--line);margin-top:10px}
+  .nota{font-size:.9rem;color:var(--ink-2);margin:16px 2px}
+  .recordar{font-size:.95rem;padding:12px 14px;border-radius:14px;background:var(--mustard-l);border:1px solid var(--mustard);margin:0 0 16px}
+  .acciones{display:grid;gap:10px;margin-bottom:8px}
+  .det{margin-top:28px}
+  .det h2{font-family:var(--serif);font-weight:400;font-size:1.2rem;margin-bottom:8px}
+  .det-r{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .det-r div{flex:1;min-width:0}
+  .det-r b{display:block;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--moss);font-weight:600}
+  .det-r p{font-size:.92rem;color:var(--ink-2);overflow-wrap:anywhere}
+  .editar{flex:none;min-height:48px;min-width:48px;padding:0 6px;color:var(--moss-d);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+  .listo{text-align:center;padding-top:30px}
+  .listo .ico{font-size:2.6rem;line-height:1;margin-bottom:6px}
+  .listo .lead{max-width:30rem;margin-left:auto;margin-right:auto}
+  .listo .acciones{max-width:360px;margin:22px auto 0}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <img id="logo" alt="Invitia atelier" width="14" height="68">
+    <span class="t">Cotiza tu invitación</span>
+  </header>
+  <div class="prog" id="prog">
+    <div class="bar" aria-hidden="true"><i id="barra"></i></div>
+    <p class="prog-l" id="progLabel">Paso 1 de 6</p>
+  </div>
+  <div class="ref" id="refChip" hidden>
+    <span id="refTxt"></span>
+    <button type="button" id="refQuitar" aria-label="Quitar el diseño que te gustó">✕</button>
+  </div>
+
+  <main id="pasos"></main>
+</div>
+
+<nav class="nav" id="nav" aria-label="Navegación del cotizador">
+  <div class="nav-in">
+    <div class="total" id="total" hidden>
+      <span class="k">Total<br>aproximado</span>
+      <span class="vv" aria-live="polite"><span class="v" id="totalV">—</span><span class="p" id="totalP"></span></span>
+    </div>
+    <div class="btns">
+      <button type="button" class="btn btn-ghost" id="btnAtras">Atrás</button>
+      <button type="button" class="btn btn-moss" id="btnSig">Siguiente</button>
+    </div>
+  </div>
+</nav>
+
+<script>
+/* ===== MARCA ===== (cambiar esto basta para reusar el cotizador con otro negocio) */
+const MARCA = {
+  negocio: "Invitia atelier",
+  whatsapp: "522221347041",          // 52 + lada + número, sin + ni espacios. Vacío = solo "Copiar"
+  responsable: "Roberto",            // quien confirma la cotización en los textos
+  inicio: "index.html",              // "Volver a la página"
+  logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAABECAYAAACxiwTbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGFSURBVFhH7Ze/LgRRFMb3ISgoFbrNFPP/7xMoJNOsYqPjAYiohI1gExQknkMhPMHWPAOC9Sdq1fi+O+cmg3UzncI9yS/3zDnfd+fM3GmmEwTBehzHr77v3wp3qN2DB+SP4An5GLyAtyiKPrBudhhIzrIsq1CswjD8FWqw0YEy6UDhOE3TCpv8gCbpDUReh+M4U1xhPvpubph2qEmSZIarChgu0NhjjvWQQj0ec/S3RXeC/hVzFSjc5HlOwYZcD7FzRSDcYg3roCgKaq55rQLFUUOo3pjruvO4nmMO8S7vLP0Rayow0qkeD0fD5jnEi1hLcCkGNTa1YlPGrj4KCmjWE8hGqieartjq8DxvjTuySWET1tijRuRfA6IViMYUNUHtGaOvimxy8Ewh7IN9jDUEy8inpf2/Ag8+CxbwqltBLT08gj6/Ux50G6ilh8ae/qTaINqeNU7AGg1YowFrNGCNBqzRgDUasEYD1mjgD434n1jivwX/ZNpALT28Y4ld3rG2otYG5SfwLQwlD1P22gAAAABJRU5ErkJggg=="
+};
+
+/* ===== CONFIG ===== */
+const PAQUETES = [
+  { id: "esencial",    nombre: "Digital Esencial",    formato: "Imagen JPEG · 1 página",
+    precio: 899, sesiones: 2, resumen: "Para mandar rápido por WhatsApp o redes.",
+    incluye: ["Diseño personalizado", "1 página (estática)", "Portada", "Información del evento"] },
+  { id: "interactiva", nombre: "Digital Interactiva", formato: "PDF interactivo · varias páginas",
+    precio: 1600, sesiones: 3, resumen: "Con itinerario, dress code y botones de ubicación, confirmación y mesa de regalos.",
+    incluye: ["Diseño personalizado", "Multipágina navegable", "Portada e información del evento", "Itinerario y dress code",
+              "Botón de ubicación (Google Maps)", "Botón de confirmación por WhatsApp", "Botón de mesa de regalos", "Información adicional"] }
+];
+const EXTRAS = [
+  { id: "monograma",  nombre: "Diseño de monograma", detalle: "Tus iniciales en un sello único", precio: 400 },
+  { id: "multipases", nombre: "Multipases",          detalle: "Pases personalizados de 2 a 5 personas", precio: 200 },
+  { id: "galeria",    nombre: "Galería",             detalle: "De 4 a 7 fotografías", precio: 400 }
+];
+const URGENCIA = [            // de menor a mayor número de días
+  { maxDias: 2, recargo: 0.50, etiqueta: "+50% (2 días o menos)" },
+  { maxDias: 3, recargo: 0.35, etiqueta: "+35% (3 días)" }
+];
+const ANTICIPO = 0.5;
+const ENTREGA_NORMAL = "3 a 5 días";
+const EVENTOS = ["XV años", "Boda", "Baby shower", "Graduación", "Cumpleaños", "Otro"];
+const PASES = ["Menos de 50", "50 a 100", "100 a 200", "Más de 200", "Aún no lo sé"];
+const ESTILOS = ["Elegante y clásico", "Minimalista", "Floral / acuarela", "Vintage / barroco", "Moderno", "Divertido / infantil", "Aún no lo sé"];
+const ORIGEN = ["Instagram", "Facebook", "TikTok", "Me recomendaron", "Google", "Otro"];
+const MAX_ESTILOS = 2;
+const PLACEHOLDER_FESTEJADO = { "XV años": "Ej. Ivana Lorena", "Boda": "Ej. Ana y Luis", "Baby shower": "Ej. Bebé Valentina",
+  "Graduación": "Ej. Sofía Martínez", "Cumpleaños": "Ej. Álvaro Fernández", "Otro": "Ej. Nombre de quien celebra" };
+
+/* ============================================================
+   CÁLCULO Y FICHA — funciones puras (se prueban en Node)
+   ============================================================ */
+/*<calc>*/
+const pad2 = n => String(n).padStart(2, "0");
+function parseISO(s) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; }
+function aISO(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+function hoyISO() { return aISO(new Date()); }
+function sumarDias(iso, n) { const d = parseISO(iso); d.setDate(d.getDate() + n); return aISO(d); }
+function diasEntre(a, b) { const x = parseISO(a), y = parseISO(b); return (x && y) ? Math.round((y - x) / 86400000) : null; }
+function fmtFecha(iso) { const d = parseISO(iso); return d ? pad2(d.getDate()) + "/" + pad2(d.getMonth() + 1) + "/" + d.getFullYear() : "—"; }
+function dinero(n) { return "$" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+const tienePrecio = p => typeof p === "number" && isFinite(p);
+
+function calcular(estado, config) {
+  const hoy = config.hoy || hoyISO();
+  const paq = config.paquetes.find(p => p.id === estado.paquete) || null;
+  const lineas = [], pendientes = [];
+  let subtotal = 0;
+  const sumar = (nombre, precio, extra) => {
+    const ok = tienePrecio(precio);
+    lineas.push(Object.assign({ concepto: nombre, precio: ok ? precio : null }, extra));
+    if (ok) subtotal += precio; else pendientes.push(nombre);
+  };
+  if (paq) sumar(paq.nombre, paq.precio, { formato: paq.formato });
+  config.extras.filter(x => (estado.extras || []).indexOf(x.id) !== -1).forEach(x => sumar(x.nombre, x.precio));
+
+  const dias = estado.fechaEntrega ? diasEntre(hoy, estado.fechaEntrega) : null;
+  const urgencia = (dias !== null && dias >= 0) ? (config.urgencia.find(u => dias <= u.maxDias) || null) : null;
+  const recargo = urgencia ? urgencia.recargo : 0;
+  const total = Math.round(subtotal * (1 + recargo));
+  const anticipo = Math.round(total * config.anticipo);
+  const conNumero = !!paq && tienePrecio(paq.precio);   // sin paquete, "ayúdame a elegir" o paquete null → "A cotizar"
+  return {
+    subtotal, recargo, urgencia, dias, total, anticipo, lineas, pendientes, conNumero,
+    totalTexto: conNumero ? "Desde " + dinero(total) : "A cotizar",
+    anticipoTexto: conNumero ? dinero(anticipo) : "—",
+    pendientesTexto: conNumero && pendientes.length ? "+ por cotizar: " + pendientes.join(", ") : ""
+  };
+}
+
+function construirFicha(estado, calc, config) {
+  const paq = config.paquetes.find(p => p.id === estado.paquete);
+  const extras = config.extras.filter(x => (estado.extras || []).indexOf(x.id) !== -1).map(x => x.nombre);
+  const o = v => (v && String(v).trim()) ? String(v).trim() : "—";
+  const evento = estado.evento === "Otro" && estado.eventoOtro.trim() ? estado.eventoOtro.trim() : estado.evento;
+  const origen = estado.origen === "Otro" && estado.origenOtro.trim() ? estado.origenOtro.trim() : estado.origen;
+  const l = [
+    "Hola " + config.negocio + " 👋 Quiero cotizar una invitación.",
+    "",
+    "FICHA DE COTIZACIÓN · " + config.negocio.toUpperCase(),
+    "Cliente: " + o(estado.nombre),
+    "Evento: " + o(evento),
+    "Festejado(a): " + o(estado.festejado),
+    "Fecha del evento: " + fmtFecha(estado.fechaEvento),
+    "Paquete: " + (paq ? paq.nombre : estado.paquete === "ayuda" ? "Por definir (ayúdame a elegir)" : "—"),
+    "Extras: " + (extras.length ? extras.join("; ") : "Ninguno"),
+    "Pases/invitados: " + o(estado.pases),
+    "Entrega deseada: " + fmtFecha(estado.fechaEntrega),
+    "Urgencia: " + (calc.urgencia ? calc.urgencia.etiqueta : "Normal"),
+    "Estilo: " + (estado.estilos.length ? estado.estilos.join("; ") : "—"),
+    "Colores: " + o(estado.colores),
+    "Foto de referencia: " + (estado.foto === "Sí" ? "Sí, la mando por este chat" : "No")
+  ];
+  if (estado.ref) l.push("Diseño que le gustó: " + estado.ref);
+  l.push(
+    "Cómo nos conoció: " + o(origen),
+    "Total aproximado: " + calc.totalTexto,
+    "Anticipo (" + Math.round(config.anticipo * 100) + "%): " + calc.anticipoTexto
+  );
+  if (calc.pendientes.length) l.push("Por cotizar: " + calc.pendientes.join("; "));
+  return l.join("\n");
+}
+
+function limpiarRef(s) {
+  return String(s || "").replace(/<[^>]*>/g, "").replace(/[<>]/g, "").replace(/[\u0000-\u001F\u007F]/g, " ")
+    .replace(/\s+/g, " ").trim().slice(0, 80).trim();
+}
+/*</calc>*/
+
+/* ============================================================
+   INTERFAZ — no es necesario editar debajo de esta línea
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.prototype.slice.call(document.querySelectorAll(s));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const CFG = { paquetes: PAQUETES, extras: EXTRAS, urgencia: URGENCIA, anticipo: ANTICIPO, negocio: MARCA.negocio };
+const WA = String(MARCA.whatsapp || "").replace(/\D/g, "");
+const HOY = hoyISO();
+const DIAS_C = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+const MESES_C = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const fechaCorta = iso => { const d = parseISO(iso); return DIAS_C[d.getDay()] + " " + d.getDate() + " " + MESES_C[d.getMonth()]; };
+const TOTAL_PASOS = 6;
+if (!WA) console.warn("[Cotizador] Falta MARCA.whatsapp: el botón de WhatsApp se cambia por \"Copiar mi cotización\".");
+
+const estado = {
+  evento: "", eventoOtro: "", festejado: "", fechaEvento: "",
+  paquete: "", extras: [], pases: "",
+  entrega: "", fechaEntrega: "", fechaOtra: "",
+  estilos: [], colores: "", foto: "",
+  nombre: "", origen: "", origenOtro: "",
+  ref: ""
+};
+
+/* ---------- Plantillas ---------- */
+const radios = (name, ops, cls) => '<div class="opts' + (cls ? " " + cls : "") + '">' + ops.map(op => {
+  const v = typeof op === "string" ? op : op.v, t = typeof op === "string" ? op : op.t, sub = typeof op === "string" ? "" : op.sub;
+  return '<label class="opt"><input type="radio" name="' + name + '" value="' + esc(v) + '"><span class="b">' + esc(t) +
+    (sub !== undefined && sub !== "" ? '<span class="sub" data-sub="' + esc(v) + '">' + esc(sub) + '</span>' : "") + '</span></label>';
+}).join("") + '</div>';
+const checks = (name, ops) => '<div class="opts">' + ops.map(op =>
+  '<label class="opt"><input type="checkbox" name="' + name + '" value="' + esc(op) + '"><span class="b">' + esc(op) + '</span></label>').join("") + '</div>';
+const precioPaq = p => tienePrecio(p) ? "Desde " + dinero(p) : "A cotizar";
+const titulo = (n, txt) => '<h1 class="h" tabindex="-1" id="h' + n + '">' + txt + '</h1>';
+
+const PASOS_HTML = [
+/* 1 */ titulo(1, "Cuéntanos de tu evento") +
+  '<p class="lead">Toca las opciones; casi no tienes que escribir.</p>' +
+  '<fieldset id="fsEvento"><legend>¿Qué vas a celebrar?</legend>' + radios("evento", EVENTOS) +
+  '<div class="extra-in" id="eventoOtroW" hidden><label class="sr" for="eventoOtro">¿Qué evento es?</label>' +
+  '<input class="in" id="eventoOtro" type="text" maxlength="40" placeholder="Ej. Bautizo, aniversario…" autocomplete="off"></div></fieldset>' +
+  '<p class="err" id="err1" role="alert"></p>' +
+  '<div class="field"><label class="lbl" for="festejado"><span id="festejadoL">Nombre del festejado o festejada</span> <span class="opc">(opcional)</span></label>' +
+  '<input class="in" id="festejado" type="text" maxlength="60" placeholder="Ej. Ivana Lorena" autocomplete="off"></div>' +
+  '<div class="field"><label class="lbl" for="fechaEvento">Fecha del evento <span class="opc">(opcional)</span></label>' +
+  '<input class="in" id="fechaEvento" type="date" min="' + HOY + '"><p class="err" id="errFechaEvento" role="alert" style="margin:8px 0 0"></p></div>',
+
+/* 2 */ titulo(2, "Elige el formato") +
+  '<p class="lead">Las dos son digitales y se diseñan desde cero para ti.</p>' +
+  '<fieldset id="fsPaquete"><legend class="sr">Formato de tu invitación</legend>' +
+  PAQUETES.map(p => '<div class="pkg" data-pkg="' + p.id + '"><label><input type="radio" name="paquete" value="' + p.id + '">' +
+    '<span class="pkg-b"><span class="pkg-top"><span class="pkg-n">' + esc(p.nombre) + '</span><span class="pkg-p">' + precioPaq(p.precio) + '</span></span>' +
+    '<span class="pkg-f">' + esc(p.formato) + '</span><span class="pkg-r">' + esc(p.resumen) + '</span>' +
+    '<span class="pkg-s">' + p.sesiones + ' sesiones de cambios incluidas</span></span></label>' +
+    '<details><summary>Ver qué incluye</summary><ul>' + p.incluye.map(i => '<li>' + esc(i) + '</li>').join("") + '</ul></details></div>').join("") +
+  '<label class="opt ayuda"><input type="radio" name="paquete" value="ayuda"><span class="b">Ayúdame a elegir' +
+  '<span class="sub">' + esc(MARCA.responsable) + ' te recomienda según tu evento</span></span></label></fieldset>' +
+  '<p class="err" id="err2" role="alert"></p>' +
+  '<p class="ayuda-l">¿Solo la quieres mandar por WhatsApp? Esencial. ¿Quieres mapa, confirmación y mesa de regalos a un toque? Interactiva.</p>',
+
+/* 3 */ titulo(3, "Extras y pases") +
+  '<p class="lead">Todo es opcional. Actívalo solo si lo quieres.</p>' +
+  '<fieldset><legend>Extras <span class="opc">(opcional)</span></legend>' +
+  EXTRAS.map(x => '<label class="sw" data-extra="' + x.id + '"><input type="checkbox" role="switch" name="extra" value="' + x.id + '">' +
+    '<span class="sw-t"><b>' + esc(x.nombre) + '</b><small>' + esc(x.detalle) + '</small></span>' +
+    '<span class="sw-p">' + (tienePrecio(x.precio) ? "+" + dinero(x.precio) : "A cotizar") + '</span><span class="track" aria-hidden="true"></span></label>').join("") +
+  '</fieldset>' +
+  '<fieldset><legend>¿Cuántos invitados o pases, más o menos? <span class="opc">(opcional)</span></legend>' + radios("pases", PASES) + '</fieldset>',
+
+/* 4 */ titulo(4, "¿Para cuándo la necesitas?") +
+  '<p class="lead">La entrega normal es de ' + ENTREGA_NORMAL + '. Si no tienes prisa, puedes saltar este paso.</p>' +
+  '<fieldset><legend class="sr">Fecha de entrega deseada</legend>' + radios("entrega", [
+    { v: "2", t: "En 2 días", sub: fechaCorta(sumarDias(HOY, 2)) },
+    { v: "3", t: "En 3 días", sub: fechaCorta(sumarDias(HOY, 3)) },
+    { v: "7", t: "En una semana", sub: fechaCorta(sumarDias(HOY, 7)) },
+    { v: "otra", t: "Otra fecha", sub: "Tú eliges" }
+  ]) +
+  '<div class="extra-in" id="fechaOtraW" hidden><label class="lbl" for="fechaOtra" style="margin-top:6px">¿Qué día la quieres?</label>' +
+  '<input class="in" id="fechaOtra" type="date" min="' + HOY + '"><p class="err" id="errFechaOtra" role="alert" style="margin:8px 0 0"></p></div></fieldset>' +
+  '<div id="entregaMsg" aria-live="polite"></div>',
+
+/* 5 */ titulo(5, "Tu estilo") +
+  '<p class="lead">Para que ' + esc(MARCA.responsable) + ' llegue con ideas desde el primer mensaje.</p>' +
+  '<fieldset id="fsEstilo"><legend>¿Qué estilo te gusta? <span class="opc">(hasta ' + MAX_ESTILOS + ')</span></legend>' + checks("estilo", ESTILOS) + '</fieldset>' +
+  '<div class="field"><label class="lbl" for="colores">Colores <span class="opc">(opcional)</span></label>' +
+  '<input class="in" id="colores" type="text" maxlength="60" placeholder="Ej. verde olivo y dorado" autocomplete="off"></div>' +
+  '<fieldset><legend>¿Tienes una foto de referencia?</legend>' + radios("foto", ["Sí", "No"]) +
+  '<p class="nota-foto" id="fotoNota" hidden>Perfecto, la mandas en el mismo chat de WhatsApp al final 📎</p></fieldset>',
+
+/* 6 */ titulo(6, "Tus datos") +
+  '<p class="lead">Último paso. Así sabemos con quién hablamos.</p>' +
+  '<div class="field"><label class="lbl" for="nombre">Tu nombre</label>' +
+  '<input class="in" id="nombre" type="text" maxlength="60" placeholder="Ej. Mariana López" autocomplete="name" aria-describedby="err6" required></div>' +
+  '<p class="err" id="err6" role="alert"></p>' +
+  '<fieldset><legend>¿Cómo nos conociste? <span class="opc">(opcional)</span></legend>' + radios("origen", ORIGEN) +
+  '<div class="extra-in" id="origenOtroW" hidden><label class="sr" for="origenOtro">¿Dónde nos conociste?</label>' +
+  '<input class="in" id="origenOtro" type="text" maxlength="40" placeholder="Cuéntanos dónde" autocomplete="off"></div></fieldset>',
+
+/* 7 */ '<div id="resumen"></div>',
+/* 8 */ '<div id="listo" class="listo"></div>'
+];
+$("#pasos").innerHTML = PASOS_HTML.map((h, i) => '<section class="step" id="paso' + (i + 1) + '" aria-labelledby="h' + (i + 1) + '">' + h + '</section>').join("");
+$("#logo").src = MARCA.logo;
+
+/* ---------- Eventos de los campos ---------- */
+const val = name => { const r = $('input[name="' + name + '"]:checked'); return r ? r.value : ""; };
+const vals = name => $$('input[name="' + name + '"]:checked').map(i => i.value);
+
+function errorEn(id, msg) { $("#" + id).textContent = msg || ""; }
+
+document.addEventListener("change", e => {
+  const t = e.target, n = t.name;
+  if (n === "evento") {
+    estado.evento = t.value; errorEn("err1");
+    $("#eventoOtroW").hidden = t.value !== "Otro";
+    $("#festejadoL").textContent = t.value === "Boda" ? "Nombre de los novios" : "Nombre del festejado o festejada";
+    $("#festejado").placeholder = PLACEHOLDER_FESTEJADO[t.value] || "";
+  }
+  if (n === "paquete") { estado.paquete = t.value; errorEn("err2"); }
+  if (n === "extra") estado.extras = vals("extra");
+  if (n === "pases") estado.pases = t.value;
+  if (n === "entrega") {
+    estado.entrega = t.value;
+    $("#fechaOtraW").hidden = t.value !== "otra";
+    estado.fechaEntrega = t.value === "otra" ? estado.fechaOtra : sumarDias(HOY, +t.value);
+  }
+  if (n === "estilo") {
+    let sel = vals("estilo");
+    const neutro = "Aún no lo sé";
+    if (t.checked && t.value === neutro) sel = [neutro];
+    else if (t.checked) sel = sel.filter(s => s !== neutro);
+    $$('input[name="estilo"]').forEach(i => { i.checked = sel.indexOf(i.value) !== -1; });
+    estado.estilos = sel;
+  }
+  if (n === "foto") { estado.foto = t.value; $("#fotoNota").hidden = t.value !== "Sí"; }
+  if (n === "origen") { estado.origen = t.value; $("#origenOtroW").hidden = t.value !== "Otro"; }
+  if (t.id === "fechaEvento") estado.fechaEvento = fechaValida(t, "errFechaEvento");
+  if (t.id === "fechaOtra") { estado.fechaOtra = fechaValida(t, "errFechaOtra"); if (estado.entrega === "otra") estado.fechaEntrega = estado.fechaOtra; }
+  actualizar();
+});
+
+document.addEventListener("input", e => {
+  const t = e.target, mapa = { eventoOtro: "eventoOtro", festejado: "festejado", colores: "colores", nombre: "nombre", origenOtro: "origenOtro" };
+  if (mapa[t.id]) { estado[mapa[t.id]] = t.value; if (t.id === "nombre" && t.value.trim()) errorEn("err6"); }
+});
+
+/* Enter en un campo de texto = Siguiente */
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.matches && e.target.matches('input.in[type="text"]')) { e.preventDefault(); siguiente(); }
+});
+
+/* Foco visible en los interruptores */
+document.addEventListener("focusin", e => { if (e.target.closest && e.target.closest(".sw") && e.target.matches(":focus-visible")) e.target.closest(".sw").classList.add("foco"); });
+document.addEventListener("focusout", e => { const s = e.target.closest && e.target.closest(".sw"); if (s) s.classList.remove("foco"); });
+
+function fechaValida(input, errId) {
+  const v = input.value;
+  if (v && v < HOY) { errorEn(errId, "Esa fecha ya pasó. Elige una a partir de hoy."); return ""; }
+  errorEn(errId); return v;
+}
+
+/* ---------- Actualización en vivo ---------- */
+function actualizar() {
+  const c = calcular(estado, CFG);
+  // Selección visual de paquetes, interruptores y estilos
+  $$(".pkg").forEach(p => p.classList.toggle("sel", p.dataset.pkg === estado.paquete));
+  $$(".sw").forEach(s => s.classList.toggle("sel", estado.extras.indexOf(s.dataset.extra) !== -1));
+  const lleno = estado.estilos.length >= MAX_ESTILOS;
+  $$('input[name="estilo"]').forEach(i => { i.disabled = lleno && !i.checked; });
+  // Total en vivo
+  $("#totalV").textContent = estado.paquete ? c.totalTexto : "Elige tu formato";
+  $("#totalP").textContent = c.pendientesTexto;
+  // Entrega
+  const msgs = [];
+  if (c.urgencia) msgs.push('<p class="aviso expres">Entrega exprés: +' + Math.round(c.recargo * 100) + '%</p>');
+  else msgs.push('<p class="aviso normal">Entrega normal: ' + ENTREGA_NORMAL + ' ✨</p>');
+  if (estado.fechaEntrega && estado.fechaEvento && estado.fechaEntrega > estado.fechaEvento)
+    msgs.push('<p class="aviso suave">Ojo: es después de tu evento</p>');
+  if (c.dias !== null && c.dias <= 1)
+    msgs.push('<p class="aviso suave">Para fechas tan cercanas, ' + esc(MARCA.responsable) + ' te confirma disponibilidad.</p>');
+  const html = msgs.join("");
+  if ($("#entregaMsg").innerHTML !== html) $("#entregaMsg").innerHTML = html;
+  return c;
+}
+
+/* ---------- Navegación con historial ---------- */
+let paso = 1, idx = 0, completo = false;
+const pila = [1];
+
+function mostrar(n, dir, enfocar) {
+  $$(".step").forEach(s => s.classList.remove("on", "atras"));
+  const sec = $("#paso" + n);
+  if (n === 7) renderResumen();
+  if (n === 8) renderListo();
+  sec.classList.add("on");
+  if (dir < 0) sec.classList.add("atras");
+  // Progreso
+  $("#prog").hidden = n === 8;
+  $("#barra").style.width = (n >= 7 ? 100 : n / TOTAL_PASOS * 100) + "%";
+  $("#progLabel").textContent = n <= TOTAL_PASOS ? "Paso " + n + " de " + TOTAL_PASOS : "¡Tu cotización está lista!";
+  // Barra inferior
+  const conNav = n <= TOTAL_PASOS;
+  $("#nav").hidden = !conNav;
+  $("#app").classList.toggle("sin-nav", !conNav);
+  $("#total").hidden = n < 2 || !conNav;
+  $("#btnAtras").hidden = n === 1;
+  $("#btnSig").textContent = (n === TOTAL_PASOS || completo) ? "Ver mi cotización" : "Siguiente";
+  window.scrollTo(0, 0);
+  if (enfocar) { const h = sec.querySelector(".h"); if (h) h.focus({ preventScroll: true }); }
+}
+
+function ir(n) {
+  const dir = n > paso ? 1 : -1;
+  idx++; pila.length = idx; pila[idx] = n;
+  history.pushState({ paso: n, i: idx }, "");
+  paso = n; mostrar(n, dir, true);
+}
+
+window.addEventListener("popstate", e => {
+  let s = e.state;
+  if (!s || !s.paso) return;
+  if (s.paso >= 7 && faltante()) { s = { paso: 1, i: s.i }; history.replaceState(s, ""); }
+  const dir = s.paso > paso ? 1 : -1;
+  idx = s.i; paso = s.paso; pila[idx] = paso;
+  mostrar(paso, dir, true);
+});
+
+function faltante() {
+  if (!estado.evento) return { paso: 1, err: "err1", msg: "Elige qué vas a celebrar para seguir.", foco: 'input[name="evento"]' };
+  if (!estado.paquete) return { paso: 2, err: "err2", msg: "Elige un formato (o “Ayúdame a elegir”) para seguir.", foco: 'input[name="paquete"]' };
+  if (!estado.nombre.trim()) return { paso: 6, err: "err6", msg: "Escribe tu nombre para seguir.", foco: "#nombre" };
+  return null;
+}
+
+function siguiente() {
+  const f = faltante();
+  const destino = (paso === TOTAL_PASOS || completo) ? 7 : paso + 1;
+  if (f && f.paso <= Math.min(paso, TOTAL_PASOS) || (f && destino === 7)) {
+    if (f.paso !== paso) ir(f.paso);
+    errorEn(f.err, f.msg);
+    const el = $(f.foco); if (el) el.focus();
+    return;
+  }
+  ir(destino);
+}
+
+$("#btnSig").addEventListener("click", siguiente);
+$("#btnAtras").addEventListener("click", () => {
+  const destino = paso - 1;
+  if (destino < 1) return;
+  if (idx > 0 && pila[idx - 1] === destino) history.back(); else ir(destino);
+});
+
+/* ---------- Resumen ---------- */
+function ficha() { return construirFicha(estado, calcular(estado, CFG), CFG); }
+function waUrl() { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(ficha()); }
+
+function renderResumen() {
+  completo = true;
+  const c = calcular(estado, CFG);
+  const paq = PAQUETES.find(p => p.id === estado.paquete);
+  const precioTxt = p => p === null ? '<span class="ac">A cotizar</span>' : dinero(p);
+  let lineas = "";
+  if (!paq) lineas += '<div class="ln"><span>Por definir<small>' + esc(MARCA.responsable) + ' te ayuda a elegir el formato</small></span><span><span class="ac">A cotizar</span></span></div>';
+  c.lineas.forEach(l => {
+    lineas += '<div class="ln"><span>' + esc(l.concepto) + (l.formato ? '<small>' + esc(l.formato) + '</small>' : "") + '</span><span>' + precioTxt(l.precio) + '</span></div>';
+  });
+  if (c.urgencia) lineas += '<div class="ln"><span>Entrega exprés<small>' + esc(c.urgencia.etiqueta) + '</small></span><span>' +
+    (c.conNumero ? "+" + dinero(c.total - c.subtotal) : "+" + Math.round(c.recargo * 100) + "%") + '</span></div>';
+
+  const evento = estado.evento === "Otro" && estado.eventoOtro.trim() ? estado.eventoOtro.trim() : estado.evento;
+  const origen = estado.origen === "Otro" && estado.origenOtro.trim() ? estado.origenOtro.trim() : estado.origen;
+  const extras = EXTRAS.filter(x => estado.extras.indexOf(x.id) !== -1).map(x => x.nombre);
+  const une = arr => arr.filter(Boolean).join(" · ") || "—";
+  const det = [
+    [1, "Tu evento", une([evento, estado.festejado.trim(), estado.fechaEvento && fmtFecha(estado.fechaEvento)])],
+    [2, "Formato", paq ? paq.nombre : "Ayúdame a elegir"],
+    [3, "Extras y pases", une([extras.join(", ") || "Sin extras", estado.pases && "Pases: " + estado.pases])],
+    [4, "Entrega", estado.fechaEntrega ? fmtFecha(estado.fechaEntrega) + " · " + (c.urgencia ? "exprés " + c.urgencia.etiqueta : "normal") : "Normal (" + ENTREGA_NORMAL + ")"],
+    [5, "Estilo", une([estado.estilos.join(", "), estado.colores.trim(), estado.foto && "Foto: " + estado.foto])],
+    [6, "Tus datos", une([estado.nombre.trim(), origen])]
+  ];
+  if (estado.ref) det.splice(1, 0, [0, "Diseño que te gustó", estado.ref]);
+
+  const enviar = WA
+    ? '<a class="btn btn-moss btn-full" id="btnEnviar" href="' + esc(waUrl()) + '" target="_blank" rel="noopener">Enviar por WhatsApp</a>' +
+      '<button type="button" class="btn btn-ghost btn-full" data-copiar>Copiar mi cotización</button>'
+    : '<button type="button" class="btn btn-moss btn-full" data-copiar>Copiar mi cotización</button>';
+
+  $("#resumen").innerHTML =
+    titulo(7, "Tu cotización") +
+    '<p class="lead">Revisa que todo esté bien' + (estado.nombre.trim() ? ", " + esc(estado.nombre.trim().split(" ")[0]) : "") + '.</p>' +
+    '<div class="recibo"><div class="rc-head"><img src="' + MARCA.logo + '" alt=""><span>' + esc(MARCA.negocio) + '</span><time>' + fmtFecha(HOY) + '</time></div>' +
+    lineas +
+    '<div class="tot"><span class="k">Total aproximado</span><span class="v">' + c.totalTexto + '</span>' +
+    (c.pendientesTexto ? '<span class="p">' + esc(c.pendientesTexto) + '</span>' : "") + '</div>' +
+    '<div class="ln ant"><span>Anticipo (' + Math.round(ANTICIPO * 100) + '%)<small>Para apartar tu fecha de entrega</small></span><span>' + c.anticipoTexto + '</span></div></div>' +
+    '<p class="nota">Es un precio aproximado. ' + esc(MARCA.responsable) + ' te confirma el total y los siguientes pasos por WhatsApp.</p>' +
+    (estado.foto === "Sí" ? '<p class="recordar">📎 No olvides mandar tu foto de referencia en el mismo chat de WhatsApp.</p>' : "") +
+    '<div class="acciones">' + enviar + '</div>' +
+    (WA ? "" : '<p class="nota" style="text-align:center">Mándanos este mensaje por Instagram o Facebook.</p>') +
+    '<section class="det" aria-labelledby="detH"><h2 id="detH">Lo que elegiste</h2>' +
+    det.map(d => '<div class="det-r"><div><b>' + esc(d[1]) + '</b><p>' + esc(d[2]) + '</p></div>' +
+      (d[0] ? '<button type="button" class="editar" data-editar="' + d[0] + '" aria-label="Editar ' + esc(d[1].toLowerCase()) + '">Editar</button>' : "") + '</div>').join("") +
+    '</section>';
+
+  const btn = $("#btnEnviar");
+  if (btn) btn.addEventListener("click", () => setTimeout(() => ir(8), 400));
+}
+
+function renderListo() {
+  $("#listo").innerHTML =
+    '<div class="ico" aria-hidden="true">💌</div>' +
+    titulo(8, "¡Listo!") +
+    '<p class="lead">Se abrió WhatsApp con tu cotización. Si no se abrió, <a href="' + esc(waUrl()) + '" target="_blank" rel="noopener">toca aquí</a>.</p>' +
+    (estado.foto === "Sí" ? '<p class="recordar">📎 Recuerda mandar tu foto de referencia en el mismo chat.</p>' : "") +
+    '<div class="acciones"><a class="btn btn-moss btn-full" href="' + esc(MARCA.inicio) + '">Volver a la página</a>' +
+    '<button type="button" class="btn btn-ghost btn-full" data-copiar>Copiar mi cotización</button></div>';
+}
+
+document.addEventListener("click", e => {
+  const ed = e.target.closest && e.target.closest("[data-editar]");
+  if (ed) { ir(+ed.dataset.editar); return; }
+  const cp = e.target.closest && e.target.closest("[data-copiar]");
+  if (cp) copiar(ficha(), cp);
+});
+
+/* ---------- Copiar (con alternativa para navegadores internos) ---------- */
+function copiarViejo(txt) {
+  const ta = document.createElement("textarea");
+  ta.value = txt; ta.setAttribute("readonly", "");
+  ta.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px";
+  document.body.appendChild(ta);
+  ta.focus(); ta.select(); ta.setSelectionRange(0, txt.length);
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+  document.body.removeChild(ta);
+  return ok;
+}
+function copiar(txt, btn) {
+  const listo = ok => {
+    const orig = btn.dataset.orig || btn.textContent;
+    btn.dataset.orig = orig;
+    btn.textContent = ok ? "Copiado ✓" : "No se pudo copiar 😕";
+    clearTimeout(btn._t);
+    btn._t = setTimeout(() => { btn.textContent = orig; }, 2200);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(txt).then(() => listo(true), () => listo(copiarViejo(txt)));
+  } else listo(copiarViejo(txt));
+}
+
+/* ---------- Parámetros de URL ---------- */
+(function () {
+  let q;
+  try { q = new URLSearchParams(location.search); } catch (err) { return; }
+  const p = q.get("paquete");
+  if (p && PAQUETES.some(x => x.id === p)) {
+    const r = $('input[name="paquete"][value="' + p + '"]');
+    r.checked = true; estado.paquete = p;
+  }
+  const ref = limpiarRef(q.get("ref"));
+  if (ref) {
+    estado.ref = ref;
+    $("#refTxt").textContent = "Te gustó: " + ref;
+    $("#refChip").hidden = false;
+  }
+})();
+$("#refQuitar").addEventListener("click", () => { estado.ref = ""; $("#refChip").hidden = true; });
+
+/* ---------- Arranque ---------- */
+history.replaceState({ paso: 1, i: 0 }, "");
+actualizar();
+mostrar(1, 1, false);
+</script>
+</body>
+</html>
