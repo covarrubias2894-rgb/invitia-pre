@@ -1,0 +1,2561 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Generador de documentos · Invitia atelier
+  Cotización, recibos, acuerdo de servicio, aviso de privacidad, ficha del evento, registro de cambios y constancia de entrega.
+
+  Un solo archivo, sin internet ni librerías: el PDF sale con "Imprimir → Guardar como PDF".
+  Los datos del negocio se cambian desde la propia app (botón ⚙ Configuración); no hace falta tocar el código.
+  No guarda datos de clientes: solo la configuración y los folios, en este navegador (clave invitia_docs_config_v1).
+  "📥 Pegar cotización" lee la ficha que manda cotizar.html por WhatsApp y llena todos los documentos.
+  Pruebas internas (número a letra, totales y lector de la cotización): abre esta página con #/pruebas al final de la liga.
+-->
+<title>Documentos · Invitia atelier</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F1EBE0">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" id="favicon" href="data:,">
+<!-- El tamaño de hoja cambia según el documento (carta o media carta) -->
+<style id="estilo-pagina">@page{size:letter;margin:12mm}</style>
+<style>
+:root{
+  /* Mismos tokens que cotizar.html */
+  --beige:#F1EBE0;
+  --beige-2:#E6DDCD;
+  --tan:#B3A288;
+  --cream:#D1C8B8;
+  --paper:#FAF7F1;
+  --ink:#2F2F2E;
+  --ink-2:#57544E;
+  --muted:#8A857B;
+  --line:#DBD1C0;
+  --moss:#5F6B45;
+  --moss-d:#4A5435;
+  --mustard:#C79A2E;
+  --mustard-l:#EAD7A4;
+  --serif:Georgia,"Times New Roman","Iowan Old Style",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  /* Propios de esta app */
+  --whats:#25D366;
+  --whats-tinta:#053B22;
+  --rojo:#8B3A2E;
+  --rojo-suave:#F8ECE8;
+  --r:18px;
+  --sombra:0 18px 40px -30px rgba(47,47,46,.55);
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;font-family:var(--sans);font-size:1rem;line-height:1.5;color:var(--ink);background:var(--beige);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+main{flex:1}
+img,svg{display:block;max-width:100%}
+h1,h2,h3{font-family:var(--serif);font-weight:400;color:var(--ink);line-height:1.2;margin:0;letter-spacing:-.01em}
+p{margin:0}
+a{color:var(--moss-d)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--moss);outline-offset:2px}
+[tabindex="-1"]:focus{outline:none}
+.sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.envoltura{width:100%;max-width:980px;margin:0 auto;padding:0 16px}
+.angosta{max-width:700px}
+@media (min-width:768px){.envoltura{padding:0 24px}}
+
+/* ---------- Botones (como el cotizador) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 20px;border:1.5px solid transparent;border-radius:999px;background:none;font-weight:600;font-size:1rem;line-height:1.2;text-align:center;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .15s,border-color .15s,transform .15s}
+.btn:active{transform:scale(.98)}
+.btn-moss{background:var(--moss);color:#fff}
+.btn-moss:hover{background:var(--moss-d)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn-ghost:hover{background:rgba(47,47,46,.05)}
+.btn-suave{background:var(--beige-2);color:var(--ink)}
+.btn-suave:hover{background:var(--cream)}
+.btn-whats{background:var(--whats);color:var(--whats-tinta)}
+.btn-whats:hover{background:#1FCB5E}
+.btn-peligro{background:transparent;color:var(--rojo);border-color:var(--rojo)}
+.btn-peligro:hover{background:var(--rojo-suave)}
+.btn-bloque{display:flex;width:100%}
+.btn-grande{min-height:56px;font-size:1.0625rem}
+.btn-chico{padding:8px 16px;font-size:.9375rem}
+.btn:disabled,.btn[aria-disabled="true"]{background:var(--beige-2);color:var(--muted);border-color:transparent;cursor:not-allowed;transform:none}
+
+/* ---------- Encabezado de la app ---------- */
+.cab{background:var(--beige);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.cab-in{display:flex;align-items:center;gap:12px;min-height:64px}
+.cab-marca{display:flex;align-items:center;gap:10px;min-width:0;margin-right:auto;color:var(--ink);text-decoration:none}
+.cab-marca img{flex:none;height:34px;width:auto;max-width:96px;object-fit:contain}
+.cab-txt{min-width:0;line-height:1.15}
+.cab-txt b{display:block;overflow:hidden;font-family:var(--serif);font-size:1.1rem;font-weight:400;text-overflow:ellipsis;white-space:nowrap}
+.cab-txt small{display:block;margin-top:2px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--moss)}
+.btn-cab{flex:none;padding:8px 14px;font-size:.9375rem}
+.btn-cab[aria-current="page"]{background:var(--ink);color:#fff}
+
+/* ---------- Avisos ---------- */
+.banner{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-top:16px;padding:14px 16px;border:1px solid var(--mustard);border-radius:14px;background:var(--mustard-l);color:var(--ink)}
+.banner p{flex:1 1 220px}
+.banner .detalle{display:block;margin-top:2px;font-size:.9375rem;color:var(--ink-2)}
+.banner-error{border-color:#D9A79C;background:var(--rojo-suave);color:var(--rojo);font-weight:600}
+.alerta{margin-bottom:18px;padding:14px 16px;border:1.5px solid var(--rojo);border-radius:14px;background:var(--rojo-suave);color:var(--rojo)}
+.alerta p{margin-bottom:10px}
+.falta{margin:0 0 12px;padding:8px 12px;border-radius:10px;background:var(--rojo-suave);color:var(--rojo);font-size:.9rem;font-weight:600}
+.nota-gris{padding:12px 14px;border-radius:12px;background:var(--beige);border:1px dashed var(--line);color:var(--ink-2);font-size:.9rem}
+.toast{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top));z-index:80;width:max-content;max-width:calc(100vw - 32px);padding:12px 18px;border-radius:14px;background:var(--ink);color:#fff;font-weight:600;box-shadow:0 10px 30px rgba(47,47,46,.3);transform:translateX(-50%)}
+.toast.error{background:var(--rojo)}
+
+/* ---------- Pantallas ---------- */
+.pantalla{padding:20px 0 32px}
+.pantalla-cab{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.titulo{font-size:clamp(1.6rem,1.3rem + 1.4vw,2.1rem)}
+.titulo span{margin-right:4px}
+.lead{margin:6px 0 18px;color:var(--ink-2)}
+.tarjeta{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sombra)}
+.ceja{font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--moss)}
+
+/* Inicio */
+.pegar{margin-top:18px}
+.pegar-caja{margin-top:12px;padding:16px}
+.pegar-caja textarea{min-height:220px;font-size:.9375rem}
+.resultado{margin-top:12px;padding:14px 16px;border:1px solid var(--moss);border-radius:14px;background:var(--paper)}
+.resultado b{font-weight:600}
+.resultado ul{margin:8px 0 0;padding-left:20px;color:var(--ink-2);font-size:.9375rem}
+.resultado li + li{margin-top:4px}
+.resultado.error{border-color:var(--rojo);background:var(--rojo-suave);color:var(--rojo)}
+.cliente-card{margin-top:16px;padding:16px}
+.cc-nombre{margin-top:4px;font-family:var(--serif);font-size:1.35rem;line-height:1.2}
+.cc-det{margin-top:2px;color:var(--ink-2);font-size:.9375rem}
+.mosaicos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:720px){.mosaicos{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media (min-width:940px){.mosaicos{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.mosaico{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:148px;padding:16px 14px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--paper);color:var(--ink);text-decoration:none;-webkit-tap-highlight-color:transparent;transition:border-color .15s,transform .15s}
+.mosaico:hover{border-color:var(--moss)}
+.mosaico:active{transform:translateY(1px)}
+.mosaico-ico{width:48px;height:48px;border-radius:50%;background:var(--beige-2);display:grid;place-items:center;font-size:1.4rem;line-height:1}
+.mosaico b{font-family:var(--serif);font-size:1.0625rem;font-weight:400;line-height:1.2}
+.mosaico small{color:var(--ink-2);font-size:.85rem;line-height:1.35}
+
+/* Formularios */
+.form-card{padding:20px 16px 4px}
+@media (min-width:600px){.form-card{padding:24px 24px 8px}}
+.campo{min-width:0;margin:0 0 18px;padding:0;border:0}
+.campo > label,.etiqueta{display:block;margin-bottom:6px;padding:0;font-weight:600;color:var(--ink)}
+.opc{font-weight:400;color:var(--muted);font-size:.85rem}
+.control{display:block;width:100%;min-width:0;min-height:50px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-size:1rem;line-height:1.35}
+textarea.control{min-height:96px;resize:vertical;line-height:1.45}
+select.control{-webkit-appearance:none;appearance:none;padding-right:42px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235F6B45' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center}
+input[type="date"].control{-webkit-appearance:none;appearance:none}
+.control::-webkit-date-and-time-value{text-align:left}
+.control:focus{border-color:var(--moss);outline:none;box-shadow:0 0 0 3px rgba(95,107,69,.25)}
+.control[aria-invalid="true"]{border-color:var(--rojo);background:#FFF9F7}
+.control:disabled{background:var(--beige);color:var(--muted)}
+.control::placeholder{color:var(--muted)}
+.ayuda{margin-top:6px;font-size:.875rem;color:var(--ink-2)}
+.fila{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px;align-items:end}
+.fila-ancha{display:grid;gap:0 12px}
+@media (min-width:520px){.fila-ancha{grid-template-columns:repeat(2,minmax(0,1fr));align-items:end}}
+.sub{margin:8px 0 12px;font-size:1.25rem}
+.sub3{margin:20px 0 10px;font-size:1.0625rem}
+.grupo{margin:0 0 18px;padding:14px 14px 0;border:1.5px dashed var(--line);border-radius:14px}
+.grupo legend{padding:0 6px;font-weight:600}
+/* Opciones (como .opt del cotizador) */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px}
+.seg.envuelve{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr))}
+.seg label{position:relative;display:block;cursor:pointer}
+.seg input{position:absolute;width:1px;height:1px;margin:0;opacity:0;pointer-events:none}
+.seg span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:100%;min-height:50px;padding:8px 6px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);font-weight:600;line-height:1.15;text-align:center;-webkit-tap-highlight-color:transparent;transition:border-color .15s,background .15s}
+.seg span small{font-weight:400;font-size:.78rem;color:var(--ink-2)}
+.seg input:checked + span{border-color:var(--moss);background:var(--mustard-l)}
+.seg input:focus-visible + span{outline:3px solid var(--moss);outline-offset:2px}
+/* Interruptores (como .sw del cotizador) */
+.sw{position:relative;display:flex;align-items:center;gap:12px;min-height:60px;margin-bottom:10px;padding:10px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);cursor:pointer;transition:border-color .15s,background .15s}
+.sw input{position:absolute;opacity:0;width:1px;height:1px}
+.sw-t{flex:1;min-width:0;line-height:1.3}
+.sw-t b{font-weight:600}
+.sw-t small{display:block;margin-top:2px;font-size:.82rem;color:var(--ink-2)}
+.track{flex:none;position:relative;width:46px;height:28px;border-radius:99px;background:var(--cream);transition:background .2s}
+.track::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.sw.sel{border-color:var(--moss);background:var(--mustard-l)}
+.sw.sel .track{background:var(--moss)}
+.sw.sel .track::after{transform:translateX(18px)}
+.sw:focus-within{outline:3px solid var(--moss);outline-offset:2px}
+.sw-precio{margin:-4px 0 14px 14px}
+.lista-items{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-bottom:12px}
+.item{min-width:0;padding:12px;border:1.5px solid var(--line);border-radius:14px;background:#fff}
+.item .campo{margin-bottom:10px}
+.item .campo > label{font-size:.9375rem}
+.item-cab{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.item-num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--moss);color:#fff;display:grid;place-items:center;font-size:.875rem;font-weight:700}
+.item-tit{flex:1;min-width:0;overflow:hidden;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+.item-btns{display:flex;gap:6px;margin-left:auto}
+.mini{flex:none;width:48px;height:48px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-size:1.125rem;font-weight:700;line-height:1;cursor:pointer}
+.mini:hover{border-color:var(--ink)}
+.mini-x{color:var(--rojo)}
+.mini-x:hover{border-color:var(--rojo)}
+.fila-ren{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:0 8px;align-items:end}
+.letra{margin:-10px 0 18px;padding:8px 12px;border-radius:10px;background:var(--beige);color:var(--ink);font-size:.9375rem;font-weight:600}
+.vivo{margin:0 0 18px;padding:14px 16px;border-radius:14px;background:var(--beige);border:1px solid var(--line)}
+.totales{margin:0}
+.totales > div{display:flex;justify-content:space-between;gap:12px;padding:4px 0}
+.totales dt{color:var(--ink-2)}
+.totales dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.totales .total{margin:4px 0;padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.totales .total dt,.totales .total dd{color:var(--ink);font-family:var(--serif);font-size:1.25rem;font-weight:400}
+.vivo-aviso{margin-top:8px;color:var(--rojo);font-size:.9rem;font-weight:600}
+.errores{margin:16px 0 0;padding:14px 16px;border:1.5px solid var(--rojo);border-radius:14px;background:var(--rojo-suave);color:var(--rojo)}
+.errores ul{margin:6px 0 0;padding-left:20px}
+.btn-ver{margin-top:16px}
+/* Cliente y pedido (compartido por todos los documentos) */
+.cp{margin:0 0 20px;border:1.5px solid var(--line);border-radius:14px;background:var(--beige)}
+.cp > summary{display:flex;align-items:center;gap:10px;min-height:56px;padding:10px 14px;cursor:pointer;list-style:none}
+.cp > summary::-webkit-details-marker{display:none}
+.cp > summary::after{content:"+";flex:none;width:30px;height:30px;margin-left:auto;border-radius:50%;background:var(--paper);color:var(--moss);display:grid;place-items:center;font-size:1.25rem;line-height:1}
+.cp[open] > summary::after{content:"−"}
+.cp-tit{min-width:0}
+.cp-tit b{display:block;font-weight:600}
+.cp-tit small{display:block;overflow:hidden;color:var(--ink-2);font-size:.85rem;text-overflow:ellipsis;white-space:nowrap}
+.cp-cuerpo{padding:4px 14px 2px}
+.cp-fijo{margin-bottom:6px}
+
+/* Botón y aviso de "archivo de ejemplo" (solo con MODO_DEMO) */
+.ejemplo-caja{margin:0 0 18px;padding:14px;border:1.5px dashed var(--mustard);border-radius:var(--r);background:var(--paper)}
+.ejemplo-caja .ayuda{margin-top:8px;text-align:center}
+.btn-ejemplo{background:var(--mustard);color:var(--ink);font-weight:700}
+.btn-ejemplo:hover{background:#B88B22}
+.ejemplo-aviso{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;padding:12px 14px;border:1px solid var(--mustard);border-radius:14px;background:var(--mustard-l);font-size:.9375rem}
+
+/* Vista previa */
+.vista-herr{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.chip-papel{display:inline-flex;align-items:center;min-height:36px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper);font-size:.875rem;font-weight:600}
+.registro{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:14px;padding:14px 16px;border:1px solid var(--mustard);border-radius:var(--r);background:var(--mustard-l)}
+.registro p{flex:1 1 200px;font-weight:600}
+.vista-marco{position:relative;overflow:hidden;padding:12px;border-radius:var(--r);background:var(--cream)}
+.vista-marco.zoom{overflow-x:auto}
+.vista-escala{transform-origin:0 0}
+
+/* Barra de acciones */
+.acciones{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 0 calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:rgba(241,235,224,.98);box-shadow:0 -8px 24px -18px rgba(47,47,46,.5)}
+.acciones-in{display:grid;gap:8px}
+.acc-principal{display:flex;gap:8px}
+.acc-imprimir{flex:1}
+.acc-ayuda{flex:none;width:48px;padding:0;font-size:1.125rem;font-weight:700}
+.acc-sec{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px}
+.acc-btn{flex-direction:column;gap:3px;min-height:56px;padding:6px 4px;border-radius:16px;font-size:.8125rem;line-height:1.15}
+.acc-btn > span[aria-hidden]{font-size:1.25rem;line-height:1}
+.solo-ancho{display:none}
+.ayuda-pdf{max-height:46vh;overflow:auto;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--paper);font-size:.9375rem}
+.ayuda-pdf-cab{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ayuda-pdf ul{margin:8px 0 0;padding-left:18px}
+.ayuda-pdf li + li{margin-top:6px}
+.ayuda-pdf .ayuda{margin-top:10px}
+.btn-x{flex:none;width:44px;height:44px;border:0;border-radius:12px;background:var(--beige);color:var(--ink);font-size:1.5rem;line-height:1;cursor:pointer}
+@media (min-width:760px){
+  .acciones-in{display:flex;flex-wrap:wrap;align-items:center}
+  .ayuda-pdf{flex:1 1 100%}
+  .acc-principal,.acc-sec{flex:1 1 auto}
+  .acc-imprimir{white-space:nowrap}
+  .acc-btn{flex-direction:row;gap:6px;min-height:48px;padding:8px 14px;border-radius:999px;font-size:.9375rem;white-space:nowrap}
+  .acc-btn > span[aria-hidden]{font-size:1.05rem}
+  .acc-ayuda{width:auto;padding:0 14px;font-size:.9375rem;white-space:nowrap}
+  .solo-ancho{display:inline}
+  .solo-corto{display:none}
+}
+
+/* Configuración */
+.estado-guardado{font-size:.875rem;font-weight:600;color:var(--moss-d)}
+.estado-guardado.error{color:var(--rojo)}
+.sec{margin-bottom:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--paper)}
+.sec > summary{display:flex;align-items:center;gap:12px;min-height:60px;padding:14px 16px;border-radius:var(--r);font-family:var(--serif);font-size:1.125rem;list-style:none;cursor:pointer}
+.sec > summary::-webkit-details-marker{display:none}
+.sec > summary::after{content:"+";flex:none;width:30px;height:30px;margin-left:auto;border-radius:50%;background:var(--beige-2);color:var(--moss-d);display:grid;place-items:center;font-family:var(--sans);font-size:1.25rem;line-height:1}
+.sec[open] > summary::after{content:"−"}
+.sec-cuerpo{padding:2px 16px 18px}
+.tabla-edit{display:grid;gap:8px;margin-bottom:12px}
+.te-cab,.te-fila{display:grid;grid-template-columns:minmax(0,1fr) 96px 48px;gap:8px;align-items:center}
+.te-cab{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.color-fila{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.color-fila input[type="color"]{width:64px;height:48px;padding:3px;border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer}
+.color-fila span{font-weight:600;font-variant-numeric:tabular-nums}
+.logo-fila{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.logo-prev{width:132px;height:72px;display:grid;place-items:center;border:1.5px dashed var(--line);border-radius:12px;background:#fff;color:var(--ink-2);font-size:.875rem}
+.logo-prev img{max-width:116px;max-height:56px;object-fit:contain}
+.logo-btns{display:flex;flex-wrap:wrap;gap:8px}
+.btns-fila{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.peligro{margin-top:24px;padding:18px 16px;border:1.5px solid #E2C2BA;border-radius:var(--r);background:var(--paper)}
+.peligro h2{margin-bottom:6px;font-size:1.125rem;color:var(--rojo)}
+.peligro p{margin-bottom:12px;color:var(--ink-2)}
+
+/* Pruebas */
+.pruebas{width:100%;border-collapse:collapse;margin-bottom:24px;background:var(--paper);font-size:.9rem}
+.pruebas th,.pruebas td{padding:8px;border:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.pruebas-res{margin-bottom:18px;font-size:1.125rem;font-weight:600}
+
+/* Pie */
+.pie{padding:18px 0 22px;color:var(--ink-2);font-size:.9375rem;text-align:center}
+
+/* ---------- Documento (hoja): blanco, texto negro, líneas finas en el color principal ---------- */
+.hoja{--c:#5F6B45;position:relative;width:8.5in;min-height:11in;padding:12mm;background:#fff;color:#151515;font-family:var(--sans);font-size:9.5pt;line-height:1.45;font-variant-numeric:lining-nums;overflow-wrap:break-word;box-shadow:0 2px 14px rgba(47,47,46,.22)}
+.hoja.media{width:5.5in;min-height:8.5in;font-size:8.5pt;line-height:1.38}
+.hoja.compacto{font-size:9pt;line-height:1.4}
+.hoja-in{display:flex;flex-direction:column;min-height:calc(11in - 24mm - .6in)}
+.hoja.media .hoja-in{min-height:calc(8.5in - 24mm - .6in)}
+.hoja p{margin:0}
+.hoja b{font-weight:700;color:#000}
+.hoja h2,.hoja h3{margin:0;font-family:var(--serif);font-weight:400;line-height:1.2;letter-spacing:0;color:#000}
+.hoja ul,.hoja ol{margin:0}
+
+.d-cab{display:flex;align-items:center;gap:12pt;padding-bottom:9pt;border-bottom:.75pt solid var(--c)}
+.d-logo{flex:none}
+.d-logo img{display:block;width:auto;height:auto;max-width:1.5in;max-height:40pt;object-fit:contain}
+.media .d-logo img{max-width:1in;max-height:28pt}
+.d-contacto{flex:1;min-width:0;text-align:right;color:#333;font-size:7.5pt;line-height:1.5}
+.media .d-contacto{font-size:6.5pt;line-height:1.45}
+.d-negocio{margin-bottom:1pt!important;font-family:var(--serif);font-size:10.5pt;color:#000;letter-spacing:.02em}
+.media .d-negocio{font-size:9pt}
+.d-contacto .nw{white-space:nowrap}
+.d-folio{flex:none;padding:4pt 8pt;border:.75pt solid var(--c);border-radius:2pt;text-align:center;line-height:1.2}
+.d-folio small{display:block;color:var(--c);font-size:5.5pt;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.d-folio b{font-family:var(--serif);font-size:11pt;font-weight:400;font-variant-numeric:tabular-nums;white-space:nowrap}
+.media .d-folio{padding:3pt 6pt}
+.media .d-folio b{font-size:9.5pt}
+.d-tit{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2pt 12pt;margin:14pt 0 10pt}
+.d-tit h2{font-size:20pt}
+.media .d-tit{margin:10pt 0 8pt}
+.media .d-tit h2{font-size:15pt}
+.d-fecha{color:#333;font-size:8.5pt;white-space:nowrap}
+.media .d-fecha{font-size:7.5pt}
+.d-eti,.d-dato small{display:block;color:var(--c);font-size:6pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.d-pac{display:flex;flex-wrap:wrap;gap:6pt 22pt;margin-bottom:12pt;padding:7pt 0;border-top:.5pt solid #BDBDBD;border-bottom:.5pt solid #BDBDBD}
+.media .d-pac{gap:5pt 16pt;margin-bottom:9pt;padding:5pt 0}
+.d-dato{min-width:0}
+.d-dato.ancho{flex:1 1 40%}
+.d-dato span{color:#000;font-size:1.05em}
+.d-blanco{display:block;min-width:2in;height:13pt;border-bottom:.5pt solid #000}
+.d-bloque{margin-top:10pt;break-inside:avoid}
+.d-bloque h3{margin-bottom:3pt;font-size:11pt}
+.d-bloque p + p{margin-top:4pt}
+
+.d-empuja{flex:1 1 auto;min-height:12pt}
+.d-firmas{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-around;gap:30pt 24pt;margin-top:34pt;break-inside:avoid}
+.d-firma{flex:1 1 0;min-width:1.75in;max-width:3in;text-align:center;font-size:8pt;line-height:1.3}
+.media .d-firmas{gap:24pt 18pt;margin-top:24pt}
+.media .d-firma{min-width:1.6in;font-size:7.5pt}
+.d-sobre{min-height:12pt;color:#000;font-size:9pt}
+.d-linea{margin-top:2pt;padding-top:3pt;border-top:.75pt solid #000}
+.d-linea b{display:block;font-size:8pt;font-weight:600}
+.d-linea span{display:block;color:#333}
+
+.d-tabla{width:100%;border-collapse:collapse;font-size:9.5pt}
+.d-tabla th{padding:4pt 6pt;border-bottom:.75pt solid var(--c);color:var(--c);font-size:6pt;font-weight:600;letter-spacing:.16em;text-align:left;text-transform:uppercase}
+.d-tabla td{padding:6pt;border-bottom:.5pt solid #CFCFCF;vertical-align:top}
+.d-tabla td small{display:block;color:#555;font-size:7.5pt}
+.d-tabla tr{break-inside:avoid}
+.hoja .num{text-align:right!important;white-space:nowrap;font-variant-numeric:tabular-nums}
+.c-num{width:18pt;color:#555}
+.d-resumen{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12pt 22pt;margin-top:12pt;break-inside:avoid}
+.d-info{flex:1 1 2.8in;min-width:0;font-size:8.5pt}
+.d-info > * + *{margin-top:5pt!important}
+.d-totales{flex:none;width:3in;border-collapse:collapse;font-size:9pt;break-inside:avoid}
+.d-totales td{padding:3pt 6pt;font-variant-numeric:lining-nums tabular-nums}
+.d-totales .d-total td{padding-top:6pt;border-top:.75pt solid #000;color:#000;font-family:var(--serif);font-size:13pt}
+.d-totales .d-anticipo td{border-top:.5pt dashed #888;font-weight:700}
+.d-apartar{margin-top:14pt!important;padding:8pt 11pt;border:.75pt solid var(--c);border-radius:3pt;break-inside:avoid}
+
+.d-bueno{align-self:flex-end;margin:0 0 10pt!important;padding:4pt 12pt;border:.75pt solid var(--c);border-radius:2pt;text-align:right}
+.d-bueno small{display:block;color:var(--c);font-size:5.5pt;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.d-bueno b{font-family:var(--serif);font-size:14pt;font-weight:400;font-variant-numeric:tabular-nums}
+.d-recibi{font-size:1.12em;line-height:1.55}
+.d-dl{display:grid;gap:5pt;margin:10pt 0 0}
+.d-dl div{display:flex;gap:8pt;padding-bottom:4pt;border-bottom:.5pt solid #CFCFCF}
+.d-dl dt{flex:none;width:1.05in;padding-top:1.5pt;color:var(--c);font-size:6pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.d-dl dd{margin:0;color:#000}
+.d-saldo{width:100%;margin-top:10pt}
+.d-leyenda{margin-top:10pt!important;color:#444;font-size:7.5pt;font-style:italic;text-align:center}
+
+.d-texto{font-size:1.12em;line-height:1.6;text-align:justify}
+.d-texto + .d-texto{margin-top:8pt!important}
+.d-intro{margin-bottom:8pt!important;text-align:justify}
+.d-clausulas{counter-reset:cl}
+.d-clausulas h3{margin:5pt 0 1pt;font-size:10.5pt}
+.compacto .d-tit{margin:10pt 0 8pt}
+.compacto .d-pac{margin-bottom:8pt;padding:5pt 0}
+.compacto .d-consent{margin-top:9pt}
+.compacto .d-consent .d-firmas{gap:22pt 18pt;margin-top:24pt}
+.compacto .d-firma{min-width:1.6in}
+.d-clausulas h3::before{counter-increment:cl;content:counter(cl) ". ";color:var(--c)}
+.d-clausulas p{text-align:justify}
+.d-clausulas ul{margin:1pt 0;padding-left:14pt}
+.d-clausulas li::marker{color:var(--c)}
+.d-aviso h3{margin:7pt 0 2pt;font-size:10.5pt}
+.d-aviso p{margin-top:3pt}
+.d-aviso ul{margin:2pt 0;padding-left:14pt}
+.d-aviso li{margin-bottom:1pt}
+.d-aviso li::marker{color:var(--c)}
+.d-consent{margin-top:12pt;padding:8pt 11pt;border:.75pt solid var(--c);border-radius:3pt;break-inside:avoid}
+.d-consent h3{font-size:10.5pt}
+.d-check{display:flex;align-items:flex-start;gap:8pt;margin-top:6pt!important}
+.d-check i{flex:none;position:relative;width:10pt;height:10pt;margin-top:1pt;border:.75pt solid #000;border-radius:1.5pt}
+.d-check i.on::after{content:"✓";position:absolute;left:0;right:0;top:-2.5pt;text-align:center;font-style:normal;font-size:10pt;font-weight:700;line-height:1;color:#000}
+.d-consent .d-firmas{margin-top:28pt}
+.d-nota{margin-top:10pt!important;color:#666;font-size:6.5pt;text-align:center}
+
+.d-sesion{display:flex;align-items:baseline;gap:8pt;margin-bottom:8pt}
+.d-sesion b{font-family:var(--serif);font-size:16pt;font-weight:400}
+.d-lista{padding-left:15pt}
+.d-lista li{margin-bottom:4pt;break-inside:avoid}
+.d-lista li::marker{color:var(--c)}
+.d-caja{margin-top:12pt;padding:7pt 10pt;border:.75pt solid var(--c);border-radius:3pt;break-inside:avoid}
+.d-caja b{font-family:var(--serif);font-size:11pt;font-weight:400}
+
+.d-ficha{display:grid;gap:10pt}
+.d-ficha section{break-inside:avoid}
+.d-ficha h3{margin-bottom:4pt;padding-bottom:2pt;border-bottom:.5pt solid var(--c);font-size:11pt}
+.d-ficha dl{display:grid;grid-template-columns:1.45in minmax(0,1fr);gap:3pt 10pt;margin:0}
+.d-ficha dt{padding-top:2pt;color:var(--c);font-size:6pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.d-ficha dd{margin:0;color:#000;white-space:pre-line}
+
+/* ---------- Impresión: solo el documento ---------- */
+@media print{
+  html,body{background:#fff!important}
+  body{display:block;min-height:0;padding:0!important}
+  .app-ui,.toast{display:none!important}
+  main,.pantalla,#p-vista .envoltura{margin:0!important;padding:0!important;max-width:none!important}
+  .vista-marco{height:auto!important;padding:0!important;overflow:visible!important;border-radius:0;background:none!important}
+  .vista-escala{width:auto!important;margin:0!important;transform:none!important}
+  .hoja{width:auto!important;max-width:calc(8.5in - 24mm);min-height:0!important;margin:0!important;padding:0!important;box-shadow:none!important}
+  .hoja.media{max-width:calc(5.5in - 24mm)}
+  .hoja,.hoja *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="cab app-ui">
+  <div class="envoltura cab-in">
+    <a class="cab-marca" id="cab-marca" href="#/" aria-label="Ir al inicio"></a>
+    <a class="btn btn-ghost btn-cab" id="btn-config" href="#/config"><span aria-hidden="true">⚙</span> Configuración</a>
+  </div>
+</header>
+
+<div class="envoltura app-ui" id="aviso-almacen" hidden>
+  <p class="banner banner-error" role="alert"><span aria-hidden="true">⚠</span> Tu navegador no deja guardar la configuración: la app funciona, pero tus cambios en ⚙ Configuración y los folios se pierden al cerrar.</p>
+</div>
+
+<main id="principal">
+  <section class="pantalla app-ui" id="p-inicio" hidden>
+    <div class="envoltura">
+      <div id="banner-config" hidden></div>
+      <div class="pegar">
+        <button type="button" class="btn btn-moss btn-grande btn-bloque" data-accion="abrir-pegar" aria-expanded="false" aria-controls="pegar-caja"><span aria-hidden="true">📥</span> Pegar cotización</button>
+        <div class="tarjeta pegar-caja" id="pegar-caja" hidden>
+          <label class="etiqueta" for="pegar-txt">Pega aquí el mensaje que te llegó del cotizador</label>
+          <textarea id="pegar-txt" class="control" rows="10" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="🎉 FICHA DE COTIZACIÓN · INVITIA ATELIER 🎊&#10;Cliente: …&#10;Evento: …"></textarea>
+          <p class="ayuda">En WhatsApp deja el dedo sobre el mensaje → Copiar. Aquí, deja el dedo en el cuadro → Pegar.</p>
+          <div class="btns-fila">
+            <button type="button" class="btn btn-moss" data-accion="llenar">Llenar</button>
+            <button type="button" class="btn btn-ghost" data-accion="cerrar-pegar">Cancelar</button>
+          </div>
+        </div>
+        <div id="pegar-res" role="status" aria-live="polite"></div>
+      </div>
+      <div id="cliente-actual"></div>
+      <h1 class="titulo" tabindex="-1" style="margin-top:26px">¿Qué documento necesitas?</h1>
+      <p class="lead">Revisa cómo queda y luego imprímelo, guárdalo en PDF o mándalo por WhatsApp.</p>
+      <nav class="mosaicos" id="mosaicos" aria-label="Documentos"></nav>
+    </div>
+  </section>
+
+  <section class="pantalla app-ui" id="p-form" hidden>
+    <div class="envoltura angosta">
+      <div class="pantalla-cab"><a class="btn btn-ghost btn-chico" href="#/" data-accion="inicio"><span aria-hidden="true">←</span> Inicio</a></div>
+      <h1 class="titulo" id="form-titulo" tabindex="-1"></h1>
+      <p class="lead" id="form-desc"></p>
+      <div class="ejemplo-caja" id="ejemplo-caja" hidden>
+        <button type="button" class="btn btn-ejemplo btn-grande btn-bloque" data-accion="ejemplo"><span aria-hidden="true">👀</span> Ver archivo de ejemplo</button>
+        <p class="ayuda">Se llena solo con datos ficticios para que veas cómo queda. O llena tú los datos aquí abajo.</p>
+      </div>
+      <div class="tarjeta form-card" id="form"></div>
+      <div class="errores" id="form-errores" role="alert" hidden></div>
+      <button type="button" class="btn btn-moss btn-grande btn-bloque btn-ver" id="btn-ver" data-accion="ver">Ver documento <span aria-hidden="true">→</span></button>
+    </div>
+  </section>
+
+  <section class="pantalla" id="p-vista" hidden>
+    <div class="envoltura app-ui">
+      <h1 class="titulo" id="vista-titulo" tabindex="-1"></h1>
+      <p class="lead">Así se va a ver impreso. Revísalo antes de imprimir o mandar.</p>
+      <p class="ejemplo-aviso" id="ejemplo-aviso" hidden><span aria-hidden="true">🧪</span> <span><b>Este es un ejemplo con datos ficticios.</b> Toca ✏️ Editar para cambiar los datos y probar con los tuyos, o 🆕 Nuevo para empezar en blanco.</span></p>
+      <div class="alerta" id="aviso-hojas" role="status" hidden></div>
+      <div class="registro" id="vista-extra" hidden>
+        <p id="vista-extra-txt"></p>
+        <button type="button" class="btn btn-moss" data-accion="recibo-cambio"><span aria-hidden="true">💵</span> Hacer recibo de este cambio</button>
+      </div>
+      <div class="vista-herr">
+        <span class="chip-papel" id="vista-papel"></span>
+        <button type="button" class="btn btn-ghost btn-chico" id="btn-zoom" data-accion="zoom"></button>
+      </div>
+    </div>
+    <div class="envoltura">
+      <div class="vista-marco" id="vista-marco"><div class="vista-escala" id="vista-escala"><article class="hoja" id="hoja" aria-label="Vista previa del documento"></article></div></div>
+    </div>
+  </section>
+
+  <section class="pantalla app-ui" id="p-config" hidden>
+    <div class="envoltura angosta">
+      <div class="pantalla-cab">
+        <button type="button" class="btn btn-ghost btn-chico" data-accion="cerrar-config"><span aria-hidden="true">←</span> Listo</button>
+        <span class="estado-guardado" id="estado-guardado" aria-live="polite"></span>
+      </div>
+      <h1 class="titulo" tabindex="-1"><span aria-hidden="true">⚙</span> Configuración</h1>
+      <p class="lead">Los cambios se guardan solos en este dispositivo. Aquí no se guarda ningún dato de tus clientes.</p>
+      <div id="config-cuerpo"></div>
+    </div>
+  </section>
+
+  <section class="pantalla app-ui" id="p-pruebas" hidden>
+    <div class="envoltura">
+      <div class="pantalla-cab"><a class="btn btn-ghost btn-chico" href="#/" data-accion="inicio"><span aria-hidden="true">←</span> Inicio</a></div>
+      <h1 class="titulo" tabindex="-1">Pruebas internas</h1>
+      <div id="pruebas-cuerpo"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie app-ui"><div class="envoltura"><p><span aria-hidden="true">🔒</span> Esta app no guarda datos de tus clientes.</p></div></footer>
+
+<div class="acciones app-ui" id="acciones" hidden>
+  <div class="envoltura acciones-in">
+    <div class="ayuda-pdf" id="ayuda-pdf" hidden>
+      <div class="ayuda-pdf-cab"><b>¿Cómo guardo el PDF?</b><button type="button" class="btn-x" data-accion="ayuda-pdf" aria-label="Cerrar ayuda">×</button></div>
+      <ul>
+        <li><b>Android (Chrome):</b> toca Imprimir → arriba elige “Guardar como PDF” → toca el botón PDF.</li>
+        <li><b>iPhone:</b> toca Imprimir → pellizca la vista previa hacia afuera (o toca el botón Compartir) → “Guardar en Archivos” o mándalo por WhatsApp.</li>
+        <li><b>Mac o computadora:</b> Imprimir → en Destino elige “Guardar como PDF”. En “Más ajustes” quita los encabezados y pies de página del navegador.</li>
+      </ul>
+      <p class="ayuda">¿Abriste esta página desde WhatsApp o Instagram? Ábrela en Chrome o Safari para poder imprimir.</p>
+    </div>
+    <div class="acc-principal">
+      <button type="button" class="btn btn-moss acc-imprimir" data-accion="imprimir"><span aria-hidden="true">🖨️</span> Imprimir / Guardar PDF</button>
+      <button type="button" class="btn btn-ghost acc-ayuda" data-accion="ayuda-pdf" aria-expanded="false" aria-controls="ayuda-pdf" title="¿Cómo guardo el PDF?"><span class="solo-corto" aria-hidden="true">?</span><span class="solo-ancho">¿Cómo guardo el PDF?</span><span class="sr-only solo-corto">¿Cómo guardo el PDF?</span></button>
+    </div>
+    <div class="acc-sec">
+      <a class="btn btn-whats acc-btn" id="acc-whats" href="#" target="_blank" rel="noopener"><span aria-hidden="true">💬</span> <span><span class="solo-ancho">Mandar por </span>WhatsApp</span></a>
+      <button type="button" class="btn btn-ghost acc-btn" id="acc-copiar" data-accion="copiar"><span aria-hidden="true">📋</span> Copiar texto</button>
+      <button type="button" class="btn btn-ghost acc-btn" data-accion="editar"><span aria-hidden="true">✏️</span> Editar</button>
+      <button type="button" class="btn btn-ghost acc-btn" data-accion="nuevo" aria-label="Nuevo cliente"><span aria-hidden="true">🆕</span> Nuevo</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<noscript><p style="padding:16px;text-align:center">Para usar el generador de documentos activa JavaScript.</p></noscript>
+
+<script>
+/* Imágenes de la marca, copiadas de index.html (logotipo oscuro e isotipo). */
+var INVITIA_IMG = {
+  logo: "data:image/png;base64,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",
+  iso: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAABECAYAAACxiwTbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGFSURBVFhH7Ze/LgRRFMb3ISgoFbrNFPP/7xMoJNOsYqPjAYiohI1gExQknkMhPMHWPAOC9Sdq1fi+O+cmg3UzncI9yS/3zDnfd+fM3GmmEwTBehzHr77v3wp3qN2DB+SP4An5GLyAtyiKPrBudhhIzrIsq1CswjD8FWqw0YEy6UDhOE3TCpv8gCbpDUReh+M4U1xhPvpubph2qEmSZIarChgu0NhjjvWQQj0ec/S3RXeC/hVzFSjc5HlOwYZcD7FzRSDcYg3roCgKaq55rQLFUUOo3pjruvO4nmMO8S7vLP0Rayow0qkeD0fD5jnEi1hLcCkGNTa1YlPGrj4KCmjWE8hGqieartjq8DxvjTuySWET1tijRuRfA6IViMYUNUHtGaOvimxy8Ewh7IN9jDUEy8inpf2/Ag8+CxbwqltBLT08gj6/Ux50G6ilh8ae/qTaINqeNU7AGg1YowFrNGCNBqzRgDUasEYD1mjgD434n1jivwX/ZNpALT28Y4ld3rG2otYG5SfwLQwlD1P22gAAAABJRU5ErkJggg=="
+};
+</script>
+<script>
+(function () {
+  'use strict';
+
+  /* ======================= MARCA ======================= */
+  // Lo propio de Invitia que no se edita en ⚙ Configuración.
+  const MARCA = {
+    logo: INVITIA_IMG.logo,   // logotipo oscuro: va en los documentos (si suben otro en Configuración, se usa ese)
+    iso: INVITIA_IMG.iso,     // isotipo "i": encabezado de la app y favicon
+    eventos: ['XV años', 'Boda', 'Baby shower', 'Graduación', 'Cumpleaños', 'Bautizo', 'Otro']
+  };
+
+  /* ======================= CONFIG inicial (todo se cambia en ⚙ Configuración) ======================= */
+  const ACUERDO_BASE = [
+    'Este acuerdo es entre {cliente} y {negocio}, para el diseño de la invitación de {evento}. Lo escribimos en palabras sencillas para que los dos tengamos claro cómo vamos a trabajar. Si algo no queda claro, pregúntame con toda confianza.',
+    '# Qué incluye',
+    '- Invitación {paquete}, en formato {formato}.',
+    '- Extras: {extras}.',
+    '- Incluye {sesiones} sesiones de cambios.',
+    '# Todo es digital',
+    'La invitación Interactiva se entrega en PDF y la Esencial en imagen JPEG. No se imprime: tú la compartes por WhatsApp, redes o como prefieras.',
+    '# Anticipo',
+    'Para apartar tu fecha se paga un anticipo del {anticipoPct}% ({anticipo}). Si decides cancelar, el anticipo no se devuelve, porque con él reservo tu lugar en mi agenda.',
+    '# Tiempo de entrega',
+    'La entrega es de {entregaNormal}, que empiezan a contar cuando recibo tu anticipo y todos los datos del evento. Si la necesitas antes, la entrega urgente lleva recargo: en 3 días, +{urg3}%; en 2 días o menos, +{urg2}%.',
+    '# Cambios',
+    'Tu invitación incluye {sesiones} sesiones de cambios. En cada sesión me mandas juntos todos los ajustes que quieras. Cada sesión adicional cuesta {cambioExtra}.',
+    '# Revisión antes de aprobar',
+    'Antes de aprobar tu invitación, revisa con calma nombres, fechas, horarios y lugares. Un cambio que se pida después de aprobarla cuenta como sesión de cambios.',
+    '# Uso del diseño',
+    'El diseño es para uso personal de tu evento. No se entregan archivos editables.',
+    '# Portafolio',
+    '{negocio} puede mostrar tu diseño en su portafolio y en redes sociales. Si prefieres que se oculten los nombres, marca la casilla de abajo.',
+    '# Liquidación',
+    'El resto ({saldo}) se paga al entregarte la invitación final.'
+  ].join('\n');
+
+  const AVISO_BASE = [
+    '{responsable}, en {ciudad}, es responsable del uso y protección de tus datos personales. Aquí te contamos, en palabras sencillas, qué datos usamos y para qué.',
+    '# ¿Qué datos recabamos?',
+    '- Tu nombre, teléfono y correo electrónico.',
+    '- Los datos de tu evento: tipo de evento, fecha, lugar, horarios e itinerario.',
+    '- Los nombres de los festejados y de sus familiares o padrinos que aparezcan en la invitación.',
+    '- Las fotografías que nos compartas para la galería o el diseño.',
+    '# ¿Para qué los usamos?',
+    'Finalidades necesarias:',
+    '- Diseñar y entregarte tu invitación.',
+    '- Ponernos en contacto contigo durante tu pedido.',
+    '- Cobrar y darte tus recibos.',
+    'Finalidad opcional, solo si nos das permiso:',
+    '- Mostrar el diseño de tu invitación en nuestro portafolio y redes sociales.',
+    'Si no quieres que usemos tus datos para la finalidad opcional, no marques esa casilla o avísanos cuando quieras. Esto no afecta tu pedido.',
+    '# ¿Con quién los compartimos?',
+    'Con nadie. No vendemos ni prestamos tus datos. Solo los compartiríamos con una autoridad si la ley lo exige.',
+    '# ¿Cómo ejercer tus derechos?',
+    'Puedes pedir acceso, corrección o eliminación de tus datos, oponerte a su uso o retirar tu permiso escribiéndonos por WhatsApp al {whatsapp} o al correo {correo}. Te respondemos en un máximo de 20 días hábiles.',
+    '# Cambios a este aviso',
+    'Si este aviso cambia, te lo haremos saber por WhatsApp.'
+  ].join('\n');
+
+  const DEFAULTS = {
+    negocio: 'Invitia atelier',
+    firmante: 'Roberto', apellido: '',            // apellido vacío: Roberto lo llena
+    ciudad: 'San Andrés Cholula, Puebla',
+    whatsapp: '2221347041', correo: 'invitia.digital@gmail.com', instagram: 'invitia.ateliermx',
+    color: '#5F6B45',
+    logo: '',                                     // vacío = logotipo de Invitia
+    // Son los precios de cotizar.html. Si allá cambian, cámbialos aquí.
+    paquetes: [
+      { nombre: 'Digital Esencial', formato: 'JPEG', precio: 899, sesiones: 2 },
+      { nombre: 'Digital Interactiva', formato: 'PDF interactivo', precio: 1800, sesiones: 3 }
+    ],
+    extras: [
+      { nombre: 'Diseño de monograma', precio: 400 },
+      { nombre: 'Multipases', precio: 200 },
+      { nombre: 'Galería', precio: 400 }
+    ],
+    anticipoPct: 50, cambioExtra: 200, urg3: 35, urg2: 50,
+    entregaNormal: '3 a 5 días', vigenciaDias: 15,
+    formasPago: 'Transferencia o efectivo',
+    banco: '', titular: '', clabe: '',            // nunca pongas datos de ejemplo aquí
+    acuerdo: ACUERDO_BASE,
+    aviso: AVISO_BASE,
+    folios: { COT: 1, REC: 1, ACU: 1, CAM: 1, ENT: 1 },
+    revisado: false
+  };
+
+  // SOLO DEMO: muestra el botón "Ver archivo de ejemplo" en cada documento.
+  const MODO_DEMO = true;
+
+  /* ======================= De aquí para abajo no hace falta tocar nada ======================= */
+  const CLAVE = 'invitia_docs_config_v1';
+  const APP_ID = 'invitia-docs';
+  const FOLIOS = ['COT', 'REC', 'ACU', 'CAM', 'ENT'];
+  const NOMBRE_FOLIO = { COT: 'Cotizaciones', REC: 'Recibos', ACU: 'Acuerdos', CAM: 'Registros de cambios', ENT: 'Constancias de entrega' };
+
+  /* ---------- Utilidades ---------- */
+  const $ = (s, el) => (el || document).querySelector(s);
+  const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const limpia = s => String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+  const clonar = o => JSON.parse(JSON.stringify(o));
+  const digitos = s => String(s || '').replace(/\D/g, '');
+  const p2 = n => String(n).padStart(2, '0');
+  const redondea = n => Math.round((Number(n) || 0) * 100) / 100;
+  const alPeso = n => Math.floor((Number(n) || 0) + 0.5 + 1e-9);   // al peso, .5 hacia arriba
+  const sinAcentos = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const mismoTexto = (a, b) => sinAcentos(limpia(a)) === sinAcentos(limpia(b));
+  const slug = s => sinAcentos(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'invitia';
+  const fmtNum = n => (Number.isInteger(n) ? String(n) : String(redondea(n)));
+  const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+
+  // Acepta "1,500", "$1500.50", " 800 "
+  function aNumero(v) {
+    const n = parseFloat(String(v == null ? '' : v).replace(/[^\d.]/g, ''));
+    return isFinite(n) ? n : 0;
+  }
+  // Teléfono mexicano a 10 dígitos (quita 52 o 521 si lo trae)
+  function telefono10(s) {
+    let d = digitos(s);
+    if (d.length === 13 && d.startsWith('521')) d = d.slice(3);
+    else if (d.length === 12 && d.startsWith('52')) d = d.slice(2);
+    return d;
+  }
+  function telBonito(d) {
+    if (d.length !== 10) return d;
+    return /^(55|56|33|81)/.test(d) ? `${d.slice(0, 2)} ${d.slice(2, 6)} ${d.slice(6)}` : `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`;
+  }
+  // Texto con un renglón por elemento; quita viñetas o números que alguien haya escrito al inicio
+  const renglones = t => String(t || '').split(/\r?\n/).map(l => l.replace(/^\s*(?:[-•*·]|\d+[.)])\s+/, '').trim()).filter(Boolean);
+  const parrafos = t => String(t || '').trim().split(/\n\s*\n/).filter(p => p.trim())
+    .map(p => `<p>${esc(p.trim()).replace(/\n/g, '<br>')}</p>`).join('');
+
+  /* ---------- Fechas ---------- */
+  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const iso = d => `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
+  const hoyISO = () => iso(new Date());
+  function deISO(s) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+    return m ? new Date(+m[1], +m[2] - 1, +m[3], 12) : null;
+  }
+  function fechaLarga(s) {
+    const d = deISO(s);
+    return d ? `${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}` : '';
+  }
+  function sumarDias(s, n) {
+    const d = deISO(s) || new Date();
+    d.setDate(d.getDate() + n);
+    return iso(d);
+  }
+  // "24/05/2027" -> "2027-05-24" (o '' si no es una fecha real)
+  function deDMA(s) {
+    const m = /^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/.exec(limpia(s));
+    if (!m) return '';
+    const d = new Date(+m[3], +m[2] - 1, +m[1], 12);
+    return d.getDate() === +m[1] && d.getMonth() === +m[2] - 1 ? iso(d) : '';
+  }
+
+  /* ---------- Dinero y número a letra ---------- */
+  function miles(n, dec) {
+    const [e, d] = Math.abs(n).toFixed(dec).split('.');
+    return (n < 0 ? '-' : '') + e.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (d ? '.' + d : '');
+  }
+  const pesos = n => '$' + miles(redondea(n), Number.isInteger(redondea(n)) ? 0 : 2);  // $1,600 o $1,600.50
+  const pesos2 = n => '$' + miles(redondea(n), 2);                                      // $1,600.00
+
+  const UNIDADES = ['', 'un', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez',
+    'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve', 'veinte',
+    'veintiún', 'veintidós', 'veintitrés', 'veinticuatro', 'veinticinco', 'veintiséis', 'veintisiete', 'veintiocho', 'veintinueve'];
+  const DECENAS = ['', '', '', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
+  const CENTENAS = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
+  // 0–999. Siempre va antes de un sustantivo ("pesos", "mil"), por eso "un" y "veintiún"
+  function hastaMil(n) {
+    if (n === 100) return 'cien';
+    const c = Math.floor(n / 100), r = n % 100, partes = [];
+    if (c) partes.push(CENTENAS[c]);
+    if (r) partes.push(r < 30 ? UNIDADES[r] : DECENAS[Math.floor(r / 10)] + (r % 10 ? ' y ' + UNIDADES[r % 10] : ''));
+    return partes.join(' ');
+  }
+  function enteroALetras(n) {
+    if (n === 0) return 'cero';
+    const millones = Math.floor(n / 1e6), milesN = Math.floor((n % 1e6) / 1000), resto = n % 1000, partes = [];
+    if (millones) partes.push(millones === 1 ? 'un millón' : enteroALetras(millones) + ' millones');
+    if (milesN) partes.push(milesN === 1 ? 'mil' : hastaMil(milesN) + ' mil');
+    if (resto) partes.push(hastaMil(resto));
+    return partes.join(' ');
+  }
+  // 1485 -> "Mil cuatrocientos ochenta y cinco pesos 00/100 M.N."
+  function numeroALetras(cantidad) {
+    const totalCentavos = Math.round(Math.abs(Number(cantidad) || 0) * 100);
+    const entero = Math.floor(totalCentavos / 100), centavos = totalCentavos % 100;
+    let t = enteroALetras(entero);
+    if (entero >= 1e6 && entero % 1e6 === 0) t += ' de pesos';
+    else t += entero === 1 ? ' peso' : ' pesos';
+    t += ` ${p2(centavos)}/100 M.N.`;
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
+
+  /* ---------- Configuración (solo datos del negocio y folios) ---------- */
+  function normalizar(c) {
+    const d = clonar(DEFAULTS);
+    if (!c || typeof c !== 'object') return d;
+    const txt = (v, def) => (typeof v === 'string' ? v : def);
+    const num = (v, def) => {
+      if (typeof v === 'number' && isFinite(v)) return v;
+      if (typeof v === 'string' && v.trim() !== '' && isFinite(+v)) return +v;
+      return def;
+    };
+    const lista = v => (Array.isArray(v) ? v : null);
+    const o = {};
+    ['negocio', 'firmante', 'apellido', 'ciudad', 'whatsapp', 'correo', 'instagram', 'formasPago', 'banco', 'titular', 'clabe', 'entregaNormal', 'acuerdo', 'aviso']
+      .forEach(k => { o[k] = txt(c[k], d[k]); });
+    o.color = /^#[0-9a-f]{6}$/i.test(c.color) ? c.color : d.color;
+    o.logo = typeof c.logo === 'string' && /^data:image\/[a-z+.-]+;base64,/i.test(c.logo) ? c.logo : '';
+    o.paquetes = (lista(c.paquetes) || d.paquetes).filter(x => x && typeof x === 'object').map(x => ({
+      nombre: txt(x.nombre, ''), formato: txt(x.formato, ''),
+      precio: Math.max(0, num(x.precio, 0)), sesiones: Math.max(0, Math.round(num(x.sesiones, 0)))
+    }));
+    o.extras = (lista(c.extras) || d.extras).filter(x => x && typeof x === 'object')
+      .map(x => ({ nombre: txt(x.nombre, ''), precio: Math.max(0, num(x.precio, 0)) }));
+    o.anticipoPct = Math.min(100, Math.max(0, num(c.anticipoPct, d.anticipoPct)));
+    o.cambioExtra = Math.max(0, num(c.cambioExtra, d.cambioExtra));
+    o.urg3 = Math.min(500, Math.max(0, num(c.urg3, d.urg3)));
+    o.urg2 = Math.min(500, Math.max(0, num(c.urg2, d.urg2)));
+    o.vigenciaDias = Math.min(365, Math.max(1, Math.round(num(c.vigenciaDias, d.vigenciaDias))));
+    const f = c.folios && typeof c.folios === 'object' ? c.folios : {};
+    o.folios = {};
+    FOLIOS.forEach(k => { o.folios[k] = Math.max(1, Math.floor(num(f[k], 1))); });
+    o.revisado = c.revisado === true;
+    return o;
+  }
+
+  // Revisa un respaldo antes de reemplazar nada. Acepta el archivo completo o solo la configuración.
+  function validarRespaldo(obj) {
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return { error: 'El archivo no tiene el formato de un respaldo.' };
+    const c = obj.config && typeof obj.config === 'object' ? obj.config : obj;
+    const faltan = [];
+    if (typeof c.negocio !== 'string') faltan.push('nombre del negocio');
+    if (!Array.isArray(c.paquetes) || !c.paquetes.every(x => x && typeof x.nombre === 'string')) faltan.push('paquetes');
+    if (!Array.isArray(c.extras) || !c.extras.every(x => x && typeof x.nombre === 'string')) faltan.push('extras');
+    if (!c.folios || typeof c.folios !== 'object') faltan.push('folios');
+    if (faltan.length) return { error: `Este archivo no parece un respaldo de esta app (no trae bien: ${faltan.join(', ')}). No se cambió nada.` };
+    return { config: normalizar(c) };
+  }
+
+  let cfg = normalizar(DEFAULTS);
+  let almacenOk = true;
+  let tGuardar = null;
+
+  function probarAlmacen() {
+    try {
+      const k = CLAVE + '_prueba';
+      localStorage.setItem(k, '1');
+      localStorage.removeItem(k);
+      return true;
+    } catch (e) { return false; }
+  }
+  function cargarConfig() {
+    almacenOk = probarAlmacen();
+    if (!almacenOk) return;
+    try {
+      const t = localStorage.getItem(CLAVE);
+      if (t) cfg = normalizar(JSON.parse(t));
+    } catch (e) { /* Configuración dañada o ilegible: se queda la inicial en memoria */ }
+  }
+  function guardarYa() {
+    clearTimeout(tGuardar);
+    tGuardar = null;
+    try {
+      localStorage.setItem(CLAVE, JSON.stringify(cfg));
+      almacenOk = true;
+    } catch (e) { almacenOk = false; }
+    $('#aviso-almacen').hidden = almacenOk;
+    const est = $('#estado-guardado');
+    if (est) {
+      est.textContent = almacenOk ? '✓ Guardado' : '⚠ Sin guardar';
+      est.classList.toggle('error', !almacenOk);
+    }
+    return almacenOk;
+  }
+  function programarGuardado() {
+    clearTimeout(tGuardar);
+    const est = $('#estado-guardado');
+    if (est) { est.textContent = 'Guardando…'; est.classList.remove('error'); }
+    tGuardar = setTimeout(guardarYa, 400);
+  }
+
+  const firmante = () => limpia(`${cfg.firmante} ${cfg.apellido}`);
+  const instagram = () => limpia(cfg.instagram).replace(/^@/, '');
+  const logoDoc = () => cfg.logo || MARCA.logo;
+
+  // Color del documento: si el elegido es muy claro, se oscurece para que se lea impreso en blanco y negro
+  function hexRgb(h) { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+  const rgbHex = c => '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
+  function luminancia(c) {
+    const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);
+  }
+  function colorDoc() {
+    let c = hexRgb(cfg.color);
+    for (let i = 0; i < 40 && 1.05 / (luminancia(c) + 0.05) < 4.5; i++) c = c.map(v => v * 0.92);
+    return rgbHex(c);
+  }
+
+  /* ---------- Pedido: catálogo y cálculos (funciones puras, se prueban en #/pruebas) ---------- */
+  const paqueteCat = (nombre, c) => c.paquetes.find(p => limpia(p.nombre) && mismoTexto(p.nombre, nombre)) || null;
+  const extraCat = (nombre, c) => c.extras.find(x => limpia(x.nombre) && mismoTexto(x.nombre, nombre)) || null;
+  const URGENCIAS = c => [['normal', 'Normal', 'Sin recargo'], ['u3', `+${fmtNum(c.urg3)}%`, '3 días'], ['u2', `+${fmtNum(c.urg2)}%`, '2 días o menos']];
+  const urgPct = (u, c) => (u === 'u3' ? c.urg3 : u === 'u2' ? c.urg2 : 0);
+  const urgTexto = (u, c) => (u === 'u3' ? `+${fmtNum(c.urg3)}% (3 días)` : u === 'u2' ? `+${fmtNum(c.urg2)}% (2 días o menos)` : 'Normal');
+  // "PDF interactivo" -> "PDF", "JPEG" -> "JPEG"
+  const formatoCorto = f => (/pdf/i.test(f) ? 'PDF' : /jpe?g/i.test(f) ? 'JPEG' : limpia(f));
+
+  const pedidoVacio = () => ({ paquete: '', precioPaq: '', extras: [], libres: [], urgencia: 'normal', entrega: '', tipoDesc: 'pct', descuento: '' });
+
+  function filasPedido(ped, c) {
+    const f = [];
+    if (limpia(ped.paquete)) {
+      const cat = paqueteCat(ped.paquete, c);
+      f.push({ concepto: limpia(ped.paquete), detalle: cat ? cat.formato : '', precio: ped.precioPaq, tipo: 'paquete' });
+    }
+    ped.extras.forEach(x => f.push({ concepto: limpia(x.nombre), detalle: '', precio: x.precio, tipo: 'extra' }));
+    ped.libres.filter(r => limpia(r.concepto)).forEach(r => f.push({ concepto: limpia(r.concepto), detalle: '', precio: r.precio, tipo: 'libre' }));
+    return f.map(r => Object.assign(r, { importe: redondea(aNumero(r.precio)), sinPrecio: !limpia(r.precio) }));
+  }
+  function totalesPedido(ped, c) {
+    const filas = filasPedido(ped, c);
+    const subtotal = redondea(filas.reduce((s, r) => s + r.importe, 0));
+    const pctUrg = urgPct(ped.urgencia, c);
+    const recargo = alPeso(subtotal * pctUrg / 100);
+    const base = redondea(subtotal + recargo);
+    const valor = aNumero(ped.descuento);
+    const pct = ped.tipoDesc === 'pct' ? Math.min(100, valor) : null;
+    const descuento = pct != null ? redondea(base * pct / 100) : Math.min(redondea(valor), base);
+    const total = redondea(base - descuento);
+    const anticipo = Math.min(total, alPeso(total * c.anticipoPct / 100));
+    return { filas, subtotal, pctUrg, recargo, descuento, pct, total, anticipo, saldo: redondea(total - anticipo), sinPrecio: filas.filter(r => r.sinPrecio).map(r => r.concepto) };
+  }
+  // Cantidad, total del pedido y pagos anteriores que se sugieren al abrir un recibo
+  function sugerenciaRecibo(tipo, t, c) {
+    const hay = t.total > 0;
+    if (tipo === 'cambios') return { cantidad: c.cambioExtra, total: null, anteriores: null };
+    if (!hay) return { cantidad: null, total: null, anteriores: null };
+    if (tipo === 'anticipo') return { cantidad: t.anticipo, total: t.total, anteriores: 0 };
+    if (tipo === 'liquidacion') return { cantidad: t.saldo, total: t.total, anteriores: t.anticipo };
+    return { cantidad: null, total: null, anteriores: null };
+  }
+  function saldoRecibo(st) {
+    if (!limpia(st.total)) return null;
+    const total = redondea(aNumero(st.total)), anteriores = redondea(aNumero(st.anteriores)), pago = redondea(aNumero(st.cantidad));
+    return { total, anteriores, pago, saldo: redondea(total - anteriores - pago) };
+  }
+
+  /* ======================= Lector de la cotización ("📥 Pegar cotización") =======================
+     ETIQUETAS: "etiqueta del mensaje" → campo. Para leer etiquetas nuevas (por ejemplo las de datos.html)
+     basta con sumar renglones. Se comparan sin acentos, sin emojis, sin mayúsculas y sin lo que va entre paréntesis.
+       cli.*  cliente actual · ped.*  pedido · fic.*  ficha del evento · control.*  solo para revisar */
+  const ETIQUETAS = {
+    'Cliente': 'cli.nombre', 'Nombre': 'cli.nombre', 'Nombre del cliente': 'cli.nombre',
+    'WhatsApp': 'cli.telefono', 'Teléfono': 'cli.telefono', 'Celular': 'cli.telefono',
+    'Evento': 'cli.evento', 'Tipo de evento': 'cli.evento',
+    'Festejado(a)': 'cli.festejado', 'Festejada': 'cli.festejado', 'Novios': 'cli.festejado',
+    'Fecha del evento': 'cli.fechaEvento',
+    'Paquete': 'ped.paquete',
+    'Extras': 'ped.extras',
+    'Entrega deseada': 'ped.entrega',
+    'Urgencia': 'ped.urgencia',
+    'Estilo': 'fic.estilo',
+    'Colores': 'fic.colores',
+    'Foto de referencia': 'fic.foto',
+    'Diseño que le gustó': 'fic.ref',
+    'Cómo nos conoció': 'fic.origen',
+    'Pases/invitados': 'fic.pases', 'Pases': 'fic.pases', 'Invitados': 'fic.pases',   // versión vieja del cotizador
+    'Lugar': 'fic.lugar', 'Lugar del evento': 'fic.lugar',
+    'Hora': 'fic.hora', 'Hora del evento': 'fic.hora',
+    'Padres': 'fic.padres',
+    'Padrinos': 'fic.padrinos',
+    'Itinerario': 'fic.itinerario',
+    'Dress code': 'fic.dress', 'Código de vestimenta': 'fic.dress',
+    'Mesa de regalos': 'fic.regalos',
+    'Ubicación': 'fic.ubicacion', 'Link de ubicación': 'fic.ubicacion',
+    'Confirmar asistencia': 'fic.confirmar', 'Número para confirmar asistencia': 'fic.confirmar',
+    'Otros datos': 'fic.otros',
+    'Total aproximado': 'control.total',
+    'Anticipo': 'control.ignorar',
+    'Por cotizar': 'control.porCotizar'
+  };
+  const normEtiqueta = s => sinAcentos(String(s || '').replace(/\([^)]*\)/g, ' ')).replace(/[^a-z0-9]+/g, ' ').trim();
+  const MAPA_ETIQUETAS = {};
+  Object.keys(ETIQUETAS).forEach(k => { MAPA_ETIQUETAS[normEtiqueta(k)] = ETIQUETAS[k]; });
+  const sinDato = v => { const s = limpia(v); return !s || /^[—–-]+$/.test(s) || /^ningun[oa]?$/i.test(sinAcentos(s)); };
+  const fichaVacia = () => ({ estilo: '', colores: '', foto: '', ref: '', origen: '', pases: '', lugar: '', hora: '', padres: '', padrinos: '',
+    itinerario: '', dress: '', regalos: '', ubicacion: '', confirmar: '', otros: '' });
+
+  function leerCotizacion(texto, c) {
+    const lineas = String(texto || '').replace(/\r/g, '').split('\n');
+    const inicio = lineas.findIndex(l => /ficha de cotizacion/.test(normEtiqueta(l)));
+    const cuerpo = inicio >= 0 ? lineas.slice(inicio + 1) : lineas;
+    const r = { ok: false, cli: { nombre: '', telefono: '', evento: '', festejado: '', fechaEvento: '' }, ped: pedidoVacio(), ficha: fichaVacia(),
+      avisos: [], noReconocidas: [], porDefinir: false, totalMensaje: null, totalCalculado: null };
+    let conocidas = 0, ultimo = null;
+    const otros = [];
+    cuerpo.forEach(linea => {
+      const i = linea.indexOf(':');
+      const etq = i > 0 ? linea.slice(0, i) : '';
+      const clave = normEtiqueta(etq);
+      if (!clave || clave.length > 40) {
+        // Renglón sin etiqueta: continúa el dato de texto anterior (itinerario, otros…)
+        if (ultimo && limpia(linea)) ultimo.push(limpia(linea));
+        return;
+      }
+      const valor = linea.slice(i + 1).trim();
+      const campo = MAPA_ETIQUETAS[clave];
+      ultimo = null;
+      if (!campo) {
+        if (!sinDato(valor)) { otros.push([limpia(etq.replace(/[^\p{L}\p{N}\s/()¿?.,-]/gu, '')), valor]); r.noReconocidas.push(limpia(etq.replace(/[^\p{L}\p{N}\s/()¿?.,-]/gu, ''))); }
+        return;
+      }
+      conocidas++;
+      if (sinDato(valor)) return;
+      const [grupo, k] = campo.split('.');
+      if (grupo === 'cli') {
+        if (k === 'fechaEvento') { r.cli.fechaEvento = deDMA(valor); if (!r.cli.fechaEvento) r.avisos.push(`No entendí la fecha del evento (“${valor}”).`); }
+        else if (k === 'telefono') r.cli.telefono = telefono10(valor);
+        else r.cli[k] = limpia(valor);
+      } else if (grupo === 'fic') {
+        const partes = [valor];
+        r.ficha[k] = partes;   // se une al final por si trae renglones de continuación
+        ultimo = partes;
+      } else if (k === 'paquete') {
+        if (/^por definir/.test(normEtiqueta(valor)) || /ayudame a elegir/.test(normEtiqueta(valor))) { r.porDefinir = true; return; }
+        const cat = paqueteCat(valor, c);
+        if (cat) { r.ped.paquete = cat.nombre; r.ped.precioPaq = String(cat.precio); }
+        else {
+          r.ped.libres.push({ concepto: limpia(valor), precio: '' });
+          r.avisos.push(`El paquete “${limpia(valor)}” no está en tu catálogo: lo puse como renglón libre, sin precio.`);
+        }
+      } else if (k === 'extras') {
+        valor.split(';').map(limpia).filter(x => !sinDato(x)).forEach(n => {
+          const cat = extraCat(n, c);
+          if (cat) { if (!r.ped.extras.some(x => x.nombre === cat.nombre)) r.ped.extras.push({ nombre: cat.nombre, precio: String(cat.precio) }); }
+          else {
+            r.ped.libres.push({ concepto: n, precio: '' });
+            r.avisos.push(`El extra “${n}” no está en tu catálogo: lo puse como renglón libre, sin precio.`);
+          }
+        });
+      } else if (k === 'entrega') {
+        r.ped.entrega = deDMA(valor);
+        if (!r.ped.entrega) r.avisos.push(`No entendí la fecha de entrega (“${valor}”).`);
+      } else if (k === 'urgencia') {
+        const v = normEtiqueta(valor), pct = parseFloat((/(\d+(?:\.\d+)?)\s*%/.exec(valor) || [])[1]);
+        if (/\b2 dias\b/.test(v) || pct === c.urg2) r.ped.urgencia = 'u2';
+        else if (/\b3 dias\b/.test(v) || pct === c.urg3) r.ped.urgencia = 'u3';
+      } else if (k === 'total') {
+        const n = aNumero(valor);
+        if (/\d/.test(valor) && n > 0) r.totalMensaje = n;
+      } else if (k === 'porCotizar') {
+        r.avisos.push(`El cotizador marcó como “por cotizar”: ${limpia(valor)}.`);
+      }
+    });
+    Object.keys(r.ficha).forEach(k => { if (Array.isArray(r.ficha[k])) r.ficha[k] = r.ficha[k].join('\n').trim(); });
+    if (otros.length) r.ficha.otros = [r.ficha.otros].concat(otros.map(([e, v]) => `${e}: ${v}`)).filter(Boolean).join('\n');
+    // Es una cotización si trae el título de la ficha o al menos una de las etiquetas principales
+    r.ok = (inicio >= 0 || conocidas >= 2) && !!(r.cli.nombre || r.cli.evento || r.ped.paquete || r.porDefinir || r.ped.extras.length);
+    if (!r.ok) return { ok: false, mensaje: 'No encontré una cotización en ese texto. Copia el mensaje completo que te llegó del cotizador y vuelve a intentar.' };
+    const t = totalesPedido(r.ped, c);
+    r.totalCalculado = t.total;
+    if (r.totalMensaje != null && !t.sinPrecio.length && Math.abs(r.totalMensaje - t.total) >= 1) {
+      r.avisos.unshift(`Ojo: el cotizador decía ${pesos(r.totalMensaje)} y con tus precios actuales da ${pesos(t.total)}.`);
+    }
+    const partes = [r.cli.nombre || 'cliente sin nombre'];
+    if (r.cli.evento) partes.push(r.cli.evento);
+    const nx = r.ped.extras.length;
+    partes.push((r.ped.paquete || (r.porDefinir ? 'Paquete por definir' : 'Sin paquete')) + (nx ? ` + ${plural(nx, 'extra', 'extras')}` : ''));
+    r.resumen = `✅ Cargué a ${partes.join(' · ')}`;
+    return r;
+  }
+
+  /* ---------- Datos de la sesión (en memoria; se borran con "Nuevo cliente" o al cerrar) ---------- */
+  const cliVacio = () => ({ nombre: '', telefono: '', evento: '', festejado: '', fechaEvento: '' });
+  const S = { cli: cliVacio(), ped: pedidoVacio(), ficha: fichaVacia(), docs: {}, ejemplo: {}, cliEjemplo: false };
+  let actual = { p: 'inicio', tipo: null };
+  let zoom = false;
+
+  const hayCliente = () => !!(limpia(S.cli.nombre) || limpia(S.cli.evento) || limpia(S.ped.paquete) || S.ped.extras.length || S.ped.libres.some(r => limpia(r.concepto)));
+  const eventoFrase = cli => { const e = limpia(cli.evento), f = limpia(cli.festejado); return e && f ? `${e} de ${f}` : e || f; };
+  const esXV = ev => /\bxv\b|quince/i.test(sinAcentos(ev));
+  const conMenores = ev => /\bxv\b|quince|baby|bautiz|infantil|ninos?|ninas?|primera comunion/.test(sinAcentos(ev));
+  const sesionesIncluidas = () => { const p = paqueteCat(S.ped.paquete, cfg); return p ? p.sesiones : null; };
+
+  const TIPOS_PAGO = { anticipo: 'Anticipo', liquidacion: 'Liquidación', cambios: 'Sesión de cambios extra', otro: 'Otro' };
+  const MOSAICOS = [
+    { href: '#/doc/cotizacion', ico: '🧾', titulo: 'Cotización', desc: 'Precio formal con tu marca' },
+    { href: '#/doc/recibo/anticipo', ico: '💵', titulo: 'Recibo de anticipo', desc: 'Comprobante del anticipo' },
+    { href: '#/doc/recibo/liquidacion', ico: '✅', titulo: 'Recibo de liquidación', desc: 'Comprobante del pago final' },
+    { href: '#/doc/acuerdo', ico: '🤝', titulo: 'Acuerdo de servicio', desc: 'Reglas claras antes de empezar' },
+    { href: '#/doc/privacidad', ico: '🛡️', titulo: 'Aviso de privacidad', desc: 'Datos y fotos de tus clientes' },
+    { href: '#/doc/ficha', ico: '📋', titulo: 'Ficha del evento', desc: 'Todo para diseñar, en una hoja' },
+    { href: '#/doc/cambios', ico: '✏️', titulo: 'Registro de cambios', desc: 'Qué se pidió en cada ronda' },
+    { href: '#/doc/entrega', ico: '💌', titulo: 'Constancia de entrega', desc: '“Recibí mi invitación y la apruebo”' }
+  ];
+  const DOCS = {
+    cliente: { nombre: 'Cliente y pedido', corto: 'Cliente', ico: '👤', folio: null, whats: false,
+      ayuda: 'Se captura una vez y lo usan todos los documentos. Con el pedido se calculan el total, el anticipo y el saldo.' },
+    cotizacion: { nombre: 'Cotización', corto: 'Cotización', ico: '🧾', folio: 'COT', whats: true, papel: 'carta',
+      ayuda: 'Elige paquete y extras; el precio se llena solo con tu catálogo y lo puedes cambiar. Los totales se calculan solos.' },
+    recibo: { nombre: 'Recibo de pago', corto: 'Recibo', ico: '💵', folio: 'REC', whats: true, papel: 'media',
+      ayuda: 'La cantidad se sugiere sola con el pedido y se escribe con letra. Puedes cambiarla.' },
+    acuerdo: { nombre: 'Acuerdo de servicio', corto: 'Acuerdo', ico: '🤝', folio: 'ACU', whats: true, papel: 'carta', compacto: true,
+      ayuda: 'Para firmar antes de empezar. Si el cliente no imprime, mándale el resumen por WhatsApp y que responda “ACEPTO”.' },
+    privacidad: { nombre: 'Aviso de privacidad', corto: 'Aviso de privacidad', ico: '🛡️', folio: null, whats: false, papel: 'carta', compacto: true,
+      ayuda: 'Para que tu cliente autorice el uso de sus datos y fotografías.' },
+    ficha: { nombre: 'Ficha del evento', corto: 'Ficha del evento', ico: '📋', folio: null, whats: false, papel: 'carta',
+      ayuda: 'Tu hoja de trabajo: todo lo que necesitas para diseñar. Los campos vacíos no se imprimen.' },
+    cambios: { nombre: 'Registro de cambios', corto: 'Registro de cambios', ico: '✏️', folio: 'CAM', whats: true, papel: 'media',
+      ayuda: 'Anota qué te pidió en esta ronda, un cambio por renglón.' },
+    entrega: { nombre: 'Constancia de entrega', corto: 'Constancia de entrega', ico: '💌', folio: 'ENT', whats: true, papel: 'media',
+      ayuda: 'Para que tu cliente confirme que recibió su invitación y la aprueba.' }
+  };
+
+  const NUEVO = {
+    cliente: () => ({}),
+    cotizacion: () => ({ fecha: hoyISO(), notas: '' }),
+    recibo: () => ({ fecha: hoyISO(), tipoPago: 'anticipo', concepto: '', cantidad: '', forma: 'Transferencia', total: '', anteriores: '',
+      autoCantidad: true, autoSaldo: true, autoConcepto: true }),
+    acuerdo: () => ({ fecha: hoyISO(), ocultarNombres: false, menor: false }),
+    privacidad: () => ({ fecha: hoyISO(), menores: false }),
+    ficha: () => ({}),
+    cambios: () => ({ sesion: '1', fecha: hoyISO(), cambios: '', errorDatos: false, notas: '' }),
+    entrega: () => ({ fecha: hoyISO(), pago: 'liquidado', pendiente: '', autoPendiente: true, portafolio: '' })
+  };
+  function estado(tipo) {
+    if (!S.docs[tipo]) S.docs[tipo] = Object.assign(NUEVO[tipo](), { folio: null });
+    return S.docs[tipo];
+  }
+  function folioTexto(tipo, st) {
+    const pref = DOCS[tipo].folio;
+    if (!pref) return '';
+    const n = st.folio != null ? st.folio : cfg.folios[pref];
+    return `${pref}-${String(n).padStart(4, '0')}`;
+  }
+
+  /* ---------- Recibo: lo que se llena solo ---------- */
+  function conceptoRecibo(tipo) {
+    const inv = limpia(S.ped.paquete) ? `Invitación ${limpia(S.ped.paquete)}` : 'Invitación';
+    const pre = { anticipo: `Anticipo ${fmtNum(cfg.anticipoPct)}%`, liquidacion: 'Liquidación', cambios: 'Sesión de cambios extra', otro: '' }[tipo];
+    return [pre, inv, eventoFrase(S.cli)].filter(Boolean).join(' · ');
+  }
+  function sincronizarRecibo(st) {
+    const s = sugerenciaRecibo(st.tipoPago, totalesPedido(S.ped, cfg), cfg);
+    if (st.autoCantidad) st.cantidad = s.cantidad != null ? String(s.cantidad) : '';
+    if (st.autoSaldo) {
+      st.total = s.total != null ? String(s.total) : '';
+      st.anteriores = s.anteriores != null ? String(s.anteriores) : '';
+    }
+    if (st.autoConcepto) st.concepto = conceptoRecibo(st.tipoPago);
+  }
+  // Abre el recibo con el tipo elegido. Si había otro recibo distinto ya impreso, empieza uno nuevo (con su propio folio).
+  function prepararRecibo(tipo, extra) {
+    const st = S.docs.recibo;
+    if (!st || st.tipoPago !== tipo || st.folio != null || extra) {
+      S.docs.recibo = Object.assign(NUEVO.recibo(), { tipoPago: tipo, folio: null }, extra || {});
+      delete S.ejemplo.recibo;
+    }
+    sincronizarRecibo(S.docs.recibo);
+  }
+  function sincronizarEntrega(st) {
+    if (st.autoPendiente) { const t = totalesPedido(S.ped, cfg); st.pendiente = t.saldo > 0 ? String(t.saldo) : ''; }
+  }
+
+  /* ---------- Archivo de ejemplo (MODO_DEMO): datos ficticios para ver cada documento lleno ---------- */
+  function pedidoEjemplo() {
+    const p = paqueteCat('Digital Interactiva', cfg) || cfg.paquetes[0] || { nombre: 'Digital Interactiva', precio: 1800 };
+    const x = extraCat('Diseño de monograma', cfg) || cfg.extras[0];
+    return Object.assign(pedidoVacio(), { paquete: p.nombre, precioPaq: String(p.precio), extras: x ? [{ nombre: x.nombre, precio: String(x.precio) }] : [] });
+  }
+  const CLI_EJEMPLO = () => ({ nombre: 'Mariana López Ruiz', telefono: '', evento: 'XV años', festejado: 'Sofía', fechaEvento: sumarDias(hoyISO(), 75) });
+  const FICHA_EJEMPLO = () => Object.assign(fichaVacia(), {
+    estilo: 'Elegante y clásico; Floral / acuarela', colores: 'Verde olivo y dorado', foto: 'Sí, la mando por este chat', origen: 'Instagram',
+    lugar: 'Salón Los Jardines (ejemplo)', hora: '19:00', padres: 'Laura Ruiz y Jorge López (ejemplo)', padrinos: 'Ana y Pedro (ejemplo)',
+    itinerario: '19:00 Misa\n21:00 Recepción\n22:00 Vals', dress: 'Formal', confirmar: 'Al WhatsApp de la mamá'
+  });
+  const EJEMPLO = {
+    cotizacion: () => ({ notas: 'El diseño del monograma se entrega también por separado para tus redes.' }),
+    recibo: () => ({ tipoPago: 'anticipo', forma: 'Transferencia' }),
+    acuerdo: () => ({}),
+    privacidad: () => ({}),
+    ficha: () => ({}),
+    cambios: () => ({ sesion: '1', cambios: 'Cambiar la tipografía del nombre por una más delgada\nAgregar el hashtag #MisXVSofía en la portada\nPasar el código de vestimenta a la última página' }),
+    entrega: () => ({ pago: 'pendiente', portafolio: 'con' })
+  };
+  function verEjemplo(tipo) {
+    const propio = hayCliente() && !S.cliEjemplo;
+    if (propio && !window.confirm('Se van a reemplazar los datos que escribiste por datos de ejemplo. ¿Continuar?')) return;
+    S.cli = CLI_EJEMPLO();
+    S.ped = pedidoEjemplo();
+    S.ficha = FICHA_EJEMPLO();
+    S.cliEjemplo = true;
+    S.docs[tipo] = Object.assign(NUEVO[tipo](), EJEMPLO[tipo](), { folio: null });
+    if (tipo === 'recibo') sincronizarRecibo(S.docs.recibo);
+    if (tipo === 'entrega') sincronizarEntrega(S.docs.entrega);
+    S.ejemplo[tipo] = true;
+    ir(`/doc/${tipo}/ver`);
+  }
+
+  /* ======================= Formularios ======================= */
+  function valorDe(st, b) {
+    const [g, k] = b.split('.');
+    if (k == null) return st[b];
+    return (g === 'cli' ? S.cli : g === 'ped' ? S.ped : S.ficha)[k];
+  }
+  // Campo de texto ligado al estado: b = 'cli.nombre' (cliente actual), 'ped.…' (pedido), 'fic.…' (ficha) o un campo del documento
+  function campo(st, b, etiqueta, o) {
+    o = o || {};
+    const id = 'f-' + b.replace('.', '-');
+    const v = valorDe(st, b);
+    const at = [`id="${id}"`, 'class="control"', `data-b="${b}"`, 'autocomplete="off"'];
+    if (o.modo) at.push(`inputmode="${o.modo}"`);
+    if (o.ph) at.push(`placeholder="${esc(o.ph)}"`);
+    if (o.cap) at.push(`autocapitalize="${o.cap}"`);
+    if (o.lista) at.push(`list="${o.lista}"`);
+    if (o.ayuda) at.push(`aria-describedby="${id}-ayuda"`);
+    const control = o.area
+      ? `<textarea ${at.join(' ')} rows="${o.filas || 4}">${esc(v)}</textarea>`
+      : `<input type="${o.tipo || 'text'}" ${at.join(' ')} value="${esc(v)}">`;
+    return `<div class="campo"><label for="${id}" id="${id}-etq">${etiqueta}${o.opc ? ' <span class="opc">(opcional)</span>' : ''}</label>${control}${o.ayuda ? `<p class="ayuda" id="${id}-ayuda">${o.ayuda}</p>` : ''}</div>`;
+  }
+  function campoOpciones(st, b, etiqueta, opciones, clase) {
+    const v = valorDe(st, b);
+    return `<fieldset class="campo"><legend class="etiqueta">${etiqueta}</legend><div class="seg${clase ? ' ' + clase : ''}">${
+      opciones.map(([val, t, sub]) => `<label><input type="radio" name="r-${b}" value="${esc(val)}" data-b="${b}"${String(v) === String(val) ? ' checked' : ''}><span>${t}${sub ? `<small>${sub}</small>` : ''}</span></label>`).join('')}</div></fieldset>`;
+  }
+  function campoSwitch(st, b, titulo, detalle) {
+    const on = !!valorDe(st, b);
+    return `<label class="sw${on ? ' sel' : ''}"><input type="checkbox" role="switch" data-b="${b}"${on ? ' checked' : ''}><span class="sw-t"><b>${titulo}</b>${detalle ? `<small>${detalle}</small>` : ''}</span><span class="track" aria-hidden="true"></span></label>`;
+  }
+  const campoTelefono = () => campo(null, 'cli.telefono', 'WhatsApp del cliente', { opc: true, tipo: 'tel', modo: 'tel', ph: '10 dígitos', ayuda: 'Para mandarle los documentos directo. Si lo dejas vacío, eliges el contacto en WhatsApp.' });
+
+  function resumenCliente() {
+    if (!hayCliente()) return 'Todavía no hay cliente';
+    const t = totalesPedido(S.ped, cfg);
+    return [limpia(S.cli.nombre) || 'Sin nombre', eventoFrase(S.cli), t.total > 0 ? pesos(t.total) : ''].filter(Boolean).join(' · ');
+  }
+  function extrasHTML() {
+    const nombres = cfg.extras.filter(x => limpia(x.nombre)).map(x => x.nombre);
+    S.ped.extras.forEach(x => { if (!nombres.some(n => mismoTexto(n, x.nombre))) nombres.push(x.nombre); });
+    if (!nombres.length) return '<p class="ayuda" style="margin:0 0 12px">No tienes extras en tu catálogo. Agrégalos en ⚙ Configuración.</p>';
+    return nombres.map((n, i) => {
+      const sel = S.ped.extras.find(x => mismoTexto(x.nombre, n)), cat = extraCat(n, cfg);
+      return `<div><label class="sw${sel ? ' sel' : ''}"><input type="checkbox" role="switch" data-extra="${esc(n)}" id="ex-${i}"${sel ? ' checked' : ''}>
+          <span class="sw-t"><b>${esc(n)}</b><small>${cat ? pesos(cat.precio) : 'No está en tu catálogo'}</small></span><span class="track" aria-hidden="true"></span></label>
+        ${sel ? `<div class="campo sw-precio"><label for="ex-p-${i}">Precio de ${esc(n)} ($)</label><input id="ex-p-${i}" type="text" class="control" inputmode="decimal" autocomplete="off" data-extra-precio="${esc(n)}" value="${esc(sel.precio)}" placeholder="$"></div>` : ''}</div>`;
+    }).join('');
+  }
+  function libresHTML() {
+    return S.ped.libres.map((r, i) => `
+      <div class="item">
+        <div class="item-cab"><span class="item-num">${i + 1}</span><span class="item-tit">Renglón libre ${i + 1}</span>
+          <span class="item-btns"><button type="button" class="mini mini-x" data-accion="quitar-libre" data-i="${i}" aria-label="Quitar renglón libre ${i + 1}">✕</button></span></div>
+        <div class="fila-ren">
+          <div class="campo"><label for="lib-c-${i}">Concepto</label><input id="lib-c-${i}" type="text" class="control" data-l="libres" data-i="${i}" data-b="concepto" autocomplete="off" placeholder="Ej. Save the date" value="${esc(r.concepto)}"></div>
+          <div class="campo"><label for="lib-p-${i}">Precio ($)</label><input id="lib-p-${i}" type="text" class="control" inputmode="decimal" data-l="libres" data-i="${i}" data-b="precio" autocomplete="off" placeholder="$" value="${esc(r.precio)}"></div>
+        </div>
+      </div>`).join('');
+  }
+  function vivoPedido() {
+    const t = totalesPedido(S.ped, cfg);
+    if (!t.filas.length) return '<p class="ayuda" style="margin:0">Elige un paquete o agrega extras para ver el total.</p>';
+    return `<dl class="totales">
+      <div><dt>Subtotal</dt><dd>${pesos(t.subtotal)}</dd></div>
+      ${t.recargo > 0 ? `<div><dt>Entrega exprés (+${fmtNum(t.pctUrg)}%)</dt><dd>+${pesos(t.recargo)}</dd></div>` : ''}
+      ${t.descuento > 0 ? `<div><dt>Descuento${t.pct != null ? ` (${fmtNum(t.pct)}%)` : ''}</dt><dd>−${pesos(t.descuento)}</dd></div>` : ''}
+      <div class="total"><dt>Total</dt><dd>${pesos(t.total)}</dd></div>
+      <div><dt>Anticipo (${fmtNum(cfg.anticipoPct)}%)</dt><dd>${pesos(t.anticipo)}</dd></div>
+      <div><dt>Saldo al entregar</dt><dd>${pesos(t.saldo)}</dd></div>
+    </dl>${t.sinPrecio.length ? `<p class="vivo-aviso">Falta el precio de: ${esc(t.sinPrecio.join(', '))}.</p>` : ''}`;
+  }
+  // Bloque "Cliente y pedido": lo comparten los 8 documentos
+  function clientePedidoHTML(o) {
+    o = o || {};
+    const opcionesPaq = cfg.paquetes.filter(p => limpia(p.nombre)).map(p => [p.nombre, `${p.nombre} · ${pesos(p.precio)}`]);
+    if (limpia(S.ped.paquete) && !paqueteCat(S.ped.paquete, cfg)) opcionesPaq.push([S.ped.paquete, `${S.ped.paquete} (no está en tu catálogo)`]);
+    const cliente = campo(null, 'cli.nombre', 'Nombre del cliente', { cap: 'words', ph: 'Nombre completo' }) +
+      campoTelefono() +
+      `<div class="fila-ancha">${campo(null, 'cli.evento', 'Evento', { lista: 'dl-eventos', ph: 'Ej. XV años' })}${campo(null, 'cli.festejado', 'Festejado(a)', { opc: true, cap: 'words', ph: 'Ej. Sofía' })}</div>
+      <datalist id="dl-eventos">${MARCA.eventos.map(e => `<option value="${esc(e)}"></option>`).join('')}</datalist>` +
+      campo(null, 'cli.fechaEvento', 'Fecha del evento', { opc: true, tipo: 'date' });
+    const pedido = o.soloCliente ? '' : `<h2 class="sub3">Pedido</h2>
+      <div class="campo"><label for="f-ped-paquete">Paquete</label><select id="f-ped-paquete" class="control" data-b="ped.paquete">
+        <option value=""${!limpia(S.ped.paquete) ? ' selected' : ''}>Sin paquete / por definir</option>
+        ${opcionesPaq.map(([v, t]) => `<option value="${esc(v)}"${S.ped.paquete === v ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select></div>
+      <div id="paq-precio"${limpia(S.ped.paquete) ? '' : ' hidden'}>${campo(null, 'ped.precioPaq', 'Precio del paquete ($)', { modo: 'decimal', ph: '$' })}</div>
+      <fieldset class="campo"><legend class="etiqueta">Extras <span class="opc">(opcional)</span></legend><div id="lista-extras">${extrasHTML()}</div></fieldset>
+      <div class="lista-items" id="lista-libres">${libresHTML()}</div>
+      <button type="button" class="btn btn-suave btn-bloque" data-accion="agregar-libre" aria-describedby="libre-ayuda">＋ Agregar renglón libre</button>
+      <p class="ayuda" id="libre-ayuda" style="margin-bottom:22px">Para lo que no está en tu catálogo: save the date, menú…</p>
+      ${campoOpciones(null, 'ped.urgencia', 'Urgencia', URGENCIAS(cfg).map(([v, t, s]) => [v, esc(t), esc(s)]))}
+      ${campo(null, 'ped.entrega', 'Fecha de entrega', { opc: true, tipo: 'date', ayuda: `Entrega normal: ${esc(cfg.entregaNormal)} a partir del anticipo y los datos.` })}
+      <div class="fila">${campoOpciones(null, 'ped.tipoDesc', 'Descuento en', [['pct', '%'], ['monto', '$']])}${
+        campo(null, 'ped.descuento', S.ped.tipoDesc === 'pct' ? 'Cuánto (%)' : 'Cuánto ($)', { opc: true, modo: 'decimal', ph: '0' })}</div>
+      <div class="vivo" id="vivo-ped" aria-live="polite">${vivoPedido()}</div>`;
+    if (o.fijo) return `<div class="cp-fijo"><h2 class="sub">Cliente</h2>${cliente}${pedido}</div>`;
+    return `<details class="cp" id="cp"${hayCliente() ? '' : ' open'}><summary><span class="cp-tit"><b><span aria-hidden="true">👤</span> Cliente${o.soloCliente ? '' : ' y pedido'}</b><small id="cp-res">${esc(resumenCliente())}</small></span></summary>
+      <div class="cp-cuerpo">${cliente}${pedido}</div></details>`;
+  }
+
+  function vivoRecibo(st) {
+    const s = saldoRecibo(st);
+    if (!s) return '<p class="ayuda" style="margin:0">Si lo capturas, el recibo muestra cuánto falta por pagar.</p>';
+    if (s.saldo < 0) return `<p style="color:var(--rojo);font-weight:600">Los pagos suman ${pesos2(-s.saldo)} más que el total del pedido. Revisa las cantidades.</p>`;
+    return `<dl class="totales"><div class="total"><dt>Saldo pendiente</dt><dd>${pesos2(s.saldo)}</dd></div></dl>`;
+  }
+  const letraDe = st => (aNumero(st.cantidad) > 0 ? numeroALetras(aNumero(st.cantidad)) : '');
+  const esAdicional = st => { const n = parseInt(st.sesion, 10), inc = sesionesIncluidas(); return !!st.errorDatos || (inc != null && n > inc); };
+  function ayudaSesion() {
+    const inc = sesionesIncluidas();
+    return inc != null ? `Tu paquete incluye ${plural(inc, 'sesión', 'sesiones')}.` : 'Elige el paquete en “Cliente y pedido” para saber cuántas sesiones incluye.';
+  }
+  function vivoCambios(st) {
+    return esAdicional(st)
+      ? `<p><b>Sesión adicional: ${pesos(cfg.cambioExtra)}</b></p><p class="ayuda">${st.errorDatos ? 'Es un cambio por error de datos después de aprobar.' : 'Ya pasó las sesiones incluidas en su paquete.'} En la vista previa puedes hacer el recibo de este cambio.</p>`
+      : '<p class="ayuda" style="margin:0">Esta sesión está incluida en su paquete.</p>';
+  }
+
+  const FORM = {
+    cliente: () => clientePedidoHTML({ fijo: true }),
+    cotizacion: st => clientePedidoHTML({ fijo: true }) +
+      campo(st, 'fecha', 'Fecha de la cotización', { tipo: 'date', ayuda: `Vigente ${cfg.vigenciaDias} días.` }) +
+      campo(st, 'notas', 'Notas', { opc: true, area: true, filas: 3, ph: 'Ej. Incluye la versión para historias de Instagram.' }),
+    recibo: st => clientePedidoHTML() +
+      campoOpciones(st, 'tipoPago', 'Tipo de pago', Object.keys(TIPOS_PAGO).map(k => [k, TIPOS_PAGO[k]]), 'envuelve') +
+      campo(st, 'fecha', 'Fecha', { tipo: 'date' }) +
+      campo(st, 'concepto', 'Concepto', { ayuda: 'Se arma solo con el pedido. Puedes cambiarlo.' }) +
+      campo(st, 'cantidad', 'Cantidad recibida ($)', { modo: 'decimal', ph: '0.00' }) +
+      `<p class="letra" id="letra"${letraDe(st) ? '' : ' hidden'}>${esc(letraDe(st))}</p>` +
+      campoOpciones(st, 'forma', 'Forma de pago', [['Transferencia', '<span aria-hidden="true">🏦</span>Transferencia'], ['Efectivo', '<span aria-hidden="true">💵</span>Efectivo'], ['Otro', '<span aria-hidden="true">💳</span>Otro']]) +
+      `<fieldset class="grupo"><legend>Saldo del pedido <span class="opc">(opcional)</span></legend>
+        <div class="fila">${campo(st, 'total', 'Total del pedido ($)', { modo: 'decimal' })}${campo(st, 'anteriores', 'Pagos anteriores ($)', { modo: 'decimal' })}</div>
+        <div class="vivo" id="vivo" aria-live="polite">${vivoRecibo(st)}</div></fieldset>`,
+    acuerdo: st => clientePedidoHTML() +
+      campo(st, 'fecha', 'Fecha', { tipo: 'date' }) +
+      campoSwitch(st, 'ocultarNombres', 'Prefiero que se oculten los nombres', 'Sale ya marcada en el acuerdo. Si no, tu cliente la marca a mano.') +
+      campoSwitch(st, 'menor', 'El cliente es menor de edad', 'Agrega la firma de padre, madre o tutor. En XV años se agrega sola.') +
+      '<p class="nota-gris" style="margin-bottom:18px">El texto base del acuerdo se cambia en ⚙ Configuración → Textos.</p>',
+    privacidad: st => clientePedidoHTML({ soloCliente: true }) +
+      campo(st, 'fecha', 'Fecha', { tipo: 'date' }) +
+      campoSwitch(st, 'menores', 'Hay fotos de menores de edad', 'Agrega la firma de padre, madre o tutor. En XV años, baby shower y fiestas infantiles se agrega sola.') +
+      '<p class="nota-gris" style="margin-bottom:18px">El texto del aviso se cambia en ⚙ Configuración → Textos.</p>',
+    ficha: () => clientePedidoHTML() +
+      '<h2 class="sub">Estilo y referencias</h2>' +
+      campo(null, 'fic.estilo', 'Estilo', { opc: true, ph: 'Ej. Elegante y clásico' }) +
+      campo(null, 'fic.colores', 'Colores', { opc: true, ph: 'Ej. verde olivo y dorado' }) +
+      `<div class="fila-ancha">${campo(null, 'fic.foto', 'Foto de referencia', { opc: true })}${campo(null, 'fic.origen', 'Cómo nos conoció', { opc: true })}</div>` +
+      campo(null, 'fic.ref', 'Diseño del portafolio que le gustó', { opc: true }) +
+      '<h2 class="sub">Lo que llega después</h2>' +
+      `<div class="fila-ancha">${campo(null, 'fic.lugar', 'Lugar', { opc: true })}${campo(null, 'fic.hora', 'Hora', { opc: true, ph: 'Ej. 19:00' })}</div>` +
+      campo(null, 'fic.padres', 'Padres', { opc: true, cap: 'words' }) +
+      campo(null, 'fic.padrinos', 'Padrinos', { opc: true, cap: 'words' }) +
+      campo(null, 'fic.itinerario', 'Itinerario', { opc: true, area: true, filas: 4, ph: 'Un momento por renglón' }) +
+      `<div class="fila-ancha">${campo(null, 'fic.dress', 'Dress code', { opc: true })}${campo(null, 'fic.regalos', 'Mesa de regalos', { opc: true })}</div>` +
+      campo(null, 'fic.ubicacion', 'Link de ubicación', { opc: true, tipo: 'url', modo: 'url', ph: 'https://maps…' }) +
+      campo(null, 'fic.confirmar', 'Número para confirmar asistencia', { opc: true, tipo: 'tel', modo: 'tel' }) +
+      campo(null, 'fic.pases', 'Pases / invitados', { opc: true }) +
+      campo(null, 'fic.otros', 'Otros datos', { opc: true, area: true, filas: 4 }),
+    cambios: st => clientePedidoHTML() +
+      `<div class="fila">${campo(st, 'sesion', 'Número de sesión', { modo: 'numeric', ayuda: ayudaSesion() })}${campo(st, 'fecha', 'Fecha', { tipo: 'date' })}</div>` +
+      campo(st, 'cambios', 'Cambios pedidos (uno por renglón)', { area: true, filas: 6, ph: 'Ej. Cambiar la hora de la recepción a las 21:00' }) +
+      campoSwitch(st, 'errorDatos', 'Cambio por error de datos después de aprobar', 'Cuenta como sesión adicional.') +
+      campo(st, 'notas', 'Notas', { opc: true, area: true, filas: 2 }) +
+      `<div class="vivo" id="vivo" aria-live="polite">${vivoCambios(st)}</div>`,
+    entrega: st => clientePedidoHTML() +
+      campo(st, 'fecha', 'Fecha de entrega', { tipo: 'date' }) +
+      campoOpciones(st, 'pago', 'Estado del pago', [['liquidado', 'Liquidado'], ['pendiente', 'Saldo pendiente']]) +
+      `<div id="pendiente-w"${st.pago === 'pendiente' ? '' : ' hidden'}>${campo(st, 'pendiente', 'Saldo pendiente ($)', { modo: 'decimal' })}</div>` +
+      campoOpciones(st, 'portafolio', 'Portafolio', [['con', 'Con nombres'], ['sin', 'Sin nombres'], ['', 'Que lo marque', 'el cliente']])
+  };
+
+  // Lo que se actualiza en vivo mientras escriben
+  function alCambiarPedido(st, b, t) {
+    const tipo = actual.tipo;
+    if (b === 'ped.paquete') {
+      const cat = paqueteCat(S.ped.paquete, cfg);
+      if (cat) S.ped.precioPaq = String(cat.precio);
+      else if (!limpia(S.ped.paquete)) S.ped.precioPaq = '';
+      const pp = $('#f-ped-precioPaq');
+      if (pp) pp.value = S.ped.precioPaq;
+      $('#paq-precio').hidden = !limpia(S.ped.paquete);
+    }
+    if (b === 'ped.tipoDesc') $('#f-ped-descuento-etq').innerHTML = `${S.ped.tipoDesc === 'pct' ? 'Cuánto (%)' : 'Cuánto ($)'} <span class="opc">(opcional)</span>`;
+    if (t && t.dataset.l === 'libres' && b === 'concepto') {
+      const tit = t.closest('.item') && $('.item-tit', t.closest('.item'));
+      if (tit) tit.textContent = limpia(t.value) || `Renglón libre ${+t.dataset.i + 1}`;
+    }
+    const vivo = $('#vivo-ped');
+    if (vivo) vivo.innerHTML = vivoPedido();
+    const res = $('#cp-res');
+    if (res) res.textContent = resumenCliente();
+    if (tipo === 'recibo') { sincronizarRecibo(st); refrescarRecibo(st, t); }
+    if (tipo === 'entrega') { sincronizarEntrega(st); ponerValor('#f-pendiente', st.pendiente, t); }
+    if (tipo === 'cambios') { const a = $('#f-sesion-ayuda'); if (a) a.textContent = ayudaSesion(); $('#vivo').innerHTML = vivoCambios(st); }
+  }
+  function ponerValor(sel, v, activo) {
+    const el = $(sel);
+    if (el && el !== activo) el.value = v;
+  }
+  function refrescarRecibo(st, activo) {
+    ponerValor('#f-cantidad', st.cantidad, activo);
+    ponerValor('#f-total', st.total, activo);
+    ponerValor('#f-anteriores', st.anteriores, activo);
+    ponerValor('#f-concepto', st.concepto, activo);
+    const l = letraDe(st), el = $('#letra');
+    el.textContent = l;
+    el.hidden = !l;
+    $('#vivo').innerHTML = vivoRecibo(st);
+  }
+  const REACCION = {
+    recibo: (st, b, t) => {
+      if (b === 'cantidad') st.autoCantidad = false;
+      else if (b === 'total' || b === 'anteriores') st.autoSaldo = false;
+      else if (b === 'concepto') st.autoConcepto = false;
+      else if (b === 'tipoPago') {
+        Object.assign(st, { autoCantidad: true, autoSaldo: true, autoConcepto: true, folio: null });
+        sincronizarRecibo(st);
+      }
+      refrescarRecibo(st, t);
+    },
+    cambios: st => { $('#vivo').innerHTML = vivoCambios(st); },
+    entrega: (st, b) => {
+      if (b === 'pago') $('#pendiente-w').hidden = st.pago !== 'pendiente';
+      if (b === 'pendiente') st.autoPendiente = false;
+    }
+  };
+
+  /* ---------- Validación antes de ver el documento ---------- */
+  function revisarTelefono(e) {
+    const t = limpia(S.cli.telefono);
+    if (t && telefono10(t).length !== 10) e.push(['f-cli-telefono', 'El WhatsApp del cliente debe tener 10 dígitos.']);
+  }
+  const requerido = (e, v, id, msg) => { if (!limpia(v)) e.push([id, msg]); };
+  const reqNombre = e => requerido(e, S.cli.nombre, 'f-cli-nombre', 'Escribe el nombre del cliente.');
+  function revisarPedido(e, conPrecios) {
+    const t = totalesPedido(S.ped, cfg);
+    if (!t.filas.length) e.push(['f-ped-paquete', 'Elige el paquete o agrega al menos un renglón al pedido.']);
+    if (conPrecios) {
+      if (limpia(S.ped.paquete) && !limpia(S.ped.precioPaq)) e.push(['f-ped-precioPaq', `Escribe el precio de “${limpia(S.ped.paquete)}”.`]);
+      S.ped.extras.forEach((x, i) => { if (!limpia(x.precio)) e.push([`ex-p-${i}`, `Escribe el precio de “${x.nombre}”.`]); });
+      S.ped.libres.forEach((r, i) => { if (limpia(r.concepto) && !limpia(r.precio)) e.push([`lib-p-${i}`, `Escribe el precio de “${limpia(r.concepto)}”.`]); });
+    }
+    if (S.ped.tipoDesc === 'pct' && aNumero(S.ped.descuento) > 100) e.push(['f-ped-descuento', 'El descuento no puede ser mayor a 100%.']);
+  }
+  const VALIDAR = {
+    cliente: () => { const e = []; revisarTelefono(e); return e; },
+    cotizacion: st => {
+      const e = [];
+      reqNombre(e);
+      revisarTelefono(e);
+      revisarPedido(e, true);
+      requerido(e, st.fecha, 'f-fecha', 'Elige la fecha.');
+      return e;
+    },
+    recibo: st => {
+      const e = [];
+      reqNombre(e);
+      revisarTelefono(e);
+      requerido(e, st.fecha, 'f-fecha', 'Elige la fecha.');
+      requerido(e, st.concepto, 'f-concepto', 'Escribe el concepto del pago.');
+      if (!(aNumero(st.cantidad) > 0)) e.push(['f-cantidad', 'Escribe la cantidad recibida.']);
+      const s = saldoRecibo(st);
+      if (s && s.saldo < 0) e.push(['f-total', 'Los pagos suman más que el total del pedido. Revisa las cantidades.']);
+      return e;
+    },
+    acuerdo: st => {
+      const e = [];
+      reqNombre(e);
+      revisarTelefono(e);
+      revisarPedido(e, false);
+      requerido(e, st.fecha, 'f-fecha', 'Elige la fecha.');
+      return e;
+    },
+    privacidad: st => {
+      const e = [];
+      revisarTelefono(e);
+      requerido(e, st.fecha, 'f-fecha', 'Elige la fecha.');
+      return e;
+    },
+    ficha: () => {
+      const e = [];
+      reqNombre(e);
+      revisarTelefono(e);
+      return e;
+    },
+    cambios: st => {
+      const e = [];
+      reqNombre(e);
+      revisarTelefono(e);
+      if (!(parseInt(st.sesion, 10) >= 1)) e.push(['f-sesion', 'Escribe el número de sesión (1, 2, 3…).']);
+      requerido(e, st.fecha, 'f-fecha', 'Elige la fecha.');
+      if (!renglones(st.cambios).length) e.push(['f-cambios', 'Escribe al menos un cambio.']);
+      return e;
+    },
+    entrega: st => {
+      const e = [];
+      reqNombre(e);
+      revisarTelefono(e);
+      revisarPedido(e, false);
+      requerido(e, st.fecha, 'f-fecha', 'Elige la fecha de entrega.');
+      if (st.pago === 'pendiente' && !(aNumero(st.pendiente) > 0)) e.push(['f-pendiente', 'Escribe el saldo pendiente.']);
+      return e;
+    }
+  };
+
+  /* ======================= Documentos ======================= */
+  // Encabezado común: logotipo, negocio, ciudad y contacto, folio y título
+  function cabDoc(o) {
+    const wa = telefono10(cfg.whatsapp), ig = instagram();
+    const contacto = [wa.length === 10 && `WhatsApp ${telBonito(wa)}`, limpia(cfg.correo), ig && '@' + ig].filter(Boolean);
+    return `<header class="d-cab">
+        <div class="d-logo"><img src="${esc(logoDoc())}" alt="${esc(cfg.negocio)}"></div>
+        <div class="d-contacto"><p class="d-negocio">${esc(cfg.negocio)}</p>${limpia(cfg.ciudad) ? `<p>${esc(cfg.ciudad)}</p>` : ''}${
+          contacto.length ? `<p>${contacto.map(x => `<span class="nw">${esc(x)}</span>`).join(' · ')}</p>` : ''}</div>
+        ${o.folio ? `<div class="d-folio"><small>Folio</small><b>${esc(o.folio)}</b></div>` : ''}
+      </header>
+      <div class="d-tit"><h2>${esc(o.titulo)}</h2>${o.fecha ? `<p class="d-fecha">${esc(o.fecha)}</p>` : ''}</div>`;
+  }
+  const dato = (etq, v, clase) => `<div class="d-dato${clase ? ' ' + clase : ''}"><small>${etq}</small><span>${esc(limpia(v))}</span></div>`;
+  // Cliente, evento, festejado y fecha del evento (solo lo que tenga dato)
+  function bloqueCliente(o) {
+    o = o || {};
+    const tel = telefono10(S.cli.telefono);
+    const nombre = limpia(S.cli.nombre)
+      ? dato('Cliente', S.cli.nombre, 'ancho')
+      : '<div class="d-dato ancho"><small>Cliente</small><span class="d-blanco"></span></div>';
+    return `<section class="d-pac">${nombre}${limpia(S.cli.evento) ? dato('Evento', S.cli.evento) : ''}${limpia(S.cli.festejado) ? dato('Festejado(a)', S.cli.festejado) : ''}${
+      S.cli.fechaEvento ? dato('Fecha del evento', fechaLarga(S.cli.fechaEvento)) : ''}${o.tel && tel.length === 10 ? dato('WhatsApp', telBonito(tel)) : ''}</section>`;
+  }
+  function firmas(lista) {
+    return `<div class="d-firmas">${lista.map(f => `<div class="d-firma"><p class="d-sobre">${esc(limpia(f.sobre))}</p><div class="d-linea"><b>${esc(f.etiqueta)}</b>${
+      (f.detalle || []).filter(x => limpia(x)).map(x => `<span>${esc(x)}</span>`).join('')}</div></div>`).join('')}</div>`;
+  }
+  const casilla = (on, texto) => `<p class="d-check"><i${on ? ' class="on"' : ''}></i><span>${texto}</span></p>`;
+  const firmaInvitia = () => ({ etiqueta: limpia(cfg.negocio), sobre: firmante(), detalle: ['Nombre y firma'] });
+
+  // Datos que se pueden escribir entre llaves en los textos de Configuración
+  function datosTextos() {
+    const t = totalesPedido(S.ped, cfg), cat = paqueteCat(S.ped.paquete, cfg), hay = t.total > 0 && !t.sinPrecio.length;
+    const extras = S.ped.extras.map(x => limpia(x.nombre)).concat(S.ped.libres.filter(r => limpia(r.concepto)).map(r => limpia(r.concepto)));
+    const wa = telefono10(cfg.whatsapp), ig = instagram();
+    return {
+      negocio: limpia(cfg.negocio), firmante: firmante(), ciudad: limpia(cfg.ciudad),
+      responsable: [firmante(), limpia(cfg.negocio) && `de ${limpia(cfg.negocio)}`].filter(Boolean).join(', '),
+      whatsapp: wa.length === 10 ? telBonito(wa) : limpia(cfg.whatsapp), correo: limpia(cfg.correo), instagram: ig ? '@' + ig : '',
+      cliente: limpia(S.cli.nombre) || 'el cliente', evento: eventoFrase(S.cli) || 'tu evento', fechaEvento: fechaLarga(S.cli.fechaEvento) || 'por definir',
+      paquete: limpia(S.ped.paquete) || 'por definir', formato: cat && limpia(cat.formato) ? limpia(cat.formato) : 'digital',
+      extras: extras.length ? extras.join(', ') : 'sin extras', sesiones: cat ? String(cat.sesiones) : 'las',
+      cambioExtra: pesos(cfg.cambioExtra), anticipoPct: fmtNum(cfg.anticipoPct), entregaNormal: limpia(cfg.entregaNormal),
+      urg3: fmtNum(cfg.urg3), urg2: fmtNum(cfg.urg2),
+      total: hay ? pesos(t.total) : 'por definir', anticipo: hay ? pesos(t.anticipo) : 'por definir', saldo: hay ? pesos(t.saldo) : 'por definir'
+    };
+  }
+  // Texto de Configuración a HTML: "# " = título, "- " = viñeta, {dato} = se llena solo
+  function formatoTexto(t, datos) {
+    const con = s => esc(s).replace(/\{(\w+)\}/g, (m, k) => (k in datos ? esc(datos[k]) : m));
+    let h = '', enLista = false;
+    String(t || '').split(/\r?\n/).forEach(l => {
+      const s = l.trim();
+      const vineta = /^[-•*]\s+/.test(s);
+      if (enLista && !vineta) { h += '</ul>'; enLista = false; }
+      if (!s) return;
+      if (/^#/.test(s)) h += `<h3>${con(s.replace(/^#+\s*/, ''))}</h3>`;
+      else if (vineta) { if (!enLista) { h += '<ul>'; enLista = true; } h += `<li>${con(s.replace(/^[-•*]\s+/, ''))}</li>`; }
+      else h += `<p>${con(s)}</p>`;
+    });
+    return h + (enLista ? '</ul>' : '');
+  }
+  function textoEntrega(t) {
+    return S.ped.entrega
+      ? `${fechaLarga(S.ped.entrega)}${S.ped.urgencia !== 'normal' ? ` · entrega exprés ${urgTexto(S.ped.urgencia, cfg)}` : ''}`
+      : `de ${limpia(cfg.entregaNormal)} a partir de tu anticipo y los datos del evento${t && t.recargo > 0 ? ` · entrega exprés ${urgTexto(S.ped.urgencia, cfg)}` : ''}`;
+  }
+  function datosTransferencia() {
+    const d = [limpia(cfg.banco) && `Banco: ${limpia(cfg.banco)}`, limpia(cfg.titular) && `Titular: ${limpia(cfg.titular)}`, limpia(cfg.clabe) && `CLABE: ${limpia(cfg.clabe)}`].filter(Boolean);
+    return d.length ? `<p><b>Datos para transferencia:</b> ${d.map(esc).join(' · ')}</p>` : '';
+  }
+  const tituloRecibo = tipo => ({ anticipo: 'Recibo de anticipo', liquidacion: 'Recibo de liquidación', cambios: 'Recibo de cambios extra' }[tipo] || 'Recibo de pago');
+
+  const DOC = {
+    cotizacion: st => {
+      const t = totalesPedido(S.ped, cfg), inc = sesionesIncluidas();
+      return cabDoc({ folio: folioTexto('cotizacion', st), titulo: 'Cotización', fecha: fechaLarga(st.fecha) }) +
+        bloqueCliente({ tel: true }) +
+        `<table class="d-tabla">
+          <thead><tr><th class="c-num">#</th><th>Concepto</th><th class="num">Precio</th></tr></thead>
+          <tbody>${t.filas.map((r, i) => `<tr><td class="c-num">${i + 1}</td><td>${esc(r.tipo === 'paquete' ? `Invitación ${r.concepto}` : r.concepto)}${r.detalle ? `<small>${esc(r.detalle)}</small>` : ''}</td><td class="num">${pesos2(r.importe)}</td></tr>`).join('')}</tbody>
+        </table>
+        <div class="d-resumen">
+          <div class="d-info">
+            ${inc != null ? `<p><b>Sesiones de cambios incluidas:</b> ${inc}. Cada sesión adicional: ${pesos(cfg.cambioExtra)}.</p>` : ''}
+            <p><b>Entrega:</b> ${esc(textoEntrega(t))}.</p>
+            <p><b>Vigencia:</b> esta cotización es válida hasta el ${fechaLarga(sumarDias(st.fecha || hoyISO(), cfg.vigenciaDias))}.</p>
+            ${limpia(cfg.formasPago) ? `<p><b>Formas de pago:</b> ${esc(limpia(cfg.formasPago))}.</p>` : ''}
+            ${datosTransferencia()}
+            ${limpia(st.notas) ? `<div><b>Notas:</b>${parrafos(st.notas)}</div>` : ''}
+          </div>
+          <table class="d-totales"><tbody>
+            <tr><td>Subtotal</td><td class="num">${pesos2(t.subtotal)}</td></tr>
+            ${t.recargo > 0 ? `<tr><td>Entrega exprés (+${fmtNum(t.pctUrg)}%)</td><td class="num">${pesos2(t.recargo)}</td></tr>` : ''}
+            ${t.descuento > 0 ? `<tr><td>Descuento${t.pct != null ? ` (${fmtNum(t.pct)}%)` : ''}</td><td class="num">−${pesos2(t.descuento)}</td></tr>` : ''}
+            <tr class="d-total"><td>Total</td><td class="num">${pesos2(t.total)}</td></tr>
+            <tr class="d-anticipo"><td>Anticipo (${fmtNum(cfg.anticipoPct)}%)</td><td class="num">${pesos2(t.anticipo)}</td></tr>
+            <tr><td>Saldo al entregar</td><td class="num">${pesos2(t.saldo)}</td></tr>
+          </tbody></table>
+        </div>
+        <p class="d-apartar"><b>Para apartar tu fecha: anticipo de ${pesos(t.anticipo)}.</b> Te asignamos tu fecha exacta de entrega al recibirlo.</p>
+        <div class="d-empuja"></div>` +
+        firmas([firmaInvitia()]);
+    },
+    recibo: st => {
+      const cant = aNumero(st.cantidad), s = saldoRecibo(st);
+      return cabDoc({ folio: folioTexto('recibo', st), titulo: tituloRecibo(st.tipoPago), fecha: fechaLarga(st.fecha) }) +
+        `<div class="d-bueno"><small>Bueno por</small><b>${pesos2(cant)}</b></div>
+        <p class="d-recibi">Recibí de <b>${esc(limpia(S.cli.nombre))}</b> la cantidad de <b>${pesos2(cant)}</b> (${esc(numeroALetras(cant))}).</p>
+        <dl class="d-dl"><div><dt>Concepto</dt><dd>${esc(limpia(st.concepto))}</dd></div><div><dt>Tipo de pago</dt><dd>${esc(TIPOS_PAGO[st.tipoPago] || 'Otro')}</dd></div><div><dt>Forma de pago</dt><dd>${esc(st.forma)}</dd></div></dl>
+        ${s ? `<table class="d-totales d-saldo"><tbody>
+          <tr><td>Total del pedido</td><td class="num">${pesos2(s.total)}</td></tr>
+          ${s.anteriores ? `<tr><td>Pagos anteriores</td><td class="num">${pesos2(s.anteriores)}</td></tr>` : ''}
+          <tr><td>Este pago</td><td class="num">${pesos2(s.pago)}</td></tr>
+          <tr class="d-total"><td>${s.saldo > 0 ? 'Saldo pendiente' : 'Saldo'}</td><td class="num">${pesos2(Math.max(0, s.saldo))}</td></tr>
+        </tbody></table>` : ''}
+        <p class="d-leyenda">Este recibo no es un comprobante fiscal.</p>
+        <div class="d-empuja"></div>` +
+        firmas([{ etiqueta: `Recibió · ${limpia(cfg.negocio)}`, sobre: firmante(), detalle: ['Nombre y firma'] }]);
+    },
+    acuerdo: st => {
+      const tutor = st.menor || esXV(S.cli.evento);
+      return cabDoc({ folio: folioTexto('acuerdo', st), titulo: 'Acuerdo de servicio', fecha: fechaLarga(st.fecha) }) +
+        bloqueCliente() +
+        `<div class="d-clausulas">${formatoTexto(cfg.acuerdo, datosTextos())}</div>
+        <section class="d-consent">
+          ${casilla(st.ocultarNombres, 'Prefiero que se oculten los nombres cuando se muestre el diseño.')}
+          <p class="d-check" style="margin-top:8pt!important"><span>Leí este acuerdo y estoy de acuerdo.</span></p>
+          ${firmas([{ etiqueta: 'Nombre y firma del cliente', sobre: S.cli.nombre }, firmaInvitia()].concat(tutor ? [{ etiqueta: 'Nombre y firma de padre, madre o tutor' }] : []))}
+        </section>
+        <p class="d-nota">Texto base de referencia. Revísalo y ajústalo a tu forma de trabajar.</p>`;
+    },
+    privacidad: st => {
+      const menores = st.menores || conMenores(S.cli.evento);
+      return cabDoc({ titulo: 'Aviso de privacidad', fecha: fechaLarga(st.fecha) }) +
+        `<div class="d-aviso">${formatoTexto(cfg.aviso, datosTextos())}</div>
+        <section class="d-consent">
+          <h3>Consentimiento</h3>
+          ${casilla(false, 'Autorizo el uso de mis datos y fotografías para el diseño de mi invitación.')}
+          ${casilla(false, `Autorizo que ${esc(limpia(cfg.negocio))} muestre el diseño en su portafolio y redes. <em>(Opcional)</em>`)}
+          ${firmas([{ etiqueta: 'Nombre y firma', sobre: S.cli.nombre }, { etiqueta: 'Fecha', sobre: fechaLarga(st.fecha) }].concat(menores ? [{ etiqueta: 'Firma de padre, madre o tutor' }] : []))}
+        </section>
+        <p class="d-nota">Texto base de referencia. Revísalo con tu asesor.</p>`;
+    },
+    ficha: () => {
+      const t = totalesPedido(S.ped, cfg), F = S.ficha, tel = telefono10(S.cli.telefono), cat = paqueteCat(S.ped.paquete, cfg);
+      const extras = S.ped.extras.map(x => x.nombre).concat(S.ped.libres.filter(r => limpia(r.concepto)).map(r => r.concepto));
+      const seccion = (titulo, filas) => {
+        const f = filas.filter(([, v]) => limpia(v));
+        return f.length ? `<section><h3>${titulo}</h3><dl>${f.map(([k, v]) => `<dt>${k}</dt><dd>${esc(String(v).trim())}</dd>`).join('')}</dl></section>` : '';
+      };
+      return cabDoc({ titulo: 'Ficha del evento', fecha: fechaLarga(hoyISO()) }) +
+        `<div class="d-ficha">${[
+          seccion('Cliente', [['Cliente', S.cli.nombre], ['WhatsApp', tel.length === 10 ? telBonito(tel) : S.cli.telefono], ['Cómo nos conoció', F.origen]]),
+          seccion('Evento', [['Evento', S.cli.evento], ['Festejado(a)', S.cli.festejado], ['Fecha del evento', fechaLarga(S.cli.fechaEvento)], ['Lugar', F.lugar], ['Hora', F.hora]]),
+          seccion('Pedido', [['Paquete', limpia(S.ped.paquete) ? `${S.ped.paquete}${cat && limpia(cat.formato) ? ' · ' + cat.formato : ''}` : ''], ['Extras', extras.join('\n')],
+            ['Entrega deseada', fechaLarga(S.ped.entrega)], ['Urgencia', S.ped.urgencia !== 'normal' ? urgTexto(S.ped.urgencia, cfg) : (t.filas.length ? 'Normal' : '')],
+            ['Total', t.total > 0 ? `${pesos(t.total)} · anticipo ${pesos(t.anticipo)}` : ''], ['Sesiones de cambios', cat ? String(cat.sesiones) : '']]),
+          seccion('Estilo', [['Estilo', F.estilo], ['Colores', F.colores], ['Foto de referencia', F.foto], ['Diseño que le gustó', F.ref], ['Pases / invitados', F.pases]]),
+          seccion('Datos del evento', [['Padres', F.padres], ['Padrinos', F.padrinos], ['Itinerario', F.itinerario], ['Dress code', F.dress], ['Mesa de regalos', F.regalos],
+            ['Link de ubicación', F.ubicacion], ['Confirmar asistencia', F.confirmar]]),
+          seccion('Otros datos', [['Otros', F.otros]])
+        ].join('')}</div>`;
+    },
+    cambios: st => {
+      const n = parseInt(st.sesion, 10), inc = sesionesIncluidas(), lista = renglones(st.cambios), extra = esAdicional(st);
+      return cabDoc({ folio: folioTexto('cambios', st), titulo: 'Registro de cambios', fecha: fechaLarga(st.fecha) }) +
+        bloqueCliente() +
+        `<p class="d-sesion"><span class="d-eti">Sesión</span><b>${n}${inc != null && n <= inc ? ` de ${inc}` : ''}</b>${inc != null && n <= inc ? '<span>incluida en tu paquete</span>' : ''}</p>
+        <ol class="d-lista">${lista.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+        ${st.errorDatos ? '<p class="d-bloque"><b>Cambio por error de datos después de aprobar.</b></p>' : ''}
+        ${limpia(st.notas) ? `<div class="d-bloque"><span class="d-eti">Notas</span>${parrafos(st.notas)}</div>` : ''}
+        ${extra ? `<p class="d-caja"><b>Sesión adicional: ${pesos(cfg.cambioExtra)}</b></p>` : ''}
+        <div class="d-empuja"></div>` +
+        firmas([{ etiqueta: 'Visto bueno del cliente', sobre: S.cli.nombre }]);
+    },
+    entrega: st => {
+      const cat = paqueteCat(S.ped.paquete, cfg);
+      const formato = cat && limpia(cat.formato) ? formatoCorto(cat.formato) : 'digital';
+      const ev = limpia(S.cli.evento), fes = limpia(S.cli.festejado);
+      const para = ev && fes ? `para ${esc(ev)} de <b>${esc(fes)}</b>` : ev ? `para ${esc(ev)}` : fes ? `para <b>${esc(fes)}</b>` : '';
+      const pendiente = st.pago === 'pendiente' ? aNumero(st.pendiente) : 0;
+      return cabDoc({ folio: folioTexto('entrega', st), titulo: 'Constancia de entrega', fecha: fechaLarga(st.fecha) }) +
+        `<p class="d-texto">Hago constar que recibí mi invitación <b>${esc(limpia(S.ped.paquete))}</b> ${para} en formato <b>${esc(formato)}</b> el ${fechaLarga(st.fecha)}, la revisé y la apruebo.</p>
+        <dl class="d-dl"><div><dt>Cliente</dt><dd>${esc(limpia(S.cli.nombre))}</dd></div><div><dt>Pago</dt><dd>${pendiente > 0 ? `Saldo pendiente: ${pesos2(pendiente)}` : 'Liquidado'}</dd></div></dl>
+        <section class="d-consent">
+          <span class="d-eti">Portafolio</span>
+          ${casilla(st.portafolio === 'con', `${esc(limpia(cfg.negocio))} puede mostrar mi invitación en su portafolio y redes, con nombres.`)}
+          ${casilla(st.portafolio === 'sin', 'Puede mostrarla, pero sin nombres.')}
+        </section>
+        <div class="d-empuja"></div>` +
+        firmas([{ etiqueta: 'Nombre y firma del cliente', sobre: S.cli.nombre }, { etiqueta: 'Fecha', sobre: fechaLarga(st.fecha) }]);
+    }
+  };
+
+  /* ---------- Texto para WhatsApp / copiar ---------- */
+  const primerNombre = () => limpia(S.cli.nombre).split(' ')[0] || '';
+  const hola = () => `Hola${primerNombre() ? ' ' + primerNombre() : ''}`;
+  const TEXTO = {
+    cotizacion: st => {
+      const t = totalesPedido(S.ped, cfg);
+      const l = [`${hola()} ✨ Te comparto tu cotización de ${limpia(cfg.negocio)}:`];
+      t.filas.forEach(r => l.push(`• ${r.concepto} — ${pesos(r.importe)}`));
+      if (t.recargo > 0) l.push(`Entrega exprés (+${fmtNum(t.pctUrg)}%): ${pesos(t.recargo)}`);
+      if (t.descuento > 0) l.push(`Descuento: −${pesos(t.descuento)}`);
+      l.push(`💌 Total: ${pesos(t.total)}`);
+      l.push(`Anticipo para apartar tu fecha (${fmtNum(cfg.anticipoPct)}%): ${pesos(t.anticipo)}`);
+      l.push(`Vigente hasta el ${fechaLarga(sumarDias(st.fecha || hoyISO(), cfg.vigenciaDias))}. Cualquier duda, aquí estoy.`);
+      return l.join('\n');
+    },
+    recibo: st => {
+      const s = saldoRecibo(st), ev = eventoFrase(S.cli);
+      const que = { anticipo: 'anticipo', liquidacion: 'liquidación', cambios: 'pago de la sesión de cambios extra' }[st.tipoPago] || 'pago';
+      const l = [`${hola()}, recibí tu ${que} de ${pesos2(aNumero(st.cantidad))}${ev ? ` para tu invitación de ${ev}` : ''}.`];
+      if (s && s.saldo <= 0) l.push('Tu invitación quedó liquidada. ¡Gracias por confiar en Invitia! 💌');
+      else if (s) l.push(`Saldo pendiente: ${pesos2(s.saldo)}. ¡Gracias! 💌`);
+      else l.push('¡Gracias! 💌');
+      return l.join(' ');
+    },
+    acuerdo: () => {
+      const d = datosTextos(), t = totalesPedido(S.ped, cfg), hay = t.total > 0 && !t.sinPrecio.length;
+      const incluye = [`${d.paquete}${d.formato !== 'digital' ? ` (${d.formato})` : ''}`].concat(d.extras !== 'sin extras' ? [d.extras] : []).join(' + ');
+      return [
+        `${hola()} ✨ Antes de empezar tu invitación, te comparto los acuerdos de ${d.negocio}:`,
+        `• Incluye: ${incluye}, con ${d.sesiones === 'las' ? 'las' : d.sesiones} sesiones de cambios.`,
+        `• Anticipo del ${d.anticipoPct}%${hay ? ` (${d.anticipo})` : ''} para apartar tu fecha; no es reembolsable si cancelas. El resto${hay ? ` (${d.saldo})` : ''}, al entregarte la invitación final.`,
+        `• Entrega de ${d.entregaNormal} desde que recibo tu anticipo y todos los datos del evento.`,
+        `• Cada sesión de cambios adicional cuesta ${d.cambioExtra}. Revisa nombres, fechas, horarios y lugares antes de aprobar: un cambio después cuenta como sesión.`,
+        '• Es para uso personal de tu evento; todo es digital y no se entregan archivos editables.',
+        '• Puedo mostrar tu diseño en mi portafolio y redes. Si prefieres que oculte los nombres, dímelo.',
+        '',
+        'Si estás de acuerdo, respóndeme "ACEPTO" y con tu anticipo arrancamos 💌'
+      ].join('\n');
+    },
+    cambios: st => {
+      const n = parseInt(st.sesion, 10), inc = sesionesIncluidas();
+      const l = [`${hola()}, estos son los cambios de la sesión ${n}${inc != null && n <= inc ? ` de ${inc}` : ' (adicional)'}:`];
+      renglones(st.cambios).forEach(x => l.push('• ' + x));
+      if (esAdicional(st)) l.push(`Esta es una sesión adicional: ${pesos(cfg.cambioExtra)}.`);
+      l.push('Te aviso en cuanto estén listos ✨');
+      return l.join('\n');
+    },
+    entrega: st => {
+      const cat = paqueteCat(S.ped.paquete, cfg), ev = eventoFrase(S.cli);
+      const pendiente = st.pago === 'pendiente' ? aNumero(st.pendiente) : 0;
+      return [
+        `${hola()} 💌 Aquí está tu invitación ${limpia(S.ped.paquete)}${ev ? ` para ${ev}` : ''}${cat && limpia(cat.formato) ? ` en ${formatoCorto(cat.formato)}` : ''}.`,
+        'Revísala con calma: nombres, fechas, horarios y lugares.',
+        pendiente > 0 ? `Saldo pendiente: ${pesos2(pendiente)}.` : 'Tu invitación está liquidada. ¡Gracias!',
+        "Si todo está bien, respóndeme 'RECIBIDO' 💌"
+      ].join('\n');
+    }
+  };
+  // api.whatsapp.com conserva acentos y emojis (wa.me los rompe en la redirección)
+  function ligaWhats(texto, tel) {
+    const d = telefono10(tel);
+    return 'https://api.whatsapp.com/send?' + (d.length === 10 ? `phone=52${d}&` : '') + 'text=' + encodeURIComponent(texto);
+  }
+
+  /* ======================= Pantallas ======================= */
+  function pintarCabecera() {
+    const img = cfg.logo || MARCA.iso;
+    $('#cab-marca').innerHTML = `<img src="${esc(img)}" alt=""><span class="cab-txt"><b>${esc(limpia(cfg.negocio) || 'Mi negocio')}</b><small>Documentos</small></span>`;
+    if (actual.p === 'config') $('#btn-config').setAttribute('aria-current', 'page');
+    else $('#btn-config').removeAttribute('aria-current');
+  }
+
+  function pintarInicio() {
+    const faltan = [!limpia(cfg.apellido) && 'tu apellido para las firmas', !(limpia(cfg.banco) || limpia(cfg.clabe)) && 'tus datos para transferencia (opcional)'].filter(Boolean);
+    const banner = $('#banner-config');
+    banner.hidden = cfg.revisado && !!limpia(cfg.apellido);
+    banner.innerHTML = banner.hidden ? '' : `<div class="banner"><p><b>Antes de empezar, revisa tus datos.</b>${
+      faltan.length ? `<span class="detalle">Falta: ${faltan.join(' y ')}.</span>` : ''}</p>
+      <a class="btn btn-moss" href="#/config">Revisar datos</a></div>`;
+    const t = totalesPedido(S.ped, cfg), nx = S.ped.extras.length + S.ped.libres.filter(r => limpia(r.concepto)).length;
+    $('#cliente-actual').innerHTML = hayCliente()
+      ? `<div class="tarjeta cliente-card"><p class="ceja">Cliente actual</p>
+        <p class="cc-nombre">${esc(limpia(S.cli.nombre) || 'Cliente sin nombre')}</p>
+        ${eventoFrase(S.cli) || S.cli.fechaEvento ? `<p class="cc-det">${esc([eventoFrase(S.cli), fechaLarga(S.cli.fechaEvento)].filter(Boolean).join(' · '))}</p>` : ''}
+        <p class="cc-det">${esc([(limpia(S.ped.paquete) || 'Paquete por definir') + (nx ? ` + ${plural(nx, 'extra', 'extras')}` : ''), t.total > 0 ? `Total ${pesos(t.total)} · anticipo ${pesos(t.anticipo)}` : ''].filter(Boolean).join(' · '))}</p>
+        <div class="btns-fila"><a class="btn btn-ghost" href="#/cliente"><span aria-hidden="true">✏️</span> Editar</a>
+        <button type="button" class="btn btn-peligro" data-accion="nuevo"><span aria-hidden="true">🆕</span> Nuevo cliente</button></div></div>`
+      : `<div class="tarjeta cliente-card"><p class="ceja">Cliente actual</p><p class="cc-det">Todavía no hay cliente. Pega la cotización que te llegó o captura los datos a mano.</p>
+        <div class="btns-fila"><a class="btn btn-ghost" href="#/cliente"><span aria-hidden="true">✏️</span> Capturar a mano</a></div></div>`;
+    $('#mosaicos').innerHTML = MOSAICOS.map(m => `<a class="mosaico" href="${m.href}"><span class="mosaico-ico" aria-hidden="true">${m.ico}</span><b>${esc(m.titulo)}</b><small>${esc(m.desc)}</small></a>`).join('');
+  }
+
+  function pintarForm(tipo) {
+    const D = DOCS[tipo], st = estado(tipo);
+    if (tipo === 'recibo') sincronizarRecibo(st);
+    if (tipo === 'entrega') sincronizarEntrega(st);
+    $('#form-titulo').innerHTML = `<span aria-hidden="true">${D.ico}</span> ${esc(D.nombre)}`;
+    $('#form-desc').textContent = D.ayuda;
+    $('#form').innerHTML = FORM[tipo](st);
+    $('#form-errores').hidden = true;
+    $('#ejemplo-caja').hidden = !MODO_DEMO || tipo === 'cliente';
+    $('#btn-ver').innerHTML = tipo === 'cliente' ? 'Listo <span aria-hidden="true">✓</span>' : 'Ver documento <span aria-hidden="true">→</span>';
+  }
+
+  function mostrarErrores(lista) {
+    const caja = $('#form-errores');
+    $$('[aria-invalid]', $('#form')).forEach(el => el.removeAttribute('aria-invalid'));
+    if (!lista.length) { caja.hidden = true; return; }
+    caja.innerHTML = `<b>Falta completar:</b><ul>${lista.map(x => `<li>${esc(x[1])}</li>`).join('')}</ul>`;
+    caja.hidden = false;
+    lista.forEach(([id]) => { const el = document.getElementById(id); if (el) el.setAttribute('aria-invalid', 'true'); });
+    const primero = document.getElementById(lista[0][0]);
+    if (primero) {
+      const det = primero.closest('details');
+      if (det) det.open = true;
+      primero.focus({ preventScroll: true });
+      primero.scrollIntoView({ block: 'center' });
+    }
+  }
+
+  /* Vista previa */
+  function pintarHoja(tipo) {
+    const st = estado(tipo), D = DOCS[tipo], hoja = $('#hoja');
+    hoja.className = `hoja ${D.papel}${D.compacto ? ' compacto' : ''}`;
+    hoja.style.setProperty('--c', colorDoc());
+    hoja.innerHTML = `<div class="hoja-in">${DOC[tipo](st)}</div>`;
+    $('#estilo-pagina').textContent = `@page{size:${D.papel === 'media' ? '5.5in 8.5in' : 'letter'};margin:12mm}`;
+    ajustarEscala();
+  }
+  function pintarVista(tipo) {
+    const st = estado(tipo), D = DOCS[tipo];
+    $('#vista-titulo').innerHTML = `<span aria-hidden="true">${D.ico}</span> ${esc(tipo === 'recibo' ? tituloRecibo(st.tipoPago) : D.nombre)}`;
+    $('#vista-papel').textContent = D.papel === 'media' ? 'Media carta · 5.5 × 8.5 in' : 'Carta · 8.5 × 11 in';
+    zoom = false;
+    pintarHoja(tipo);
+    const w = $('#acc-whats');
+    w.hidden = !D.whats;
+    $('#acc-copiar').hidden = !D.whats;
+    w.href = D.whats ? ligaWhats(TEXTO[tipo](st), S.cli.telefono) : '#';
+    w.setAttribute('aria-label', telefono10(S.cli.telefono).length === 10 ? 'Mandar por WhatsApp al cliente' : 'Mandar por WhatsApp (eliges el contacto)');
+    $('#ejemplo-aviso').hidden = !S.ejemplo[tipo];
+    const extra = tipo === 'cambios' && esAdicional(st);
+    $('#vista-extra').hidden = !extra;
+    $('#vista-extra-txt').textContent = extra ? `Sesión adicional: ${pesos(cfg.cambioExtra)}. ¿Ya te la pagó?` : '';
+    ocultarAyuda();
+  }
+  function ajustarEscala() {
+    const marco = $('#vista-marco'), caja = $('#vista-escala'), hoja = $('#hoja');
+    if ($('#p-vista').hidden) return;
+    caja.style.transform = 'none';
+    const w = hoja.offsetWidth, h = hoja.offsetHeight;
+    const disp = marco.clientWidth - 24;
+    const cabe = Math.min(1, disp / w);
+    const s = zoom ? 1 : cabe;
+    caja.style.width = w + 'px';
+    caja.style.transform = s < 1 ? `scale(${s})` : 'none';
+    caja.style.marginLeft = s * w < disp ? `${Math.floor((disp - s * w) / 2)}px` : '0';
+    marco.style.height = `${Math.ceil(h * s) + 24 + (zoom && w > disp ? 14 : 0)}px`;
+    marco.classList.toggle('zoom', zoom);
+    const bz = $('#btn-zoom');
+    bz.hidden = cabe >= 1;
+    bz.innerHTML = zoom ? '<span aria-hidden="true">↔</span> Ajustar a la pantalla' : '<span aria-hidden="true">🔍</span> Ver más grande';
+    revisarHojas();
+  }
+  // Avisa si el contenido ya no cabe en una hoja (la firma se iría a la siguiente página)
+  function revisarHojas() {
+    const tipo = actual.tipo, hi = $('.hoja-in'), caja = $('#aviso-hojas');
+    const ult = hi && hi.lastElementChild;
+    if (!tipo || !ult || !DOCS[tipo].papel) { caja.hidden = true; return; }
+    const alto = ult.offsetTop + ult.offsetHeight - hi.offsetTop;
+    const pagina = ((DOCS[tipo].papel === 'media' ? 8.5 : 11) - 24 / 25.4) * 96;
+    const pasa = alto > pagina - 4;
+    caja.hidden = !pasa;
+    if (pasa) caja.innerHTML = '<p><b>Este documento no cabe en una sola hoja</b> y una parte se iría a otra página.</p><p style="margin:0">Acorta el texto con ✏️ Editar.</p>';
+  }
+
+  function asignarFolio(tipo) {
+    const pref = DOCS[tipo].folio, st = S.docs[tipo];
+    if (!pref || !st || st.folio != null || S.ejemplo[tipo]) return false; // el ejemplo no gasta folios
+    st.folio = cfg.folios[pref];
+    cfg.folios[pref] = st.folio + 1;
+    guardarYa();
+    return true;
+  }
+  function imprimir() {
+    const tipo = actual.tipo;
+    if (actual.p !== 'vista' || !tipo) return;
+    const nuevoFolio = asignarFolio(tipo);
+    pintarHoja(tipo);
+    const folio = folioTexto(tipo, estado(tipo));
+    // Nombre sugerido del PDF (sin datos del cliente)
+    document.title = `${folio ? folio + ' ' : ''}${DOCS[tipo].corto} - ${limpia(cfg.negocio)}`;
+    if (typeof window.print !== 'function') { toast('Este navegador no deja imprimir. Ábrelo en Chrome o Safari.', 'error'); return; }
+    window.print();
+    if (nuevoFolio) toast(`Folio ${folio} registrado. El siguiente será ${DOCS[tipo].folio}-${String(cfg.folios[DOCS[tipo].folio]).padStart(4, '0')}.`);
+  }
+
+  function ocultarAyuda() {
+    $('#ayuda-pdf').hidden = true;
+    $$('.acc-ayuda').forEach(b => b.setAttribute('aria-expanded', 'false'));
+  }
+
+  async function copiarTexto(texto) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(texto); return true; }
+    } catch (e) { /* se intenta a la antigua */ }
+    const ta = document.createElement('textarea');
+    ta.value = texto;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, texto.length);
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    ta.remove();
+    return ok;
+  }
+
+  let tToast;
+  function toast(msg, clase) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.className = 'toast' + (clase ? ' ' + clase : '');
+    t.hidden = false;
+    clearTimeout(tToast);
+    tToast = setTimeout(() => { t.hidden = true; }, 3600);
+  }
+
+  // Borra todo lo del cliente: datos, pedido, ficha, documentos, lo pegado y lo que está en pantalla
+  function borrarCliente() {
+    S.cli = cliVacio();
+    S.ped = pedidoVacio();
+    S.ficha = fichaVacia();
+    S.docs = {};
+    S.ejemplo = {};
+    S.cliEjemplo = false;
+    $('#hoja').innerHTML = '';
+    $('#form').innerHTML = '';
+    $('#pegar-txt').value = '';
+    $('#pegar-res').innerHTML = '';
+    $('#acc-whats').href = '#';
+  }
+  function nuevo() {
+    if (hayCliente() && !S.cliEjemplo && !window.confirm(`¿Empezar con un cliente nuevo?\n\nSe borra todo lo de ${limpia(S.cli.nombre) || 'este cliente'} de la pantalla.`)) return;
+    borrarCliente();
+    ir('/', { reemplazar: true });
+    toast('Listo. Se borraron los datos del cliente.');
+  }
+
+  /* ---------- Pegar cotización ---------- */
+  function abrirPegar(abrir) {
+    $('#pegar-caja').hidden = !abrir;
+    $('[data-accion="abrir-pegar"]').setAttribute('aria-expanded', String(abrir));
+    if (abrir) { $('#pegar-res').innerHTML = ''; $('#pegar-txt').focus(); }
+  }
+  function llenarDesdeCotizacion() {
+    const txt = $('#pegar-txt').value, res = $('#pegar-res');
+    if (!limpia(txt)) { toast('Primero pega el mensaje del cotizador.', 'error'); $('#pegar-txt').focus(); return; }
+    const r = leerCotizacion(txt, cfg);
+    if (!r.ok) {
+      res.innerHTML = `<div class="resultado error"><b>${esc(r.mensaje)}</b></div>`;
+      return;
+    }
+    if (hayCliente() && !S.cliEjemplo && !window.confirm(`Se van a reemplazar los datos de ${limpia(S.cli.nombre) || 'el cliente actual'} por los de la cotización. ¿Continuar?`)) return;
+    borrarCliente();
+    S.cli = r.cli;
+    S.ped = r.ped;
+    S.ficha = r.ficha;
+    const notas = r.avisos.slice();
+    if (r.noReconocidas.length) notas.push(`No reconocí: ${r.noReconocidas.join(', ')}. Lo guardé en “Otros datos” de la ficha del evento.`);
+    if (r.porDefinir) notas.push('El cliente pidió ayuda para elegir el paquete: elígelo en ✏️ Editar.');
+    abrirPegar(false);
+    pintarInicio();
+    res.innerHTML = `<div class="resultado"><b>${esc(r.resumen)}</b>${notas.length ? `<ul>${notas.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}</div>`;
+    toast('Cotización cargada ✅');
+    $('#cliente-actual').scrollIntoView({ block: 'nearest' });
+  }
+
+  /* ======================= Configuración ======================= */
+  function cCampo(etq, attrs, o) {
+    o = o || {};
+    const id = 'c-' + Object.values(attrs).join('-').replace(/[^\w-]/g, '-');
+    const data = Object.entries(attrs).map(([k, v]) => `data-${k}="${esc(v)}"`).join(' ');
+    let v;
+    if (attrs.c) { const [a, b] = attrs.c.split('.'); v = b ? cfg[a][b] : cfg[a]; }
+    else v = cfg[attrs.cl][+attrs.i][attrs.f];
+    const extra = `${o.modo ? ` inputmode="${o.modo}"` : ''}${o.ph ? ` placeholder="${esc(o.ph)}"` : ''}${o.ayuda ? ` aria-describedby="${id}-ayuda"` : ''}`;
+    const control = o.area
+      ? `<textarea id="${id}" class="control" rows="${o.filas || 4}" ${data}${extra}>${esc(v)}</textarea>`
+      : `<input id="${id}" class="control" type="${o.tipo || 'text'}" autocomplete="off" ${data}${extra} value="${esc(v)}">`;
+    return `<div class="campo"><label for="${id}">${etq}${o.opc ? ' <span class="opc">(opcional)</span>' : ''}</label>${control}${o.ayuda ? `<p class="ayuda" id="${id}-ayuda">${o.ayuda}</p>` : ''}</div>`;
+  }
+  const seccion = (id, titulo, cuerpo, abiertos) =>
+    `<details class="sec" data-sec="${id}"${abiertos.has(id) ? ' open' : ''}><summary>${titulo}</summary><div class="sec-cuerpo">${cuerpo}</div></details>`;
+  const botonAgregar = (accion, texto) => `<button type="button" class="btn btn-suave btn-bloque" data-accion="${accion}">＋ ${texto}</button>`;
+  const LLAVES_ACUERDO = '{cliente}, {evento}, {fechaEvento}, {paquete}, {formato}, {extras}, {sesiones}, {cambioExtra}, {anticipoPct}, {anticipo}, {total}, {saldo}, {entregaNormal}, {urg3}, {urg2}, {negocio}, {firmante}';
+  const LLAVES_AVISO = '{responsable}, {negocio}, {firmante}, {ciudad}, {whatsapp}, {correo}, {instagram}';
+
+  function configHTML(ab) {
+    const negocio = cCampo('Nombre del negocio', { c: 'negocio' }) +
+      `<div class="fila-ancha">${cCampo('Nombre de quien firma', { c: 'firmante' })}${cCampo('Apellido', { c: 'apellido' }, { ph: 'Escribe tu apellido' })}</div>` +
+      cCampo('Ciudad', { c: 'ciudad' }) +
+      `<div class="fila-ancha">${cCampo('WhatsApp', { c: 'whatsapp' }, { tipo: 'tel', modo: 'tel', ayuda: '10 dígitos, sin el 52.' })}${cCampo('Instagram', { c: 'instagram' }, { ph: 'sin @' })}</div>` +
+      cCampo('Correo', { c: 'correo' }, { tipo: 'email', modo: 'email' }) +
+      `<div class="campo"><label for="c-color">Color principal</label>
+        <div class="color-fila"><input id="c-color" type="color" data-c="color" value="${esc(cfg.color)}" aria-describedby="c-color-ayuda"><span id="c-color-hex">${esc(cfg.color.toUpperCase())}</span>
+        <button type="button" class="btn btn-ghost btn-chico" data-accion="color-defecto">Usar el verde musgo</button></div>
+        <p class="ayuda" id="c-color-ayuda">Se usa en las líneas finas y los detalles de los documentos. Si eliges un tono muy claro, se oscurece solo para que se lea impreso.</p></div>
+      <div class="campo"><span class="etiqueta">Logo de los documentos</span>
+        <div class="logo-fila"><div class="logo-prev"><img src="${esc(logoDoc())}" alt="${cfg.logo ? 'Tu logo' : 'Logotipo de Invitia'}"></div>
+        <div class="logo-btns"><button type="button" class="btn btn-suave" data-accion="subir-logo"><span aria-hidden="true">⬆️</span> ${cfg.logo ? 'Cambiar logo' : 'Subir otro logo'}</button>${cfg.logo ? '<button type="button" class="btn btn-ghost" data-accion="quitar-logo">Usar el de Invitia</button>' : ''}</div></div>
+        <input type="file" id="in-logo" accept="image/*" class="sr-only" tabindex="-1" aria-hidden="true">
+        <p class="ayuda">${cfg.logo ? 'Estás usando tu propio logo.' : 'Estás usando el logotipo de Invitia.'} PNG o JPG; se ajusta solo a 600 px.</p></div>`;
+
+    const paquetes = '<p class="nota-gris" style="margin-bottom:14px">Son los precios de cotizar.html. Si allá cambian, cámbialos aquí.</p>' +
+      cfg.paquetes.map((p, i) => `<div class="item" style="margin-bottom:12px">
+        <div class="item-cab"><span class="item-num">${i + 1}</span><span class="item-tit" data-titulo>${esc(limpia(p.nombre) || 'Paquete nuevo')}</span>
+          <span class="item-btns"><button type="button" class="mini mini-x" data-accion="quitar-paq" data-i="${i}" aria-label="Quitar paquete ${i + 1}">✕</button></span></div>
+        ${cCampo('Nombre', { cl: 'paquetes', i, f: 'nombre' }, { ph: 'Ej. Digital Interactiva' })}
+        ${cCampo('Formato de entrega', { cl: 'paquetes', i, f: 'formato' }, { ph: 'Ej. PDF interactivo' })}
+        <div class="fila">${cCampo('Precio ($)', { cl: 'paquetes', i, f: 'precio', num: 'dinero' }, { modo: 'decimal' })}${cCampo('Sesiones de cambios', { cl: 'paquetes', i, f: 'sesiones', num: 'cero' }, { modo: 'numeric' })}</div></div>`).join('') +
+      botonAgregar('agregar-paq', 'Agregar paquete');
+
+    const extras = `<div class="tabla-edit"><div class="te-cab" aria-hidden="true"><span>Extra</span><span>Precio ($)</span><span></span></div>${
+      cfg.extras.map((x, i) => `<div class="te-fila">
+        <input class="control" type="text" autocomplete="off" aria-label="Nombre del extra ${i + 1}" id="c-extras-${i}-nombre" data-cl="extras" data-i="${i}" data-f="nombre" value="${esc(x.nombre)}">
+        <input class="control" type="text" inputmode="decimal" autocomplete="off" aria-label="Precio del extra ${i + 1}" data-cl="extras" data-i="${i}" data-f="precio" data-num="dinero" value="${esc(x.precio)}">
+        <button type="button" class="mini mini-x" data-accion="quitar-extra" data-i="${i}" aria-label="Quitar extra ${i + 1}">✕</button></div>`).join('')}</div>` +
+      botonAgregar('agregar-extra', 'Agregar extra (save the date, menú…)');
+
+    const reglas = `<div class="fila">${cCampo('Anticipo (%)', { c: 'anticipoPct', num: 'pct' }, { modo: 'decimal' })}${cCampo('Sesión de cambios extra ($)', { c: 'cambioExtra', num: 'dinero' }, { modo: 'decimal' })}</div>` +
+      `<div class="fila">${cCampo('Urgencia 3 días (%)', { c: 'urg3', num: 'dinero' }, { modo: 'decimal' })}${cCampo('Urgencia 2 días o menos (%)', { c: 'urg2', num: 'dinero' }, { modo: 'decimal' })}</div>` +
+      `<div class="fila">${cCampo('Entrega normal', { c: 'entregaNormal' })}${cCampo('Vigencia de la cotización (días)', { c: 'vigenciaDias', num: 'entero' }, { modo: 'numeric' })}</div>`;
+
+    const cobro = cCampo('Formas de pago', { c: 'formasPago' }) +
+      '<p class="ayuda" style="margin:-6px 0 14px">Datos para transferencia: salen en la cotización. Si los dejas vacíos, no se imprimen.</p>' +
+      cCampo('Banco', { c: 'banco' }, { opc: true }) +
+      cCampo('Titular', { c: 'titular' }, { opc: true }) +
+      cCampo('CLABE', { c: 'clabe' }, { opc: true, modo: 'numeric' });
+
+    const textos = `<p class="ayuda" style="margin:0 0 12px">Empieza un renglón con <b>#</b> para un título y con <b>-</b> para una viñeta. Lo que va entre llaves se llena solo.</p>` +
+      cCampo('Acuerdo de servicio', { c: 'acuerdo' }, { area: true, filas: 16, ayuda: `Puedes usar ${LLAVES_ACUERDO}. La casilla de portafolio y las firmas se agregan solas.` }) +
+      '<button type="button" class="btn btn-ghost btn-chico" data-accion="restaurar-acuerdo" style="margin:-6px 0 22px">Restablecer texto base</button>' +
+      cCampo('Aviso de privacidad', { c: 'aviso' }, { area: true, filas: 16, ayuda: `Puedes usar ${LLAVES_AVISO}. Las casillas de autorización y las firmas se agregan solas.` }) +
+      '<button type="button" class="btn btn-ghost btn-chico" data-accion="restaurar-aviso" style="margin-top:-6px">Restablecer texto base</button>';
+
+    const folios = '<p class="ayuda" style="margin:0 0 12px">Es el número que llevará el <b>siguiente</b> documento de cada tipo. Sube solo cada vez que imprimes.</p>' +
+      `<div class="fila">${FOLIOS.map(k => cCampo(`${NOMBRE_FOLIO[k]} <span class="opc">(${k})</span>`, { c: 'folios.' + k, num: 'entero' }, { modo: 'numeric' })).join('')}</div>`;
+
+    const respaldo = '<p>Úsalo para pasar tu configuración del celular a la Mac, o al revés. El respaldo no incluye datos de clientes.</p>' +
+      `<div class="btns-fila"><button type="button" class="btn btn-moss" data-accion="descargar-respaldo"><span aria-hidden="true">⬇️</span> Descargar respaldo</button>
+      <button type="button" class="btn btn-ghost" data-accion="cargar-respaldo"><span aria-hidden="true">⬆️</span> Cargar respaldo</button></div>
+      <input type="file" id="in-respaldo" class="sr-only" tabindex="-1" aria-hidden="true">
+      <p class="ayuda" id="respaldo-msg" role="status"></p>`;
+
+    return seccion('negocio', '<span aria-hidden="true">🏷️</span> Negocio', negocio, ab) +
+      seccion('paquetes', '<span aria-hidden="true">💌</span> Paquetes', paquetes, ab) +
+      seccion('extras', '<span aria-hidden="true">✨</span> Extras', extras, ab) +
+      seccion('reglas', '<span aria-hidden="true">📏</span> Reglas', reglas, ab) +
+      seccion('cobro', '<span aria-hidden="true">💳</span> Cobro', cobro, ab) +
+      seccion('textos', '<span aria-hidden="true">📝</span> Textos', textos, ab) +
+      seccion('folios', '<span aria-hidden="true">#️⃣</span> Folios', folios, ab) +
+      seccion('respaldo', '<span aria-hidden="true">💾</span> Respaldo', respaldo, ab) +
+      `<div class="peligro"><h2>Restablecer configuración inicial</h2>
+        <p>Borra tu configuración (logo, precios, textos y folios) y vuelve a los datos con los que venía la app.</p>
+        <button type="button" class="btn btn-peligro" data-accion="restablecer">Restablecer configuración</button></div>`;
+  }
+
+  function pintarConfig(o) {
+    o = o || {};
+    const cuerpo = $('#config-cuerpo');
+    let abiertos;
+    if (o.entrar) {
+      abiertos = new Set(!cfg.revisado || !limpia(cfg.apellido) ? ['negocio'] : []);
+      $('#estado-guardado').textContent = almacenOk ? '' : '⚠ Sin guardar';
+    } else {
+      abiertos = new Set($$('details[open]', cuerpo).map(d => d.dataset.sec));
+      if (o.abrir) abiertos.add(o.abrir);
+    }
+    cuerpo.innerHTML = configHTML(abiertos);
+    if (o.foco) {
+      const el = $(o.foco, cuerpo);
+      if (el) { el.focus({ preventScroll: true }); el.scrollIntoView({ block: 'center' }); }
+    }
+  }
+
+  function alEditarConfig(e) {
+    const t = e.target;
+    if (t.id === 'in-logo' || t.id === 'in-respaldo') return;
+    const c = t.dataset.c, cl = t.dataset.cl;
+    if (!c && !cl) return;
+    let v = t.value;
+    const tipoNum = t.dataset.num;
+    if (tipoNum === 'entero') v = Math.max(1, Math.floor(aNumero(v)) || 1);
+    else if (tipoNum === 'cero') v = Math.max(0, Math.floor(aNumero(v)));
+    else if (tipoNum === 'pct') v = Math.min(100, aNumero(v));
+    else if (tipoNum === 'dinero') v = redondea(aNumero(v));
+    if (c) {
+      const [a, b] = c.split('.');
+      if (b) cfg[a][b] = v; else cfg[a] = v;
+    } else {
+      const item = cfg[cl][+t.dataset.i];
+      if (!item) return;
+      item[t.dataset.f] = v;
+    }
+    // Al salir del campo, los números se muestran ya corregidos
+    if (tipoNum && e.type === 'change') t.value = v;
+    if (c === 'negocio') pintarCabecera();
+    if (c === 'color') $('#c-color-hex').textContent = String(v).toUpperCase();
+    if (cl === 'paquetes' && t.dataset.f === 'nombre') {
+      const tit = $('[data-titulo]', t.closest('.item'));
+      if (tit) tit.textContent = limpia(v) || 'Paquete nuevo';
+    }
+    programarGuardado();
+  }
+
+  function procesarLogo(archivo) {
+    if (!archivo) return;
+    if (!/^image\//.test(archivo.type)) { toast('Ese archivo no es una imagen.', 'error'); return; }
+    const lector = new FileReader();
+    lector.onerror = () => toast('No pude leer esa imagen. Prueba con un PNG o JPG.', 'error');
+    lector.onload = () => {
+      const img = new Image();
+      img.onerror = lector.onerror;
+      img.onload = () => {
+        const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+        if (!w || !h) { lector.onerror(); return; }
+        const s = Math.min(1, 600 / w, 600 / h);
+        const cv = document.createElement('canvas');
+        cv.width = Math.max(1, Math.round(w * s));
+        cv.height = Math.max(1, Math.round(h * s));
+        const ctx = cv.getContext('2d');
+        const jpg = archivo.type === 'image/jpeg';
+        if (jpg) { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height); }
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, 0, 0, cv.width, cv.height);
+        let url;
+        try { url = cv.toDataURL(jpg ? 'image/jpeg' : 'image/png', 0.9); } catch (e) { lector.onerror(); return; }
+        const antes = cfg.logo;
+        cfg.logo = url;
+        if (!guardarYa() && probarAlmacen()) {
+          cfg.logo = antes;
+          guardarYa();
+          toast('El logo pesa demasiado para guardarlo. Prueba con una imagen más sencilla.', 'error');
+        } else toast('Logo listo ✅');
+        pintarConfig();
+        pintarCabecera();
+      };
+      img.src = lector.result;
+    };
+    lector.readAsDataURL(archivo);
+  }
+
+  function descargarRespaldo() {
+    const datos = { app: APP_ID, version: 1, creado: new Date().toISOString(), config: cfg };
+    const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `respaldo-documentos-${slug(cfg.negocio)}-${hoyISO()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    $('#respaldo-msg').textContent = `Se descargó ${a.download}. Guárdalo en un lugar seguro.`;
+  }
+  function cargarRespaldo(archivo) {
+    if (!archivo) return;
+    const msg = $('#respaldo-msg');
+    const lector = new FileReader();
+    lector.onerror = () => { msg.textContent = 'No se pudo leer el archivo.'; };
+    lector.onload = () => {
+      let obj;
+      try { obj = JSON.parse(lector.result); } catch (e) {
+        msg.textContent = 'Ese archivo no es un respaldo de esta app. No se cambió nada.';
+        toast('Archivo no válido', 'error');
+        return;
+      }
+      const r = validarRespaldo(obj);
+      if (r.error) { msg.textContent = r.error; toast('Archivo no válido', 'error'); return; }
+      if (!window.confirm(`¿Reemplazar tu configuración con el respaldo de “${limpia(r.config.negocio) || 'tu negocio'}”?\n\nLo que tienes ahora en Configuración se perderá.`)) return;
+      cfg = r.config;
+      guardarYa();
+      pintarConfig();
+      pintarCabecera();
+      $('#respaldo-msg').textContent = 'Respaldo cargado. Ya tienes tu configuración.';
+      toast('Respaldo cargado ✅');
+    };
+    lector.readAsText(archivo);
+  }
+
+  /* ======================= Pruebas internas (#/pruebas) ======================= */
+  const PRUEBAS_LETRAS = [
+    [1, 'Un peso 00/100 M.N.'],
+    [15, 'Quince pesos 00/100 M.N.'],
+    [21, 'Veintiún pesos 00/100 M.N.'],
+    [100, 'Cien pesos 00/100 M.N.'],
+    [101, 'Ciento un pesos 00/100 M.N.'],
+    [1000, 'Mil pesos 00/100 M.N.'],
+    [1485, 'Mil cuatrocientos ochenta y cinco pesos 00/100 M.N.'],
+    [2021.50, 'Dos mil veintiún pesos 50/100 M.N.'],
+    [1000000, 'Un millón de pesos 00/100 M.N.'],
+    [0.5, 'Cero pesos 50/100 M.N.'],
+    [16, 'Dieciséis pesos 00/100 M.N.'],
+    [31, 'Treinta y un pesos 00/100 M.N.'],
+    [21000, 'Veintiún mil pesos 00/100 M.N.'],
+    [101000, 'Ciento un mil pesos 00/100 M.N.'],
+    [2000000, 'Dos millones de pesos 00/100 M.N.'],
+    [1234567.89, 'Un millón doscientos treinta y cuatro mil quinientos sesenta y siete pesos 89/100 M.N.']
+  ];
+  const ped = (paq, extras, urg, o) => Object.assign(pedidoVacio(), {
+    paquete: paq ? paq[0] : '', precioPaq: paq ? String(paq[1]) : '', extras: (extras || []).map(([nombre, precio]) => ({ nombre, precio: String(precio) })), urgencia: urg || 'normal'
+  }, o || {});
+  const PRUEBAS_TOTALES = [
+    { nombre: 'Interactiva $1,800 + monograma $400 con +35%', ped: ped(['Digital Interactiva', 1800], [['Diseño de monograma', 400]], 'u3'), esp: [2200, 770, 0, 2970, 1485, 1485] },
+    { nombre: 'Esencial $899 sin extras (anticipo al peso, .5 hacia arriba)', ped: ped(['Digital Esencial', 899]), esp: [899, 0, 0, 899, 450, 449] },
+    { nombre: 'Esencial con +50% (2 días o menos)', ped: ped(['Digital Esencial', 899], null, 'u2'), esp: [899, 450, 0, 1349, 675, 674] },
+    { nombre: 'Descuento 10% después del recargo', ped: ped(['Digital Interactiva', 1800], [['Galería', 400]], 'normal', { tipoDesc: 'pct', descuento: '10' }), esp: [2200, 0, 220, 1980, 990, 990] },
+    { nombre: 'Descuento en $ mayor al total', ped: ped(['Digital Esencial', 899], null, 'normal', { tipoDesc: 'monto', descuento: '5000' }), esp: [899, 0, 899, 0, 0, 0] },
+    { nombre: 'Renglón libre con centavos', ped: ped(null, null, 'normal', { libres: [{ concepto: 'Save the date', precio: '350.50' }, { concepto: '', precio: '999' }] }), esp: [350.5, 0, 0, 350.5, 175, 175.5] }
+  ];
+  const FICHA_A = [
+    '✉️ Hola Invitia atelier ✨ Quiero cotizar una invitación.',
+    '',
+    '🎉 FICHA DE COTIZACIÓN · INVITIA ATELIER 🎊',
+    'Cliente: Ana López',
+    'Evento: XV años',
+    'Festejado(a): Ivana Lorena',
+    'Fecha del evento: 24/05/2027',
+    'Paquete: Digital Interactiva',
+    'Extras: Diseño de monograma; Multipases',
+    'Entrega deseada: 15/05/2027',
+    'Urgencia: +35% (3 días)',
+    'Estilo: Elegante y clásico; Floral / acuarela',
+    'Colores: guinda y dorado',
+    'Foto de referencia: Sí, la mando por este chat',
+    'Diseño que le gustó: Isis Lissandra · XV años',
+    'Cómo nos conoció: Instagram',
+    'Total aproximado: Desde $2,970',
+    'Anticipo (50%): $1,485'
+  ].join('\n');
+  const FICHA_B = FICHA_A.split('\n').slice(2).join('\n').replace(/^🎉 | 🎊$/gm, '');
+  const FICHA_C = FICHA_A.replace('Paquete: Digital Interactiva', 'Paquete: Por definir (ayúdame a elegir)').replace('Extras: Diseño de monograma; Multipases', 'Extras: Ninguno')
+    .replace('Total aproximado: Desde $2,970', 'Total aproximado: A cotizar').replace('Anticipo (50%): $1,485', 'Anticipo (50%): —');
+  const FICHA_D = FICHA_A.replace('Extras: Diseño de monograma; Multipases', 'Extras: Diseño de monograma; Save the date');
+  const FICHA_E = ['Hola Invitia atelier 👋 Quiero cotizar una invitación.', '', 'FICHA DE COTIZACIÓN · INVITIA ATELIER', 'Cliente: Ana López', 'Evento: Boda',
+    'Festejado(a): Ana y Luis', 'Fecha del evento: 24/05/2027', 'Paquete: Digital Esencial', 'Extras: Ninguno', 'Pases/invitados: 50 a 100', 'Entrega deseada: —',
+    'Urgencia: Normal', 'Estilo: —', 'Colores: —', 'Foto de referencia: No', 'Cómo nos conoció: Facebook', 'Total aproximado: Desde $899', 'Anticipo (50%): $450'].join('\n');
+  const FICHA_F = 'Hola Roberto, ¿me pasas precios de invitaciones para boda? Gracias 😊';
+  const PRUEBAS_LECTOR = [
+    { nombre: '(a) Ficha tal cual, con emojis', texto: FICHA_A, revisar: r => [
+      ['Se reconoce como cotización', r.ok],
+      ['Cliente, evento y festejado', r.cli.nombre === 'Ana López' && r.cli.evento === 'XV años' && r.cli.festejado === 'Ivana Lorena'],
+      ['Fecha del evento 24/05/2027 → 2027-05-24', r.cli.fechaEvento === '2027-05-24'],
+      ['Paquete del catálogo con su precio', r.ped.paquete === 'Digital Interactiva' && r.ped.precioPaq === '1800'],
+      ['2 extras del catálogo', r.ped.extras.map(x => x.nombre).join('|') === 'Diseño de monograma|Multipases'],
+      ['Entrega 15/05/2027 y urgencia +35%', r.ped.entrega === '2027-05-15' && r.ped.urgencia === 'u3'],
+      ['Estilo, colores, foto, diseño y origen en la ficha', r.ficha.estilo === 'Elegante y clásico; Floral / acuarela' && r.ficha.colores === 'guinda y dorado' && /^Sí/.test(r.ficha.foto) && /Isis Lissandra/.test(r.ficha.ref) && r.ficha.origen === 'Instagram'],
+      ['Recalcula con tus precios y avisa que no coincide ($2,970 vs $3,240)', r.totalCalculado === 3240 && r.avisos.includes('Ojo: el cotizador decía $2,970 y con tus precios actuales da $3,240.')],
+      ['Nada sin reconocer', !r.noReconocidas.length],
+      ['Resumen', r.resumen === '✅ Cargué a Ana López · XV años · Digital Interactiva + 2 extras']
+    ] },
+    { nombre: '(b) Sin emojis y sin la línea de saludo', texto: FICHA_B, revisar: r => {
+      const a = leerCotizacion(FICHA_A, normalizar(DEFAULTS));
+      return [['Se reconoce como cotización', r.ok], ['Da lo mismo que (a)', JSON.stringify([r.cli, r.ped, r.ficha]) === JSON.stringify([a.cli, a.ped, a.ficha])]];
+    } },
+    { nombre: '(c) Paquete: Por definir (ayúdame a elegir)', texto: FICHA_C, revisar: r => [
+      ['Se reconoce como cotización', r.ok], ['Queda sin paquete', r.ped.paquete === '' && r.porDefinir && !r.ped.libres.length],
+      ['Extras: Ninguno = sin extras', !r.ped.extras.length], ['No avisa diferencia de total (decía “A cotizar”)', !r.avisos.some(a => /^Ojo/.test(a))],
+      ['Resumen', /Paquete por definir$/.test(r.resumen)]
+    ] },
+    { nombre: '(d) Extra que no está en el catálogo', texto: FICHA_D, revisar: r => [
+      ['Monograma sí entra como extra', r.ped.extras.length === 1 && r.ped.extras[0].nombre === 'Diseño de monograma'],
+      ['“Save the date” entra como renglón libre sin precio', r.ped.libres.length === 1 && r.ped.libres[0].concepto === 'Save the date' && r.ped.libres[0].precio === ''],
+      ['Avisa', r.avisos.some(a => /Save the date/.test(a) && /no está en tu catálogo/.test(a))]
+    ] },
+    { nombre: '(e) Versión vieja con Pases/invitados: 50 a 100', texto: FICHA_E, revisar: r => [
+      ['Se reconoce como cotización', r.ok], ['Pases/invitados se acepta', r.ficha.pases === '50 a 100' && !r.noReconocidas.length],
+      ['Urgencia Normal', r.ped.urgencia === 'normal'], ['Entrega “—” = sin dato', r.ped.entrega === ''],
+      ['Total igual al del mensaje: sin aviso', r.totalCalculado === 899 && !r.avisos.length]
+    ] },
+    { nombre: '(f) Texto que no es una ficha', texto: FICHA_F, revisar: r => [
+      ['No se carga y avisa amable', !r.ok && r.mensaje === 'No encontré una cotización en ese texto. Copia el mensaje completo que te llegó del cotizador y vuelve a intentar.']
+    ] },
+    { nombre: '(g) Etiqueta desconocida y una de datos.html', texto: FICHA_A + '\nDress code: Formal\nMascota: Firulais', revisar: r => [
+      ['Dress code va a la ficha', r.ficha.dress === 'Formal'], ['Mascota va a “Otros datos”', r.ficha.otros === 'Mascota: Firulais' && r.noReconocidas.join() === 'Mascota']
+    ] }
+  ];
+  function correrPruebas() {
+    const c = normalizar(DEFAULTS);   // las pruebas usan la configuración inicial, no la tuya
+    const letras = PRUEBAS_LETRAS.map(([n, esp]) => { const r = numeroALetras(n); return { n, esp, r, ok: r === esp }; });
+    const totales = PRUEBAS_TOTALES.map(p => {
+      const t = totalesPedido(p.ped, c);
+      const r = [t.subtotal, t.recargo, t.descuento, t.total, t.anticipo, t.saldo];
+      return { nombre: p.nombre, esp: p.esp, r, ok: r.every((x, i) => x === p.esp[i]) };
+    });
+    // Liquidación: total $2,970 con anticipo $1,485 → se cobran $1,485 y el saldo queda en $0
+    const tl = totalesPedido(PRUEBAS_TOTALES[0].ped, c), sl = sugerenciaRecibo('liquidacion', tl, c);
+    const saldoL = saldoRecibo({ total: String(sl.total), anteriores: String(sl.anteriores), cantidad: String(sl.cantidad) });
+    const sa = sugerenciaRecibo('anticipo', tl, c), sc = sugerenciaRecibo('cambios', tl, c);
+    const recibos = [
+      { nombre: 'Liquidación de $2,970 con anticipo de $1,485', esp: 'cobra $1,485 · saldo $0', r: `cobra ${pesos(sl.cantidad)} · saldo ${pesos(saldoL.saldo)}` },
+      { nombre: 'Anticipo de $2,970', esp: 'cobra $1,485 · saldo $1,485', r: `cobra ${pesos(sa.cantidad)} · saldo ${pesos(sa.total - sa.anteriores - sa.cantidad)}` },
+      { nombre: 'Sesión de cambios extra', esp: 'cobra $200', r: `cobra ${pesos(sc.cantidad)}` }
+    ].map(x => Object.assign(x, { ok: x.r === x.esp }));
+    const lector = PRUEBAS_LECTOR.map(p => {
+      const r = leerCotizacion(p.texto, c);
+      let checks;
+      try { checks = p.revisar(r).map(([nombre, ok]) => ({ nombre, ok: !!ok })); } catch (e) { checks = [{ nombre: 'Error: ' + e.message, ok: false }]; }
+      return { nombre: p.nombre, checks, ok: checks.every(x => x.ok), salida: r.ok ? `${r.resumen}${r.avisos.length ? '\n' + r.avisos.join('\n') : ''}` : r.mensaje };
+    });
+    const ida = JSON.stringify(cfg), vuelta = JSON.stringify(validarRespaldo(JSON.parse(JSON.stringify({ app: APP_ID, config: cfg }))).config);
+    const todas = letras.concat(totales, recibos, lector).map(x => x.ok).concat([ida === vuelta]);
+    return { letras, totales, recibos, lector, respaldo: ida === vuelta, pasan: todas.filter(Boolean).length, total: todas.length };
+  }
+  function pintarPruebas() {
+    const r = correrPruebas();
+    const marca = ok => (ok ? '✅' : '❌');
+    $('#pruebas-cuerpo').innerHTML = `
+      <p class="pruebas-res" id="pruebas-res">${marca(r.pasan === r.total)} Pasan ${r.pasan} de ${r.total} pruebas.</p>
+      <h2 class="sub">Lector de la cotización</h2>
+      <table class="pruebas"><thead><tr><th></th><th>Caso</th><th>Revisiones</th><th>Lo que muestra la app</th></tr></thead><tbody>${
+        r.lector.map(x => `<tr><td>${marca(x.ok)}</td><td>${esc(x.nombre)}</td><td>${x.checks.map(c => `${marca(c.ok)} ${esc(c.nombre)}`).join('<br>')}</td><td style="white-space:pre-line">${esc(x.salida)}</td></tr>`).join('')}</tbody></table>
+      <h2 class="sub">Totales del pedido</h2>
+      <table class="pruebas"><thead><tr><th></th><th>Caso</th><th>Esperado: subtotal / recargo / descuento / total / anticipo / saldo</th><th>Resultado</th></tr></thead><tbody>${
+        r.totales.map(x => `<tr><td>${marca(x.ok)}</td><td>${esc(x.nombre)}</td><td>${x.esp.join(' / ')}</td><td>${x.r.join(' / ')}</td></tr>`).join('')}</tbody></table>
+      <h2 class="sub">Recibos</h2>
+      <table class="pruebas"><thead><tr><th></th><th>Caso</th><th>Esperado</th><th>Resultado</th></tr></thead><tbody>${
+        r.recibos.map(x => `<tr><td>${marca(x.ok)}</td><td>${esc(x.nombre)}</td><td>${esc(x.esp)}</td><td>${esc(x.r)}</td></tr>`).join('')}</tbody></table>
+      <h2 class="sub">Número a letra</h2>
+      <table class="pruebas"><thead><tr><th></th><th>Cantidad</th><th>Esperado</th><th>Resultado</th></tr></thead><tbody>${
+        r.letras.map(x => `<tr><td>${marca(x.ok)}</td><td>${x.n}</td><td>${esc(x.esp)}</td><td>${esc(x.r)}</td></tr>`).join('')}</tbody></table>
+      <h2 class="sub">Respaldo</h2>
+      <p>${marca(r.respaldo)} Descargar y volver a cargar el respaldo deja la configuración igual.</p>`;
+  }
+
+  /* ======================= Navegación ======================= */
+  const pila = [];
+  let reemplazando = false;
+  let rutaMem = null; // si el navegador no deja cambiar el # (algunos visores abren el archivo así), la ruta vive en memoria
+  const rutaHash = () => location.hash.replace(/^#/, '') || '/';
+  const rutaActual = () => (rutaMem != null ? rutaMem : rutaHash());
+  function ir(ruta, o) {
+    const reemplazar = !!(o && o.reemplazar);
+    if (rutaActual() === ruta) { render(); return; }
+    if (rutaMem == null) {
+      reemplazando = reemplazar;
+      try {
+        if (reemplazar) location.replace('#' + ruta); else location.hash = ruta;
+      } catch (e) { /* navegación bloqueada */ }
+      if (rutaHash() === ruta) return; // el evento hashchange pinta la pantalla
+      reemplazando = false;
+    }
+    if (reemplazar) pila[Math.max(0, pila.length - 1)] = ruta; else pila.push(ruta);
+    rutaMem = ruta;
+    render();
+  }
+  // Regresa con el botón "atrás" del navegador si la pantalla anterior es esa; si no, la reemplaza
+  function regresarA(ruta) {
+    const anterior = pila.length >= 2 && pila[pila.length - 2] === ruta;
+    if (anterior && rutaMem == null) history.back();
+    else if (anterior) { pila.pop(); rutaMem = ruta; render(); }
+    else ir(ruta, { reemplazar: true });
+  }
+  const volver = () => (pila.length >= 2 ? regresarA(pila[pila.length - 2]) : ir('/', { reemplazar: true }));
+  window.addEventListener('hashchange', () => {
+    const r = rutaActual();
+    if (reemplazando) { pila[Math.max(0, pila.length - 1)] = r; reemplazando = false; }
+    else if (pila.length >= 2 && pila[pila.length - 2] === r) pila.pop();
+    else pila.push(r);
+    render();
+  });
+
+  function render() {
+    const r = rutaActual();
+    if (r === '/config') return mostrar('config');
+    if (r === '/pruebas') return mostrar('pruebas');
+    if (r === '/cliente') return mostrar('form', 'cliente');
+    const rec = /^\/doc\/recibo\/(anticipo|liquidacion|cambios|otro)$/.exec(r);
+    if (rec) { prepararRecibo(rec[1]); ir('/doc/recibo', { reemplazar: true }); return; }
+    const m = /^\/doc\/(\w+)(\/ver)?$/.exec(r);
+    if (m && DOCS[m[1]] && m[1] !== 'cliente') {
+      const tipo = m[1];
+      if (m[2]) {
+        if (S.docs[tipo] && !VALIDAR[tipo](S.docs[tipo]).length) return mostrar('vista', tipo);
+        ir(`/doc/${tipo}`, { reemplazar: true });
+        return;
+      }
+      return mostrar('form', tipo);
+    }
+    mostrar('inicio');
+  }
+  function mostrar(p, tipo) {
+    if (actual.p === 'config' && p !== 'config' && tGuardar) guardarYa();
+    actual = { p, tipo: tipo || null };
+    ['inicio', 'form', 'vista', 'config', 'pruebas'].forEach(k => { $('#p-' + k).hidden = k !== p; });
+    $('#acciones').hidden = p !== 'vista';
+    ajustarRelleno();
+    if (p === 'inicio') pintarInicio();
+    else if (p === 'form') pintarForm(tipo);
+    else if (p === 'vista') pintarVista(tipo);
+    else if (p === 'config') pintarConfig({ entrar: true });
+    else if (p === 'pruebas') pintarPruebas();
+    pintarCabecera();
+    document.title = `${tipo ? DOCS[tipo].corto + ' · ' : p === 'config' ? 'Configuración · ' : ''}Documentos · ${limpia(cfg.negocio)}`;
+    window.scrollTo(0, 0);
+    const h = $(`#p-${p} h1`);
+    if (h) h.focus({ preventScroll: true });
+  }
+
+  /* ======================= Eventos ======================= */
+  function alEscribir(e) {
+    const t = e.target, tipo = actual.tipo;
+    if (!tipo || (t.type === 'radio' && !t.checked)) return;
+    const st = estado(tipo);
+    let b = t.dataset.b, pedido = false;
+    if (t.dataset.extra != null) {
+      if (e.type !== 'change') return;
+      const n = t.dataset.extra, cat = extraCat(n, cfg);
+      if (t.checked) S.ped.extras.push({ nombre: n, precio: cat ? String(cat.precio) : '' });
+      else S.ped.extras = S.ped.extras.filter(x => !mismoTexto(x.nombre, n));
+      $('#lista-extras').innerHTML = extrasHTML();
+      const el = $(`[data-extra="${CSS.escape(n)}"]`);
+      if (el) el.focus();
+      b = 'ped.extras';
+      pedido = true;
+    } else if (t.dataset.extraPrecio != null) {
+      const x = S.ped.extras.find(y => y.nombre === t.dataset.extraPrecio);
+      if (x) x.precio = t.value;
+      b = 'ped.extras';
+      pedido = true;
+    } else {
+      if (!b) return;
+      const v = t.type === 'checkbox' ? t.checked : t.value;
+      if (t.dataset.l === 'libres') {
+        const it = S.ped.libres[+t.dataset.i];
+        if (!it) return;
+        it[b] = v;
+        pedido = true;
+      } else if (/^(cli|ped|fic)\./.test(b)) {
+        const [g, k] = b.split('.');
+        (g === 'cli' ? S.cli : g === 'ped' ? S.ped : S.ficha)[k] = v;
+        if (g !== 'fic') pedido = true;
+        S.cliEjemplo = false;
+      } else st[b] = v;
+      if (t.type === 'checkbox' && t.closest('.sw')) t.closest('.sw').classList.toggle('sel', t.checked);
+    }
+    delete S.ejemplo[tipo]; // ya lo están cambiando: deja de ser el ejemplo
+    t.removeAttribute('aria-invalid');
+    if (pedido) alCambiarPedido(st, b, t);
+    if (REACCION[tipo] && !/^(cli|ped|fic)\./.test(b)) REACCION[tipo](st, b, t, e);
+  }
+  $('#form').addEventListener('input', alEscribir);
+  $('#form').addEventListener('change', alEscribir);
+
+  $('#p-config').addEventListener('input', alEditarConfig);
+  $('#p-config').addEventListener('change', e => {
+    if (e.target.id === 'in-logo') { procesarLogo(e.target.files[0]); e.target.value = ''; return; }
+    if (e.target.id === 'in-respaldo') { cargarRespaldo(e.target.files[0]); e.target.value = ''; return; }
+    alEditarConfig(e);
+  });
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-accion]');
+    if (!b) {
+      // Ligas internas (#/...) pasan por ir() para que también funcionen con la ruta en memoria
+      const liga = e.target.closest('a[href^="#/"]');
+      if (liga && !e.ctrlKey && !e.metaKey && !e.shiftKey) { e.preventDefault(); ir(liga.getAttribute('href').slice(1)); }
+      return;
+    }
+    const a = b.dataset.accion, i = +b.dataset.i;
+    if (b.tagName === 'A') e.preventDefault();
+    const st = actual.tipo ? estado(actual.tipo) : null;
+    switch (a) {
+      case 'inicio': regresarA('/'); break;
+      case 'ver': {
+        const errores = VALIDAR[actual.tipo](st);
+        mostrarErrores(errores);
+        if (errores.length) break;
+        if (actual.tipo === 'cliente') regresarA('/');
+        else ir(`/doc/${actual.tipo}/ver`);
+        break;
+      }
+      case 'imprimir': imprimir(); break;
+      case 'ejemplo': verEjemplo(actual.tipo); break;
+      case 'ayuda-pdf': {
+        const caja = $('#ayuda-pdf');
+        caja.hidden = !caja.hidden;
+        $$('.acc-ayuda').forEach(x => x.setAttribute('aria-expanded', String(!caja.hidden)));
+        break;
+      }
+      case 'copiar':
+        copiarTexto(TEXTO[actual.tipo](st)).then(ok => toast(ok ? 'Texto copiado. Pégalo donde quieras.' : 'No se pudo copiar en este navegador.', ok ? '' : 'error'));
+        break;
+      case 'editar': regresarA(`/doc/${actual.tipo}`); break;
+      case 'nuevo': nuevo(); break;
+      case 'zoom': zoom = !zoom; ajustarEscala(); break;
+      case 'recibo-cambio':
+        prepararRecibo('cambios', { concepto: `Sesión de cambios extra (sesión ${parseInt(st.sesion, 10)}) · ${conceptoRecibo('otro')}`, autoConcepto: false });
+        ir('/doc/recibo');
+        break;
+
+      // Pegar cotización
+      case 'abrir-pegar': abrirPegar($('#pegar-caja').hidden); break;
+      case 'cerrar-pegar': $('#pegar-txt').value = ''; abrirPegar(false); break;
+      case 'llenar': llenarDesdeCotizacion(); break;
+
+      // Pedido: renglones libres
+      case 'agregar-libre':
+        S.ped.libres.push({ concepto: '', precio: '' });
+        $('#lista-libres').innerHTML = libresHTML();
+        $(`#lib-c-${S.ped.libres.length - 1}`).focus();
+        break;
+      case 'quitar-libre':
+        S.ped.libres.splice(i, 1);
+        $('#lista-libres').innerHTML = libresHTML();
+        alCambiarPedido(st, 'ped.libres');
+        { const sig = $(`#lib-c-${Math.min(i, S.ped.libres.length - 1)}`); (sig || $('[data-accion="agregar-libre"]')).focus(); }
+        break;
+
+      // Configuración
+      case 'cerrar-config':
+        cfg.revisado = true;
+        guardarYa();
+        volver();
+        break;
+      case 'color-defecto': cfg.color = DEFAULTS.color; guardarYa(); pintarConfig(); break;
+      case 'subir-logo': $('#in-logo').click(); break;
+      case 'quitar-logo': cfg.logo = ''; guardarYa(); pintarConfig(); pintarCabecera(); break;
+      case 'agregar-paq':
+        cfg.paquetes.push({ nombre: '', formato: '', precio: 0, sesiones: 2 });
+        guardarYa();
+        pintarConfig({ abrir: 'paquetes', foco: `#c-paquetes-${cfg.paquetes.length - 1}-nombre` });
+        break;
+      case 'quitar-paq':
+        if (!window.confirm(`¿Quitar el paquete “${limpia(cfg.paquetes[i].nombre) || 'sin nombre'}”?`)) break;
+        cfg.paquetes.splice(i, 1); guardarYa(); pintarConfig(); break;
+      case 'agregar-extra':
+        cfg.extras.push({ nombre: '', precio: 0 });
+        guardarYa();
+        pintarConfig({ abrir: 'extras', foco: `#c-extras-${cfg.extras.length - 1}-nombre` });
+        break;
+      case 'quitar-extra': cfg.extras.splice(i, 1); guardarYa(); pintarConfig(); break;
+      case 'restaurar-acuerdo':
+        if (!window.confirm('¿Cambiar el texto del acuerdo por el texto base? Se pierden tus cambios a este texto.')) break;
+        cfg.acuerdo = DEFAULTS.acuerdo; guardarYa(); pintarConfig(); break;
+      case 'restaurar-aviso':
+        if (!window.confirm('¿Cambiar el texto del aviso por el texto base? Se pierden tus cambios a este texto.')) break;
+        cfg.aviso = DEFAULTS.aviso; guardarYa(); pintarConfig(); break;
+      case 'descargar-respaldo': descargarRespaldo(); break;
+      case 'cargar-respaldo': $('#in-respaldo').click(); break;
+      case 'restablecer':
+        if (!window.confirm('¿Restablecer la configuración inicial?\n\nSe borra tu configuración: logo, precios, textos y folios. Si la quieres conservar, primero descarga un respaldo.')) break;
+        cfg = normalizar(DEFAULTS);
+        guardarYa();
+        pintarConfig({ entrar: true });
+        pintarCabecera();
+        toast('Se cargó la configuración inicial.');
+        break;
+    }
+  });
+
+  // Ctrl+P / Cmd+P desde la vista previa también cuenta como impresión
+  window.addEventListener('beforeprint', () => {
+    if (actual.p === 'vista' && asignarFolio(actual.tipo)) pintarHoja(actual.tipo);
+  });
+  // Que la barra de acciones nunca tape el final de la página
+  const ajustarRelleno = () => { document.body.style.paddingBottom = actual.p === 'vista' ? `${$('#acciones').offsetHeight + 16}px` : ''; };
+  window.addEventListener('resize', () => { if (actual.p === 'vista') { ajustarEscala(); ajustarRelleno(); } });
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(() => { if (actual.p === 'vista') ajustarEscala(); }).observe($('#hoja'));
+    new ResizeObserver(ajustarRelleno).observe($('#acciones'));
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#ayuda-pdf').hidden) ocultarAyuda(); });
+  // Si cierran la pestaña con un cambio pendiente, se guarda antes
+  window.addEventListener('pagehide', () => { if (tGuardar) guardarYa(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && tGuardar) guardarYa(); });
+
+  /* ---------- Arranque ---------- */
+  // Favicon: el isotipo sobre papel
+  $('#favicon').href = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#F1EBE0"/><image x="4" y="3" width="24" height="26" href="${MARCA.iso}" xlink:href="${MARCA.iso}"/></svg>`);
+  cargarConfig();
+  $('#aviso-almacen').hidden = almacenOk;
+  pila.push(rutaActual());
+  render();
+  if (window.console && console.assert) {
+    const r = correrPruebas();
+    r.letras.concat(r.totales, r.recibos, r.lector).forEach(x => console.assert(x.ok, 'Prueba fallida', x));
+  }
+})();
+</script>
+</body>
+</html>
