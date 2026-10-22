@@ -1,0 +1,1316 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Mensajes · Invitia atelier</title>
+<meta name="theme-color" content="#F1EBE0">
+<link rel="icon" id="favicon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAABECAYAAACxiwTbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGFSURBVFhH7Ze/LgRRFMb3ISgoFbrNFPP/7xMoJNOsYqPjAYiohI1gExQknkMhPMHWPAOC9Sdq1fi+O+cmg3UzncI9yS/3zDnfd+fM3GmmEwTBehzHr77v3wp3qN2DB+SP4An5GLyAtyiKPrBudhhIzrIsq1CswjD8FWqw0YEy6UDhOE3TCpv8gCbpDUReh+M4U1xhPvpubph2qEmSZIarChgu0NhjjvWQQj0ec/S3RXeC/hVzFSjc5HlOwYZcD7FzRSDcYg3roCgKaq55rQLFUUOo3pjruvO4nmMO8S7vLP0Rayow0qkeD0fD5jnEi1hLcCkGNTa1YlPGrj4KCmjWE8hGqieartjq8DxvjTuySWET1tijRuRfA6IViMYUNUHtGaOvimxy8Ewh7IN9jDUEy8inpf2/Ag8+CxbwqltBLT08gj6/Ux50G6ilh8ae/qTaINqeNU7AGg1YowFrNGCNBqzRgDUasEYD1mjgD434n1jivwX/ZNpALT28Y4ld3rG2otYG5SfwLQwlD1P22gAAAABJRU5ErkJggg==">
+<style>
+  :root{
+    --beige:#F1EBE0;
+    --beige-2:#E6DDCD;
+    --tan:#B3A288;
+    --cream:#D1C8B8;
+    --paper:#FAF7F1;
+    --ink:#2F2F2E;
+    --ink-2:#57544E;
+    --muted:#8A857B;
+    --line:#DBD1C0;
+    --moss:#5F6B45;
+    --moss-d:#4A5435;
+    --mustard:#C79A2E;
+    --mustard-l:#EAD7A4;
+    --serif: Georgia, "Times New Roman", "Iowan Old Style", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --r: 18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--beige);color:var(--ink);line-height:1.5;font-size:16px;overflow-x:hidden;min-height:100vh}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;border:0;background:none}
+  a{color:inherit}
+  [hidden]{display:none!important}
+  :focus-visible{outline:3px solid var(--moss);outline-offset:2px}
+  .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px}
+  body.con-hoja{overflow:hidden}
+
+  .app{max-width:560px;margin:0 auto;padding:0 16px calc(32px + env(safe-area-inset-bottom))}
+
+  /* ---------- Encabezado ---------- */
+  .top{display:flex;align-items:center;gap:12px;padding:16px 0 12px}
+  .top img{height:34px;width:auto}
+  .top .t{font-family:var(--serif);font-size:1.15rem;line-height:1.2;flex:1;min-width:0}
+  .top .t small{display:block;font-family:var(--sans);font-size:.75rem;letter-spacing:.06em;color:var(--ink-2)}
+  .ico-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--paper);border:1px solid var(--line);font-size:1.25rem}
+  .alerta{font-size:.9rem;padding:12px 14px;border-radius:14px;background:var(--mustard-l);border:1px solid var(--mustard);margin-bottom:12px}
+
+  /* ---------- Botones (como cotizar.html) ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:52px;padding:0 22px;border-radius:999px;font-weight:600;font-size:1rem;text-decoration:none;text-align:center;line-height:1.2;transition:background .2s,transform .15s}
+  .btn:active{transform:scale(.97)}
+  .btn-moss{background:var(--moss);color:#fff}
+  .btn-moss:hover{background:var(--moss-d)}
+  .btn-ghost{border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+  .btn-full{display:flex;width:100%}
+  .btn-sm{min-height:48px;padding:0 12px;font-size:.92rem}
+  .btn[aria-pressed="true"]{background:var(--mustard-l);border-color:var(--mustard)}
+  .link{display:inline-flex;align-items:center;min-height:48px;padding:0 4px;color:var(--moss-d);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+  /* ---------- Cliente actual ---------- */
+  .cli{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);margin-bottom:6px}
+  .cli summary{display:flex;align-items:center;gap:10px;min-height:60px;padding:8px 16px;cursor:pointer;list-style:none}
+  .cli summary::-webkit-details-marker{display:none}
+  .cli summary::after{content:"+";flex:none;font-size:1.3rem;color:var(--moss-d);width:24px;text-align:center}
+  .cli[open] summary::after{content:"–"}
+  .cli-s{flex:1;min-width:0;line-height:1.3}
+  .cli-s b{display:block;font-family:var(--serif);font-weight:400;font-size:1.1rem}
+  .cli-s span{display:block;font-size:.85rem;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cli-in{padding:4px 16px 16px}
+  .cli-acc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+
+  .field{margin:0 0 16px}
+  .lbl,legend{display:block;font-weight:600;font-size:.95rem;margin-bottom:6px;padding:0}
+  .opc{font-weight:400;color:var(--muted);font-size:.85rem}
+  fieldset{border:0;margin:0 0 16px;min-width:0}
+  .in{display:block;width:100%;min-height:50px;padding:12px 14px;background:#fff;border:1.5px solid var(--line);border-radius:14px;font-size:1rem;-webkit-appearance:none;appearance:none}
+  .in:focus{border-color:var(--moss);outline:none;box-shadow:0 0 0 3px rgba(95,107,69,.25)}
+  .in[type=date]{min-width:0}
+  select.in{padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A5435' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 14px center/18px no-repeat}
+  textarea.in{min-height:150px;resize:vertical;line-height:1.5}
+  .hint{font-size:.85rem;color:var(--ink-2);margin-top:6px}
+  .hint.ojo{color:#8B3A2E;font-weight:600}
+  .pesos{position:relative}
+  .pesos::before{content:"$";position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-2)}
+  .pesos .in{padding-left:28px}
+  .pct{position:relative}
+  .pct::after{content:"%";position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--ink-2)}
+  .pct .in{padding-right:32px}
+
+  .opts{display:grid;gap:8px}
+  .opt{position:relative;display:block}
+  .opt input{position:absolute;opacity:0;width:1px;height:1px;left:12px;top:12px}
+  .opt .b{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:50px;padding:10px 44px 10px 14px;background:#fff;border:1.5px solid var(--line);border-radius:14px;cursor:pointer;line-height:1.3}
+  .opt .b small{color:var(--moss-d);font-weight:600;white-space:nowrap}
+  .opt .b::after{content:"";position:absolute;right:13px;top:50%;width:18px;height:18px;margin-top:-9px;border:1.5px solid var(--tan);border-radius:6px;background:#fff center/12px no-repeat}
+  .opt input[type=radio] + .b::after{border-radius:50%}
+  .opt input:checked + .b{border-color:var(--moss);background:var(--mustard-l)}
+  .opt input:checked + .b::after{border-color:var(--moss);background-color:var(--moss);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+  .opt input:focus-visible + .b{outline:3px solid var(--moss);outline-offset:2px}
+  .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .seg .b{justify-content:center;padding:10px 14px}
+  .seg .b::after{display:none}
+
+  /* ---------- Buscador, etapas y lista ---------- */
+  .barra{position:sticky;top:0;z-index:5;background:var(--beige);padding:10px 0 6px;margin:0 -16px;padding-left:16px;padding-right:16px}
+  .buscar{position:relative}
+  .buscar::before{content:"";position:absolute;left:16px;top:50%;width:16px;height:16px;margin-top:-8px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2357544E' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E") center/16px no-repeat}
+  .buscar .in{padding-left:42px;border-radius:999px;background:var(--paper)}
+  .chips{display:flex;gap:8px;overflow-x:auto;margin:10px -16px 0;padding:0 16px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none;min-height:48px;padding:0 16px;border-radius:999px;background:var(--paper);border:1.5px solid var(--line);font-size:.92rem;white-space:nowrap}
+  .chip[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:#fff;font-weight:600}
+  .cuenta{font-size:.8rem;color:var(--ink-2);margin:8px 2px 8px}
+
+  .lista{list-style:none;display:grid;gap:10px}
+  .cm{display:block;width:100%;text-align:left;min-height:48px;padding:14px 16px;background:var(--paper);border:1.5px solid var(--line);border-radius:16px;transition:border-color .15s}
+  .cm:hover{border-color:var(--tan)}
+  .cm span{display:block}
+  .cm-top{display:flex!important;align-items:baseline;gap:8px}
+  .cm-t{flex:1;min-width:0;font-weight:600;line-height:1.3}
+  .tag{flex:none;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--beige-2);color:var(--ink-2)}
+  .cm-e{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--moss);margin:2px 0 6px}
+  .cm-p{font-size:.9rem;color:var(--ink-2);white-space:pre-line;overflow-wrap:anywhere;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .nuevo{margin-bottom:10px}
+  .vacio{text-align:center;color:var(--ink-2);padding:28px 8px}
+  mark.f{background:var(--mustard-l);color:var(--ink);font-weight:600;border-radius:4px;padding:0 2px;box-shadow:inset 0 -2px 0 var(--mustard)}
+
+  .pie{text-align:center;font-size:.85rem;color:var(--ink-2);margin:32px 0 8px}
+
+  /* ---------- Hojas (pantallas encima) ---------- */
+  .hoja{position:fixed;inset:0;z-index:20;background:var(--beige);overflow-y:auto;overscroll-behavior:contain;animation:sube .22s ease both}
+  @keyframes sube{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .h-top{position:sticky;top:0;z-index:2;background:rgba(241,235,224,.97);border-bottom:1px solid var(--line)}
+  .h-top > div{display:flex;align-items:center;gap:8px;max-width:560px;margin:0 auto;padding:6px 8px}
+  .h-top h2{flex:1;min-width:0;font-family:var(--serif);font-weight:400;font-size:1.2rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .h-top h2:focus{outline:none}
+  .atras{flex:none;width:48px;height:48px;border-radius:50%;font-size:1.3rem}
+  .h-in{max-width:560px;margin:0 auto;padding:16px 16px calc(40px + env(safe-area-inset-bottom))}
+  .meta{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--moss);margin-bottom:10px}
+  .ed{display:block;width:100%;min-height:170px;padding:14px;background:#fff;border:1.5px solid var(--line);border-radius:14px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;font-size:1rem}
+  .ed:focus{border-color:var(--moss);outline:none;box-shadow:0 0 0 3px rgba(95,107,69,.25)}
+  .faltan{font-size:.9rem;padding:10px 14px;border-radius:14px;background:var(--mustard-l);border:1px solid var(--mustard);margin-top:10px}
+  .acc{display:grid;gap:10px;margin-top:16px}
+  .fila3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .fila3 .btn{padding:0 6px;font-size:.88rem}
+  .para{font-size:.85rem;color:var(--ink-2);margin-top:12px;text-align:center}
+  .rel{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 16px;margin-top:4px}
+
+  .vars{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 6px}
+  .var{min-height:40px;padding:0 12px;border-radius:999px;background:var(--paper);border:1.5px dashed var(--tan);font-size:.85rem;color:var(--moss-d);font-weight:600}
+  .prev{background:var(--paper);border:1px dashed var(--line);border-radius:14px;padding:12px 14px;font-size:.92rem;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere}
+  .sub-h{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--moss);margin:18px 0 6px}
+
+  .sec{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+  .sec h3{font-family:var(--serif);font-weight:400;font-size:1.2rem;margin-bottom:12px}
+  .sec .in{background:#fff}
+  .duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+  .duo .field{margin-bottom:12px}
+  .grupo{border-top:1px dashed var(--line);padding-top:12px;margin-top:4px}
+  .grupo:first-of-type{border-top:0;padding-top:0;margin-top:0}
+  .grupo h4{font-size:.9rem;margin-bottom:8px}
+  .ext{display:grid;grid-template-columns:minmax(0,1fr) 104px 48px;gap:8px;align-items:center;margin-bottom:8px}
+  .quitar{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);color:var(--ink-2)}
+  .guardado{font-size:.85rem;color:var(--moss-d);text-align:center;margin:4px 0 14px;min-height:1.3em}
+  .guardado.error{color:#8B3A2E;font-weight:600}
+
+  /* ---------- Aviso flotante y confirmación ---------- */
+  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));z-index:40;max-width:calc(100% - 32px);transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:var(--paper);padding:12px 20px;border-radius:999px;font-weight:600;font-size:.95rem;text-align:center;transition:opacity .2s,transform .2s}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  .modal{position:fixed;inset:0;z-index:30;background:rgba(47,47,46,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+  .modal-c{width:100%;max-width:420px;background:var(--paper);border-radius:var(--r);padding:20px;box-shadow:0 18px 40px -20px rgba(0,0,0,.5)}
+  .modal-c p{font-size:1.02rem;margin-bottom:16px}
+  .modal-c .acc{margin-top:0}
+
+  @media (min-width:600px){ .modal{align-items:center} }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <img id="logo" alt="Invitia atelier" width="14" height="68">
+    <span class="t">Mensajes<small>Invitia atelier</small></span>
+    <button type="button" class="ico-btn" id="btnCfg" aria-label="Configuración">⚙</button>
+  </header>
+
+  <p class="alerta" id="avisoAlmacen" role="status" hidden>⚠ Este navegador no deja guardar. La app funciona, pero tus favoritos, cambios y configuración se pierden al cerrarla.</p>
+
+  <details class="cli" id="cli">
+    <summary><span class="cli-s"><b>Cliente actual</b><span id="cliRes">Sin cliente</span></span></summary>
+    <div class="cli-in">
+      <div class="cli-acc">
+        <button type="button" class="btn btn-ghost btn-sm" id="btnNuevo">🆕 Nuevo cliente</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="btnPegar">📥 Pegar cotización</button>
+      </div>
+      <p class="alerta" id="cliAviso" role="status" hidden></p>
+      <div class="field"><label class="lbl" for="cNombre">Nombre</label>
+        <input class="in" id="cNombre" type="text" maxlength="60" autocomplete="off" placeholder="Ej. Mariana López"></div>
+      <div class="field"><label class="lbl" for="cTel">WhatsApp <span class="opc">(opcional)</span></label>
+        <input class="in" id="cTel" type="tel" inputmode="tel" maxlength="20" autocomplete="off" placeholder="10 dígitos">
+        <p class="hint" id="cTelH">Si lo pones, se abre directo su chat.</p></div>
+      <div class="field"><label class="lbl" for="cEvento">Evento</label>
+        <input class="in" id="cEvento" type="text" maxlength="40" autocomplete="off" list="eventos" placeholder="Ej. XV años">
+        <datalist id="eventos"><option value="XV años"><option value="Boda"><option value="Baby shower"><option value="Graduación"><option value="Cumpleaños"><option value="Bautizo"></datalist></div>
+      <div class="field"><label class="lbl" for="cFest">Festejado(a)</label>
+        <input class="in" id="cFest" type="text" maxlength="60" autocomplete="off" placeholder="Ej. Ivana Lorena"></div>
+      <div class="field"><label class="lbl" for="cPaq">Paquete</label>
+        <select class="in" id="cPaq"></select></div>
+      <fieldset><legend>Extras <span class="opc">(opcional)</span></legend><div class="opts" id="cExtras"></div></fieldset>
+      <div class="field"><label class="lbl" for="cTotal">Total</label>
+        <div class="pesos"><input class="in" id="cTotal" type="text" inputmode="decimal" maxlength="12" autocomplete="off" placeholder="Se calcula solo"></div>
+        <p class="hint" id="cTotalH">Se calcula con paquete + extras. Puedes cambiarlo.</p></div>
+      <fieldset><legend>¿Ya pagó el anticipo?</legend>
+        <div class="opts seg">
+          <label class="opt"><input type="radio" name="cAnt" value="si"><span class="b">Sí</span></label>
+          <label class="opt"><input type="radio" name="cAnt" value="no" checked><span class="b">No</span></label>
+        </div></fieldset>
+      <div class="field" style="margin-bottom:4px"><label class="lbl" for="cFecha">Fecha de entrega</label>
+        <input class="in" id="cFecha" type="date"></div>
+    </div>
+  </details>
+
+  <div class="barra">
+    <div class="buscar"><label class="sr" for="q">Buscar mensaje</label>
+      <input class="in" id="q" type="search" placeholder="Buscar mensaje…" autocomplete="off"></div>
+    <div class="chips" id="chips" role="toolbar" aria-label="Etapas"></div>
+  </div>
+  <p class="cuenta" id="cuenta" aria-live="polite"></p>
+  <button type="button" class="btn btn-moss btn-full nuevo" id="btnNuevoMsg" hidden>＋ Nuevo mensaje</button>
+  <ul class="lista" id="lista"></ul>
+
+  <p class="pie">🔒 Esta app no guarda datos de tus clientes.</p>
+</div>
+
+<!-- Mensaje abierto -->
+<section class="hoja" id="hDet" aria-labelledby="detT" hidden>
+  <div class="h-top"><div><button type="button" class="atras" data-cerrar aria-label="Volver">←</button><h2 id="detT" tabindex="-1"></h2></div></div>
+  <div class="h-in">
+    <p class="meta" id="detMeta"></p>
+    <label class="sr" for="ed">Mensaje para este envío</label>
+    <div class="ed" id="ed" role="textbox" aria-multiline="true" spellcheck="true"></div>
+    <p class="hint">Lo que cambies aquí es solo para este envío; la plantilla no cambia.</p>
+    <p class="faltan" id="faltan" aria-live="polite" hidden></p>
+    <div class="acc">
+      <button type="button" class="btn btn-moss btn-full" id="btnWA">Enviar por WhatsApp</button>
+      <div class="fila3">
+        <button type="button" class="btn btn-ghost" id="btnCopiar">Copiar</button>
+        <button type="button" class="btn btn-ghost" id="btnFav" aria-pressed="false">☆ Favorito</button>
+        <button type="button" class="btn btn-ghost" id="btnEditar">Editar plantilla</button>
+      </div>
+    </div>
+    <p class="para" id="para"></p>
+    <div class="rel">
+      <button type="button" class="link" id="btnRellenar">↺ Volver a llenar</button>
+      <button type="button" class="link" id="btnOriginal" hidden>Volver al original</button>
+    </div>
+  </div>
+</section>
+
+<!-- Editar plantilla / mensaje propio -->
+<section class="hoja" id="hEdit" aria-labelledby="edT" hidden>
+  <div class="h-top"><div><button type="button" class="atras" data-cerrar aria-label="Volver">←</button><h2 id="edT" tabindex="-1">Editar plantilla</h2></div></div>
+  <div class="h-in">
+    <p class="hint" id="tNotaBase" style="margin:0 0 14px">Es un mensaje base: cambias solo el texto. Siempre puedes volver al original.</p>
+    <div id="tCampos">
+      <div class="field"><label class="lbl" for="tTitulo">Título</label>
+        <input class="in" id="tTitulo" type="text" maxlength="50" autocomplete="off" placeholder="Ej. Promoción de temporada"></div>
+      <div class="field"><label class="lbl" for="tEtapa">Etapa</label>
+        <select class="in" id="tEtapa"></select></div>
+    </div>
+    <div class="field"><label class="lbl" for="tTexto">Texto</label>
+      <textarea class="in" id="tTexto" rows="7"></textarea>
+      <p class="hint">Toca un dato para ponerlo donde está el cursor:</p>
+      <div class="vars" id="tVars"></div>
+      <p class="hint">Un tramo entre [[ ]] se quita solo si le falta algún dato.</p></div>
+    <p class="sub-h">Así se ve con el cliente actual</p>
+    <div class="prev" id="tPrev"></div>
+    <p class="hint ojo" id="tErr" role="alert"></p>
+    <div class="acc">
+      <button type="button" class="btn btn-moss btn-full" id="tGuardar">Guardar</button>
+      <button type="button" class="btn btn-ghost btn-full" id="tOriginal" hidden>Volver al original</button>
+      <button type="button" class="btn btn-ghost btn-full" id="tBorrar" hidden>Borrar este mensaje</button>
+    </div>
+  </div>
+</section>
+
+<!-- Pegar cotización -->
+<section class="hoja" id="hPegar" aria-labelledby="pT" hidden>
+  <div class="h-top"><div><button type="button" class="atras" data-cerrar aria-label="Volver">←</button><h2 id="pT" tabindex="-1">Pegar cotización</h2></div></div>
+  <div class="h-in">
+    <div class="field"><label class="lbl" for="pTxt">Pega aquí el mensaje que te llegó del cotizador</label>
+      <textarea class="in" id="pTxt" rows="9" placeholder="🎉 FICHA DE COTIZACIÓN · INVITIA ATELIER 🎊&#10;Cliente: …"></textarea></div>
+    <p class="hint ojo" id="pErr" role="alert"></p>
+    <div class="acc"><button type="button" class="btn btn-moss btn-full" id="pLlenar">Llenar cliente actual</button></div>
+    <p class="hint" style="margin-top:12px">El texto no se guarda: solo llena la pantalla.</p>
+  </div>
+</section>
+
+<!-- Configuración -->
+<section class="hoja" id="hCfg" aria-labelledby="cfgT" hidden>
+  <div class="h-top"><div><button type="button" class="atras" data-cerrar aria-label="Volver">←</button><h2 id="cfgT" tabindex="-1">Configuración</h2></div></div>
+  <div class="h-in">
+    <p class="guardado" id="guardado" aria-live="polite"></p>
+    <div id="cfgForm"></div>
+  </div>
+</section>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTxt" hidden>
+  <div class="modal-c">
+    <p id="mTxt"></p>
+    <div class="acc"><button type="button" class="btn btn-moss btn-full" id="mSi">Sí</button>
+      <button type="button" class="btn btn-ghost btn-full" id="mNo">Cancelar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="archivo" accept=".json,application/json" hidden>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ======================= Lector de documentos.html (copiado sin cambios) ======================= */
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const limpia = s => String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+  const clonar = o => JSON.parse(JSON.stringify(o));
+  const digitos = s => String(s || '').replace(/\D/g, '');
+  const p2 = n => String(n).padStart(2, '0');
+  const redondea = n => Math.round((Number(n) || 0) * 100) / 100;
+  const alPeso = n => Math.floor((Number(n) || 0) + 0.5 + 1e-9);   // al peso, .5 hacia arriba
+  const sinAcentos = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const mismoTexto = (a, b) => sinAcentos(limpia(a)) === sinAcentos(limpia(b));
+  const slug = s => sinAcentos(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'invitia';
+  const fmtNum = n => (Number.isInteger(n) ? String(n) : String(redondea(n)));
+  const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+  // Acepta "1,500", "$1500.50", " 800 "
+  function aNumero(v) {
+    const n = parseFloat(String(v == null ? '' : v).replace(/[^\d.]/g, ''));
+    return isFinite(n) ? n : 0;
+  }
+  // Teléfono mexicano a 10 dígitos (quita 52 o 521 si lo trae)
+  function telefono10(s) {
+    let d = digitos(s);
+    if (d.length === 13 && d.startsWith('521')) d = d.slice(3);
+    else if (d.length === 12 && d.startsWith('52')) d = d.slice(2);
+    return d;
+  }
+  function telBonito(d) {
+    if (d.length !== 10) return d;
+    return /^(55|56|33|81)/.test(d) ? `${d.slice(0, 2)} ${d.slice(2, 6)} ${d.slice(6)}` : `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`;
+  }
+  // Texto con un renglón por elemento; quita viñetas o números que alguien haya escrito al inicio
+  const renglones = t => String(t || '').split(/\r?\n/).map(l => l.replace(/^\s*(?:[-•*·]|\d+[.)])\s+/, '').trim()).filter(Boolean);
+  const parrafos = t => String(t || '').trim().split(/\n\s*\n/).filter(p => p.trim())
+    .map(p => `<p>${esc(p.trim()).replace(/\n/g, '<br>')}</p>`).join('');
+  /* ---------- Fechas ---------- */
+  const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const iso = d => `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
+  const hoyISO = () => iso(new Date());
+  function deISO(s) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+    return m ? new Date(+m[1], +m[2] - 1, +m[3], 12) : null;
+  }
+  function fechaLarga(s) {
+    const d = deISO(s);
+    return d ? `${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}` : '';
+  }
+  function sumarDias(s, n) {
+    const d = deISO(s) || new Date();
+    d.setDate(d.getDate() + n);
+    return iso(d);
+  }
+  // "24/05/2027" -> "2027-05-24" (o '' si no es una fecha real)
+  function deDMA(s) {
+    const m = /^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/.exec(limpia(s));
+    if (!m) return '';
+    const d = new Date(+m[3], +m[2] - 1, +m[1], 12);
+    return d.getDate() === +m[1] && d.getMonth() === +m[2] - 1 ? iso(d) : '';
+  }
+
+  /* ---------- Dinero y número a letra ---------- */
+  function miles(n, dec) {
+    const [e, d] = Math.abs(n).toFixed(dec).split('.');
+    return (n < 0 ? '-' : '') + e.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (d ? '.' + d : '');
+  }
+  const pesos = n => '$' + miles(redondea(n), Number.isInteger(redondea(n)) ? 0 : 2);  // $1,600 o $1,600.50
+  const pesos2 = n => '$' + miles(redondea(n), 2);                                      // $1,600.00
+  /* ---------- Pedido: catálogo y cálculos (funciones puras, se prueban en #/pruebas) ---------- */
+  const paqueteCat = (nombre, c) => c.paquetes.find(p => limpia(p.nombre) && mismoTexto(p.nombre, nombre)) || null;
+  const extraCat = (nombre, c) => c.extras.find(x => limpia(x.nombre) && mismoTexto(x.nombre, nombre)) || null;
+  const URGENCIAS = c => [['normal', 'Normal', 'Sin recargo'], ['u3', `+${fmtNum(c.urg3)}%`, '3 días'], ['u2', `+${fmtNum(c.urg2)}%`, '2 días o menos']];
+  const urgPct = (u, c) => (u === 'u3' ? c.urg3 : u === 'u2' ? c.urg2 : 0);
+  const urgTexto = (u, c) => (u === 'u3' ? `+${fmtNum(c.urg3)}% (3 días)` : u === 'u2' ? `+${fmtNum(c.urg2)}% (2 días o menos)` : 'Normal');
+  // "PDF interactivo" -> "PDF", "JPEG" -> "JPEG"
+  const formatoCorto = f => (/pdf/i.test(f) ? 'PDF' : /jpe?g/i.test(f) ? 'JPEG' : limpia(f));
+
+  const pedidoVacio = () => ({ paquete: '', precioPaq: '', extras: [], libres: [], urgencia: 'normal', entrega: '', tipoDesc: 'pct', descuento: '' });
+
+  function filasPedido(ped, c) {
+    const f = [];
+    if (limpia(ped.paquete)) {
+      const cat = paqueteCat(ped.paquete, c);
+      f.push({ concepto: limpia(ped.paquete), detalle: cat ? cat.formato : '', precio: ped.precioPaq, tipo: 'paquete' });
+    }
+    ped.extras.forEach(x => f.push({ concepto: limpia(x.nombre), detalle: '', precio: x.precio, tipo: 'extra' }));
+    ped.libres.filter(r => limpia(r.concepto)).forEach(r => f.push({ concepto: limpia(r.concepto), detalle: '', precio: r.precio, tipo: 'libre' }));
+    return f.map(r => Object.assign(r, { importe: redondea(aNumero(r.precio)), sinPrecio: !limpia(r.precio) }));
+  }
+  function totalesPedido(ped, c) {
+    const filas = filasPedido(ped, c);
+    const subtotal = redondea(filas.reduce((s, r) => s + r.importe, 0));
+    const pctUrg = urgPct(ped.urgencia, c);
+    const recargo = alPeso(subtotal * pctUrg / 100);
+    const base = redondea(subtotal + recargo);
+    const valor = aNumero(ped.descuento);
+    const pct = ped.tipoDesc === 'pct' ? Math.min(100, valor) : null;
+    const descuento = pct != null ? redondea(base * pct / 100) : Math.min(redondea(valor), base);
+    const total = redondea(base - descuento);
+    const anticipo = Math.min(total, alPeso(total * c.anticipoPct / 100));
+    return { filas, subtotal, pctUrg, recargo, descuento, pct, total, anticipo, saldo: redondea(total - anticipo), sinPrecio: filas.filter(r => r.sinPrecio).map(r => r.concepto) };
+  }
+  /* ======================= Lector de la cotización ("📥 Pegar cotización") =======================
+     ETIQUETAS: "etiqueta del mensaje" → campo. Para leer etiquetas nuevas (por ejemplo las de datos.html)
+     basta con sumar renglones. Se comparan sin acentos, sin emojis, sin mayúsculas y sin lo que va entre paréntesis.
+       cli.*  cliente actual · ped.*  pedido · fic.*  ficha del evento · control.*  solo para revisar */
+  const ETIQUETAS = {
+    'Cliente': 'cli.nombre', 'Nombre': 'cli.nombre', 'Nombre del cliente': 'cli.nombre',
+    'WhatsApp': 'cli.telefono', 'Teléfono': 'cli.telefono', 'Celular': 'cli.telefono',
+    'Evento': 'cli.evento', 'Tipo de evento': 'cli.evento',
+    'Festejado(a)': 'cli.festejado', 'Festejada': 'cli.festejado', 'Novios': 'cli.festejado',
+    'Fecha del evento': 'cli.fechaEvento',
+    'Paquete': 'ped.paquete',
+    'Extras': 'ped.extras',
+    'Entrega deseada': 'ped.entrega',
+    'Urgencia': 'ped.urgencia',
+    'Estilo': 'fic.estilo',
+    'Colores': 'fic.colores',
+    'Foto de referencia': 'fic.foto',
+    'Diseño que le gustó': 'fic.ref',
+    'Cómo nos conoció': 'fic.origen',
+    'Pases/invitados': 'fic.pases', 'Pases': 'fic.pases', 'Invitados': 'fic.pases',   // versión vieja del cotizador
+    'Lugar': 'fic.lugar', 'Lugar del evento': 'fic.lugar',
+    'Hora': 'fic.hora', 'Hora del evento': 'fic.hora',
+    'Padres': 'fic.padres',
+    'Padrinos': 'fic.padrinos',
+    'Itinerario': 'fic.itinerario',
+    'Dress code': 'fic.dress', 'Código de vestimenta': 'fic.dress',
+    'Mesa de regalos': 'fic.regalos',
+    'Ubicación': 'fic.ubicacion', 'Link de ubicación': 'fic.ubicacion',
+    'Confirmar asistencia': 'fic.confirmar', 'Número para confirmar asistencia': 'fic.confirmar',
+    'Otros datos': 'fic.otros',
+    'Total aproximado': 'control.total',
+    'Anticipo': 'control.ignorar',
+    'Por cotizar': 'control.porCotizar'
+  };
+  const normEtiqueta = s => sinAcentos(String(s || '').replace(/\([^)]*\)/g, ' ')).replace(/[^a-z0-9]+/g, ' ').trim();
+  const MAPA_ETIQUETAS = {};
+  Object.keys(ETIQUETAS).forEach(k => { MAPA_ETIQUETAS[normEtiqueta(k)] = ETIQUETAS[k]; });
+  const sinDato = v => { const s = limpia(v); return !s || /^[—–-]+$/.test(s) || /^ningun[oa]?$/i.test(sinAcentos(s)); };
+  const fichaVacia = () => ({ estilo: '', colores: '', foto: '', ref: '', origen: '', pases: '', lugar: '', hora: '', padres: '', padrinos: '',
+    itinerario: '', dress: '', regalos: '', ubicacion: '', confirmar: '', otros: '' });
+
+  function leerCotizacion(texto, c) {
+    const lineas = String(texto || '').replace(/\r/g, '').split('\n');
+    const inicio = lineas.findIndex(l => /ficha de cotizacion/.test(normEtiqueta(l)));
+    const cuerpo = inicio >= 0 ? lineas.slice(inicio + 1) : lineas;
+    const r = { ok: false, cli: { nombre: '', telefono: '', evento: '', festejado: '', fechaEvento: '' }, ped: pedidoVacio(), ficha: fichaVacia(),
+      avisos: [], noReconocidas: [], porDefinir: false, totalMensaje: null, totalCalculado: null };
+    let conocidas = 0, ultimo = null;
+    const otros = [];
+    cuerpo.forEach(linea => {
+      const i = linea.indexOf(':');
+      const etq = i > 0 ? linea.slice(0, i) : '';
+      const clave = normEtiqueta(etq);
+      if (!clave || clave.length > 40) {
+        // Renglón sin etiqueta: continúa el dato de texto anterior (itinerario, otros…)
+        if (ultimo && limpia(linea)) ultimo.push(limpia(linea));
+        return;
+      }
+      const valor = linea.slice(i + 1).trim();
+      const campo = MAPA_ETIQUETAS[clave];
+      ultimo = null;
+      if (!campo) {
+        if (!sinDato(valor)) { otros.push([limpia(etq.replace(/[^\p{L}\p{N}\s/()¿?.,-]/gu, '')), valor]); r.noReconocidas.push(limpia(etq.replace(/[^\p{L}\p{N}\s/()¿?.,-]/gu, ''))); }
+        return;
+      }
+      conocidas++;
+      if (sinDato(valor)) return;
+      const [grupo, k] = campo.split('.');
+      if (grupo === 'cli') {
+        if (k === 'fechaEvento') { r.cli.fechaEvento = deDMA(valor); if (!r.cli.fechaEvento) r.avisos.push(`No entendí la fecha del evento (“${valor}”).`); }
+        else if (k === 'telefono') r.cli.telefono = telefono10(valor);
+        else r.cli[k] = limpia(valor);
+      } else if (grupo === 'fic') {
+        const partes = [valor];
+        r.ficha[k] = partes;   // se une al final por si trae renglones de continuación
+        ultimo = partes;
+      } else if (k === 'paquete') {
+        if (/^por definir/.test(normEtiqueta(valor)) || /ayudame a elegir/.test(normEtiqueta(valor))) { r.porDefinir = true; return; }
+        const cat = paqueteCat(valor, c);
+        if (cat) { r.ped.paquete = cat.nombre; r.ped.precioPaq = String(cat.precio); }
+        else {
+          r.ped.libres.push({ concepto: limpia(valor), precio: '' });
+          r.avisos.push(`El paquete “${limpia(valor)}” no está en tu catálogo: lo puse como renglón libre, sin precio.`);
+        }
+      } else if (k === 'extras') {
+        valor.split(';').map(limpia).filter(x => !sinDato(x)).forEach(n => {
+          const cat = extraCat(n, c);
+          if (cat) { if (!r.ped.extras.some(x => x.nombre === cat.nombre)) r.ped.extras.push({ nombre: cat.nombre, precio: String(cat.precio) }); }
+          else {
+            r.ped.libres.push({ concepto: n, precio: '' });
+            r.avisos.push(`El extra “${n}” no está en tu catálogo: lo puse como renglón libre, sin precio.`);
+          }
+        });
+      } else if (k === 'entrega') {
+        r.ped.entrega = deDMA(valor);
+        if (!r.ped.entrega) r.avisos.push(`No entendí la fecha de entrega (“${valor}”).`);
+      } else if (k === 'urgencia') {
+        const v = normEtiqueta(valor), pct = parseFloat((/(\d+(?:\.\d+)?)\s*%/.exec(valor) || [])[1]);
+        if (/\b2 dias\b/.test(v) || pct === c.urg2) r.ped.urgencia = 'u2';
+        else if (/\b3 dias\b/.test(v) || pct === c.urg3) r.ped.urgencia = 'u3';
+      } else if (k === 'total') {
+        const n = aNumero(valor);
+        if (/\d/.test(valor) && n > 0) r.totalMensaje = n;
+      } else if (k === 'porCotizar') {
+        r.avisos.push(`El cotizador marcó como “por cotizar”: ${limpia(valor)}.`);
+      }
+    });
+    Object.keys(r.ficha).forEach(k => { if (Array.isArray(r.ficha[k])) r.ficha[k] = r.ficha[k].join('\n').trim(); });
+    if (otros.length) r.ficha.otros = [r.ficha.otros].concat(otros.map(([e, v]) => `${e}: ${v}`)).filter(Boolean).join('\n');
+    // Es una cotización si trae el título de la ficha o al menos una de las etiquetas principales
+    r.ok = (inicio >= 0 || conocidas >= 2) && !!(r.cli.nombre || r.cli.evento || r.ped.paquete || r.porDefinir || r.ped.extras.length);
+    if (!r.ok) return { ok: false, mensaje: 'No encontré una cotización en ese texto. Copia el mensaje completo que te llegó del cotizador y vuelve a intentar.' };
+    const t = totalesPedido(r.ped, c);
+    r.totalCalculado = t.total;
+    if (r.totalMensaje != null && !t.sinPrecio.length && Math.abs(r.totalMensaje - t.total) >= 1) {
+      r.avisos.unshift(`Ojo: el cotizador decía ${pesos(r.totalMensaje)} y con tus precios actuales da ${pesos(t.total)}.`);
+    }
+    const partes = [r.cli.nombre || 'cliente sin nombre'];
+    if (r.cli.evento) partes.push(r.cli.evento);
+    const nx = r.ped.extras.length;
+    partes.push((r.ped.paquete || (r.porDefinir ? 'Paquete por definir' : 'Sin paquete')) + (nx ? ` + ${plural(nx, 'extra', 'extras')}` : ''));
+    r.resumen = `✅ Cargué a ${partes.join(' · ')}`;
+    return r;
+  }
+
+  /* ======================= Mensajes de Invitia ======================= */
+  const ISOTIPO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAABECAYAAACxiwTbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGFSURBVFhH7Ze/LgRRFMb3ISgoFbrNFPP/7xMoJNOsYqPjAYiohI1gExQknkMhPMHWPAOC9Sdq1fi+O+cmg3UzncI9yS/3zDnfd+fM3GmmEwTBehzHr77v3wp3qN2DB+SP4An5GLyAtyiKPrBudhhIzrIsq1CswjD8FWqw0YEy6UDhOE3TCpv8gCbpDUReh+M4U1xhPvpubph2qEmSZIarChgu0NhjjvWQQj0ec/S3RXeC/hVzFSjc5HlOwYZcD7FzRSDcYg3roCgKaq55rQLFUUOo3pjruvO4nmMO8S7vLP0Rayow0qkeD0fD5jnEi1hLcCkGNTa1YlPGrj4KCmjWE8hGqieartjq8DxvjTuySWET1tijRuRfA6IViMYUNUHtGaOvimxy8Ewh7IN9jDUEy8inpf2/Ag8+CxbwqltBLT08gj6/Ux50G6ilh8ae/qTaINqeNU7AGg1YowFrNGCNBqzRgDUasEYD1mjgD434n1jivwX/ZNpALT28Y4ld3rG2otYG5SfwLQwlD1P22gAAAABJRU5ErkJggg==";
+
+  // Son los de cotizar.html. Roberto los cambia en ⚙ Configuración.
+  const CONFIG_BASE = {
+    negocio: 'Invitia atelier', firma: 'Roberto', instagram: 'invitia.ateliermx',
+    linkPagina: '', linkCotizador: '', linkDatos: '',
+    paquetes: [
+      { nombre: 'Digital Esencial', precio: 899, formato: 'JPEG', sesiones: 2 },
+      { nombre: 'Digital Interactiva', precio: 1800, formato: 'PDF interactivo', sesiones: 3 }
+    ],
+    extras: [
+      { nombre: 'Diseño de monograma', precio: 400 },
+      { nombre: 'Multipases', precio: 200 },
+      { nombre: 'Galería', precio: 400 }
+    ],
+    anticipoPct: 50, cambioExtra: 200, urg3: 35, urg2: 50, entregaNormal: '3 a 5 días',
+    banco: '', titular: '', clabe: ''             // nunca pongas datos de ejemplo aquí
+  };
+
+  const ETAPAS = [['cotizar', 'Cotizar'], ['anticipo', 'Anticipo'], ['diseno', 'Diseño y cambios'], ['entrega', 'Entrega y cobro'], ['despues', 'Después'], ['preguntas', 'Preguntas']];
+  const NOMBRE_ETAPA = {};
+  ETAPAS.forEach(([k, n]) => { NOMBRE_ETAPA[k] = n; });
+  const FILTROS = [['todos', 'Todos'], ['favs', '⭐ Favoritos']].concat(ETAPAS, [['mios', 'Mis mensajes']]);
+
+  // Mensajes de base. Las cifras salen de Configuración; nunca se escriben a mano.
+  const BASE = [
+    { id: 'bienvenida', etapa: 'cotizar', titulo: 'Bienvenida',
+      texto: '¡Hola {nombre}! ✨ Gracias por escribirnos. Para darte tu precio al momento, arma tu cotización aquí en 2 minutos: {link_cotizador}. Te llega todo a este chat y seguimos desde aquí 💌' },
+    { id: 'precios', etapa: 'cotizar', titulo: 'Precios rápidos',
+      texto: '¡Hola {nombre}! Te comparto nuestros precios ✨\nEsencial desde {precio_esencial}: una imagen lista para mandar por WhatsApp.\nInteractiva desde {precio_interactiva}: PDF con ubicación, confirmación y mesa de regalos a un toque.\nTu precio exacto, con extras, lo armas aquí: {link_cotizador}' },
+    { id: 'diferencia', etapa: 'cotizar', titulo: 'Diferencia entre paquetes',
+      texto: 'Te lo explico rápido, {nombre} 😊\nEsencial: una sola imagen (JPEG), ideal si solo la vas a mandar por WhatsApp o redes.\nInteractiva: PDF de varias páginas con itinerario, dress code y botones de ubicación, confirmación y regalos; ideal si tus invitados necesitan todos los detalles.\n¿Cuál va más con tu evento?' },
+    { id: 'cotizacion-recibida', etapa: 'cotizar', titulo: 'Recibí tu cotización',
+      texto: '¡Gracias, {nombre}! Ya nos llegó tu cotización ✨ Quedó así: {paquete}, extras: {extras}, total {total}. El siguiente paso es el anticipo de {anticipo} para apartar tu fecha. ¿Te paso los datos?' },
+    { id: 'seguimiento', etapa: 'cotizar', titulo: 'Seguimiento a los 2 días',
+      texto: '¡Hola {nombre}! ¿Cómo vas? 😊 Solo paso a ver si te quedó alguna duda con tu cotización. Si quieres, ajustamos el paquete o los extras a lo que necesitas. Aquí seguimos ✨' },
+    { id: 'ultimo-seguimiento', etapa: 'cotizar', titulo: 'Último seguimiento',
+      texto: '{nombre}, no queremos llenarte de mensajes, así que este es el último 😊 Si más adelante te animas a hacer tu invitación con nosotros, aquí estamos cuando lo decidas. ¡Que tu evento salga precioso! ✨' },
+    { id: 'apartar', etapa: 'anticipo', titulo: 'Cómo apartar',
+      texto: '¡Gracias, {nombre}! Para apartar tu fecha el anticipo es de {anticipo} ({porcentaje_anticipo}). Te dejo los datos: {datos_pago}. En cuanto lo recibamos te confirmamos tu fecha exacta de entrega ✨' },
+    { id: 'anticipo-recibido', etapa: 'anticipo', titulo: 'Anticipo recibido',
+      texto: '¡Recibimos tu anticipo, {nombre}! Gracias por la confianza 💌 Lo que sigue: mándanos los datos de tu evento (nombres, fecha, hora, lugar y lo que quieras que diga tu invitación).[[ Si te es más fácil, llénalos aquí: {link_datos}.]] Con eso empezamos a diseñar ✨' },
+    { id: 'faltan-datos', etapa: 'anticipo', titulo: 'Faltan datos del evento',
+      texto: '¡Hola {nombre}! Para arrancar con tu invitación solo nos faltan los datos de tu evento 😊[[ Los puedes llenar aquí: {link_datos}.]] Tu fecha de entrega empieza a contar en cuanto los tengamos completos.' },
+    { id: 'primera-propuesta', etapa: 'diseno', titulo: 'Primera propuesta lista',
+      texto: '¡{nombre}, ya está tu primera propuesta! ✨ Revísala con calma, sobre todo nombres, fechas, horarios y lugares. Tu paquete incluye {sesiones} sesiones de cambios, así que junta en un solo mensaje todo lo que quieras ajustar 💌' },
+    { id: 'cambios-recibidos', etapa: 'diseno', titulo: 'Recibí tus cambios',
+      texto: '¡Listo, {nombre}! Recibimos tus cambios y los tomamos como una sesión de cambios ✨ En cuanto esté la nueva versión te la mandamos por aquí, normalmente al día siguiente.' },
+    { id: 'sesiones-agotadas', etapa: 'diseno', titulo: 'Se acabaron las sesiones incluidas',
+      texto: '{nombre}, ya usamos las {sesiones} sesiones de cambios que incluye tu paquete. Con gusto seguimos ajustando: cada sesión adicional es de {cambio_extra}. ¿Te parece si la agendamos? 💌' },
+    { id: 'error-aprobado', etapa: 'diseno', titulo: 'Error de datos después de aprobar',
+      texto: 'Con gusto lo corregimos, {nombre} 😊 Como el diseño ya estaba aprobado, este ajuste cuenta como una sesión de cambios: si aún te queda alguna de las {sesiones} incluidas no tiene costo, y si ya se usaron es de {cambio_extra}. ¿Te parece si lo hacemos de una vez?' },
+    { id: 'urgencia', etapa: 'diseno', titulo: 'Urgencia',
+      texto: '¡Sí se puede, {nombre}! ✨ Nuestra entrega normal es de {dias_entrega}. Si la necesitas antes, hay un cargo por urgencia sobre el total: {urgencia}. ¿Para qué día la necesitas?' },
+    { id: 'lista', etapa: 'entrega', titulo: 'Invitación lista',
+      texto: '¡{nombre}, tu invitación está lista! 🎉 Para liberarte los archivos finales solo falta el saldo de {saldo}. Te dejo los datos: {datos_pago}. En cuanto lo recibamos te la mandamos completa 💌' },
+    { id: 'recordatorio-saldo', etapa: 'entrega', titulo: 'Recordatorio de saldo',
+      texto: '¡Hola {nombre}! 😊 Tu invitación ya está lista y esperándote. Cuando puedas, nos haces el pago de {saldo} y te la mandamos en ese momento para que empieces a compartirla. Si necesitas otra vez los datos de pago, con gusto te los paso.' },
+    { id: 'entrega-final', etapa: 'entrega', titulo: 'Entrega final',
+      texto: '¡Aquí está tu invitación, {nombre}! 🎉 Te la mandamos en {formato}, lista para compartir. Tip: reenvíala desde este chat a tus contactos y grupos, así llega con la mejor calidad. ¡Gracias por elegirnos! 💌' },
+    { id: 'opinion', etapa: 'despues', titulo: 'Pedir opinión',
+      texto: '¡Hola {nombre}! Esperamos que tu evento haya salido precioso ✨ ¿Nos regalas 2 líneas sobre cómo te fue con nosotros? Nos encantaría publicarlas para que más personas nos conozcan 💌' },
+    { id: 'portafolio', etapa: 'despues', titulo: 'Permiso para portafolio',
+      texto: '{nombre}, nos encantó cómo quedó tu invitación 😍 ¿Nos das permiso de mostrarla en nuestro Instagram {instagram}? Si prefieres, ocultamos nombres, fechas y lugares. Solo con tu sí la publicamos.' },
+    { id: 'recomendacion', etapa: 'despues', titulo: 'Pedir recomendación',
+      texto: '¡Gracias otra vez, {nombre}! Si alguien de tu familia o de tus amigos va a celebrar algo pronto, nos encantaría hacer su invitación. Aquí pueden ver nuestros diseños: {link_pagina} ✨' },
+    { id: 'cuanto-tarda', etapa: 'preguntas', titulo: '¿Cuánto tarda?',
+      texto: '{nombre}, la entrega normal es de {dias_entrega} y empieza a contar desde que recibimos tu anticipo y los datos completos de tu evento ✨ Si la necesitas antes, también hacemos entregas urgentes.' },
+    { id: 'que-recibo', etapa: 'preguntas', titulo: '¿Qué recibo?',
+      texto: 'Todo es digital, {nombre} 😊 La Interactiva se entrega en PDF con botones que funcionan desde el celular, y la Esencial en imagen JPEG. No hacemos impresión: la compartes directo por WhatsApp o redes.' },
+    { id: 'editables', etapa: 'preguntas', titulo: '¿Me das los editables?',
+      texto: '{nombre}, no entregamos archivos editables: tu invitación es un diseño exclusivo para uso personal de tu evento. Si necesitas algún ajuste, con gusto lo hacemos nosotros 😊' },
+    { id: 'fuera-horario', etapa: 'preguntas', titulo: 'Fuera de horario',
+      texto: '¡Hola {nombre}! Gracias por escribirnos 🌙 Ya cerramos por hoy, pero te respondemos mañana temprano ✨' }
+  ];
+  const BASE_POR_ID = {};
+  BASE.forEach(m => { BASE_POR_ID[m.id] = m; });
+
+  /* ---------- Utilidades propias ---------- */
+  const $ = (s, el) => (el || document).querySelector(s);
+  const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+  const dinero = n => pesos(n);
+  const listaY = a => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1]);
+  const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  // "2027-05-24" -> "lunes 24 de mayo" (con año solo si no es este año)
+  function fechaBonita(s) {
+    const d = deISO(s);
+    if (!d) return '';
+    return `${DIAS[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()]}` + (d.getFullYear() !== new Date().getFullYear() ? ` de ${d.getFullYear()}` : '');
+  }
+
+  /* ---------- Guardado local (solo configuración, favoritos, mensajes, ediciones y contador) ---------- */
+  const CLAVE = 'invitia_msgs_v1';
+  const APP_ID = 'invitia-mensajes';
+
+  function normConfig(c) {
+    const d = clonar(CONFIG_BASE);
+    if (!c || typeof c !== 'object') return d;
+    const txt = (v, def) => (typeof v === 'string' ? v : def);
+    const num = (v, def) => {
+      if (typeof v === 'number' && isFinite(v)) return Math.max(0, v);
+      if (typeof v === 'string' && v.trim() !== '' && isFinite(+v)) return Math.max(0, +v);
+      return def;
+    };
+    const o = {};
+    ['negocio', 'firma', 'instagram', 'linkPagina', 'linkCotizador', 'linkDatos', 'entregaNormal', 'banco', 'titular', 'clabe']
+      .forEach(k => { o[k] = txt(c[k], d[k]); });
+    const ps = Array.isArray(c.paquetes) ? c.paquetes : [];
+    o.paquetes = d.paquetes.map((p, i) => {
+      const x = ps[i] && typeof ps[i] === 'object' ? ps[i] : {};
+      return { nombre: txt(x.nombre, p.nombre), precio: num(x.precio, p.precio), formato: txt(x.formato, p.formato), sesiones: Math.round(num(x.sesiones, p.sesiones)) };
+    });
+    o.extras = (Array.isArray(c.extras) ? c.extras : d.extras).filter(x => x && typeof x === 'object')
+      .map(x => ({ nombre: txt(x.nombre, ''), precio: num(x.precio, 0) }));
+    o.anticipoPct = Math.min(100, num(c.anticipoPct, d.anticipoPct));
+    o.cambioExtra = num(c.cambioExtra, d.cambioExtra);
+    o.urg3 = Math.min(500, num(c.urg3, d.urg3));
+    o.urg2 = Math.min(500, num(c.urg2, d.urg2));
+    return o;
+  }
+  function normDatos(o) {
+    o = o && typeof o === 'object' ? o : {};
+    const d = { config: normConfig(o.config), favs: [], edits: {}, mios: [], usos: {}, etapa: 'todos', clienteAbierto: true };
+    const ids = new Set(BASE.map(m => m.id));
+    if (Array.isArray(o.mios)) {
+      d.mios = o.mios.filter(m => m && typeof m === 'object' && typeof m.id === 'string' && typeof m.texto === 'string' && !ids.has(m.id))
+        .map(m => ({ id: m.id, titulo: limpia(m.titulo) || 'Mi mensaje', etapa: NOMBRE_ETAPA[m.etapa] ? m.etapa : 'cotizar', texto: m.texto }));
+      d.mios.forEach(m => ids.add(m.id));
+    }
+    if (Array.isArray(o.favs)) d.favs = o.favs.filter(id => typeof id === 'string' && ids.has(id));
+    if (o.edits && typeof o.edits === 'object') Object.keys(o.edits).forEach(k => { if (BASE_POR_ID[k] && typeof o.edits[k] === 'string') d.edits[k] = o.edits[k]; });
+    if (o.usos && typeof o.usos === 'object') Object.keys(o.usos).forEach(k => { const n = +o.usos[k]; if (ids.has(k) && n > 0) d.usos[k] = Math.floor(n); });
+    if (FILTROS.some(f => f[0] === o.etapa)) d.etapa = o.etapa;
+    if (typeof o.clienteAbierto === 'boolean') d.clienteAbierto = o.clienteAbierto;
+    return d;
+  }
+
+  let D = normDatos({});
+  let almacenOk = true;
+  function cargar() {
+    try {
+      const t = localStorage.getItem(CLAVE);
+      localStorage.setItem(CLAVE + '_prueba', '1');
+      localStorage.removeItem(CLAVE + '_prueba');
+      if (t) D = normDatos(JSON.parse(t));
+    } catch (e) { almacenOk = false; }
+  }
+  function guardar() {
+    try { localStorage.setItem(CLAVE, JSON.stringify(D)); almacenOk = true; } catch (e) { almacenOk = false; }
+    $('#avisoAlmacen').hidden = almacenOk;
+    return almacenOk;
+  }
+  const conf = () => D.config;
+
+  /* ---------- Cliente actual: SOLO en memoria. "Nuevo cliente" o cerrar la app lo borra ---------- */
+  const cliVacio = () => ({ nombre: '', telefono: '', evento: '', festejado: '', paquete: '', extras: [], total: '', totalManual: false, anticipoPagado: false, fechaEntrega: '' });
+  let cli = cliVacio();
+
+  const paq = () => (cli.paquete !== '' ? conf().paquetes[+cli.paquete] || null : null);
+  const extrasCli = () => cli.extras.map(i => conf().extras[i]).filter(x => x && limpia(x.nombre));
+  function totalAuto() {
+    const p = paq(), xs = extrasCli();
+    if (!p && !xs.length) return 0;
+    return (p ? p.precio : 0) + xs.reduce((s, x) => s + x.precio, 0);
+  }
+  const totalNum = () => redondea(aNumero(cli.total));
+  const anticipoNum = () => alPeso(totalNum() * conf().anticipoPct / 100);
+  const saldoNum = () => (cli.anticipoPagado ? redondea(totalNum() - anticipoNum()) : totalNum());
+  const tel = () => telefono10(cli.telefono);
+
+  /* ---------- Variables ---------- */
+  const conPrecio = n => (n > 0 ? dinero(n) : '');
+  const VARS = [
+    ['nombre', 'nombre', () => limpia(cli.nombre).split(' ')[0]],
+    ['evento', 'evento', () => limpia(cli.evento)],
+    ['festejado', 'festejado', () => limpia(cli.festejado)],
+    ['paquete', 'paquete', () => (paq() ? limpia(paq().nombre) : '')],
+    ['extras', 'extras', () => { const xs = extrasCli(); return xs.length ? listaY(xs.map(x => limpia(x.nombre))) : paq() ? 'ninguno' : ''; }],
+    ['total', 'total', () => conPrecio(totalNum())],
+    ['anticipo', 'anticipo', () => (totalNum() > 0 && conf().anticipoPct > 0 ? dinero(anticipoNum()) : '')],
+    ['saldo', 'saldo', () => (totalNum() > 0 ? dinero(saldoNum()) : '')],
+    ['fecha_entrega', 'fecha de entrega', () => fechaBonita(cli.fechaEntrega)],
+    ['sesiones', 'sesiones', () => (paq() && paq().sesiones > 0 ? String(paq().sesiones) : '')],
+    ['formato', 'formato', () => (paq() ? formatoCorto(paq().formato) : '')],
+    ['precio_esencial', 'precio esencial', () => conPrecio(conf().paquetes[0].precio)],
+    ['precio_interactiva', 'precio interactiva', () => conPrecio(conf().paquetes[1].precio)],
+    ['cambio_extra', 'cambio extra', () => conPrecio(conf().cambioExtra)],
+    ['porcentaje_anticipo', '% de anticipo', () => (conf().anticipoPct > 0 ? fmtNum(conf().anticipoPct) + '%' : '')],
+    ['dias_entrega', 'días de entrega', () => limpia(conf().entregaNormal)],
+    ['urgencia', 'urgencia', () => (conf().urg3 > 0 && conf().urg2 > 0 ? `+${fmtNum(conf().urg3)}% si es en 3 días y +${fmtNum(conf().urg2)}% si es en 2 días o menos` : '')],
+    ['link_pagina', 'link de la página', () => limpia(conf().linkPagina)],
+    ['link_cotizador', 'link del cotizador', () => limpia(conf().linkCotizador)],
+    ['link_datos', 'link de datos', () => limpia(conf().linkDatos)],
+    ['instagram', 'instagram', () => { const i = limpia(conf().instagram).replace(/^@/, ''); return i ? '@' + i : ''; }],
+    ['datos_pago', 'datos de pago', () => {
+      // Nunca se inventan: si falta banco, titular o CLABE, la variable queda como faltante
+      const b = limpia(conf().banco), t = limpia(conf().titular), c = digitos(conf().clabe);
+      return b && t && c ? `${b} · a nombre de ${t} · CLABE ${c}` : '';
+    }],
+    ['firma', 'firma', () => limpia(conf().firma)],
+    ['negocio', 'negocio', () => limpia(conf().negocio)]
+  ];
+  const VAR = {};
+  VARS.forEach(([k, label, fn]) => { VAR[k] = { label, fn }; });
+
+  // Plantilla -> partes [{t:'texto'} | {falta:'clave'}]
+  function partes(tpl) {
+    // Tramos opcionales [[ … ]]: se quitan completos si les falta algún dato
+    const t = String(tpl || '').replace(/\[\[([\s\S]*?)\]\]/g, (m, dentro) => {
+      const falta = (dentro.match(/\{([a-z_]+)\}/g) || []).some(v => { const k = v.slice(1, -1); return VAR[k] && !VAR[k].fn(); });
+      return falta ? '' : dentro;
+    });
+    const out = [];
+    let ult = 0;
+    t.replace(/\{([a-z_]+)\}/g, (m, k, pos) => {
+      if (!VAR[k]) return m;
+      if (pos > ult) out.push({ t: t.slice(ult, pos) });
+      const v = VAR[k].fn();
+      out.push(v ? { t: v } : { falta: k });
+      ult = pos + m.length;
+      return m;
+    });
+    if (ult < t.length) out.push({ t: t.slice(ult) });
+    return out;
+  }
+  const aTexto = ps => ps.map(p => (p.t != null ? p.t : `[${VAR[p.falta].label}]`)).join('');
+  const aHTML = ps => ps.map(p => (p.t != null ? esc(p.t) : `<mark class="f">[${esc(VAR[p.falta].label)}]</mark>`)).join('');
+  const faltanEn = txt => VARS.filter(([, label]) => txt.indexOf(`[${label}]`) !== -1).map(([, label]) => label);
+
+  /* ---------- Mensajes: base (con ediciones) + propios ---------- */
+  function todos() {
+    const base = BASE.map((m, i) => ({ id: m.id, titulo: m.titulo, etapa: m.etapa, texto: D.edits[m.id] != null ? D.edits[m.id] : m.texto,
+      editado: D.edits[m.id] != null, propio: false, orden: i }));
+    return base.concat(D.mios.map((m, i) => ({ id: m.id, titulo: m.titulo, etapa: m.etapa, texto: m.texto, editado: false, propio: true, orden: BASE.length + i })));
+  }
+  const porId = id => todos().find(m => m.id === id) || null;
+  const esFav = id => D.favs.indexOf(id) !== -1;
+  function sumarUso(id) { D.usos[id] = (D.usos[id] || 0) + 1; guardar(); }
+
+  /* ---------- Lista ---------- */
+  function renderChips() {
+    $('#chips').innerHTML = FILTROS.map(([k, n]) => `<button type="button" class="chip" data-f="${k}" aria-pressed="${D.etapa === k}">${esc(n)}</button>`).join('');
+  }
+  function renderLista() {
+    const palabras = sinAcentos(limpia($('#q').value)).split(' ').filter(Boolean);
+    const f = D.etapa;
+    const lista = todos()
+      .filter(m => f === 'todos' || (f === 'favs' ? esFav(m.id) : f === 'mios' ? m.propio : m.etapa === f))
+      .map(m => { const ps = partes(m.texto); return { m, ps, busca: sinAcentos(m.titulo + ' ' + aTexto(ps) + ' ' + m.texto) }; })
+      .filter(x => palabras.every(p => x.busca.indexOf(p) !== -1));
+    lista.sort((a, b) => (esFav(b.m.id) - esFav(a.m.id)) || ((D.usos[b.m.id] || 0) - (D.usos[a.m.id] || 0)) || (a.m.orden - b.m.orden));
+
+    $('#btnNuevoMsg').hidden = f !== 'mios';
+    $('#cuenta').textContent = lista.length === 1 ? '1 mensaje' : `${lista.length} mensajes`;
+    if (!lista.length) {
+      const q = limpia($('#q').value);
+      $('#lista').innerHTML = `<li class="vacio">${q ? `No encontramos mensajes con “${esc(q)}”.`
+        : f === 'favs' ? 'Aún no tienes favoritos. Abre un mensaje y toca ☆ Favorito.'
+        : f === 'mios' ? 'Aún no tienes mensajes propios. Crea el primero con “＋ Nuevo mensaje”.' : 'No hay mensajes aquí.'}</li>`;
+      return;
+    }
+    $('#lista').innerHTML = lista.map(({ m, ps }) =>
+      `<li><button type="button" class="cm" data-abrir="${esc(m.id)}"><span class="cm-top"><span class="cm-t">${esFav(m.id) ? '⭐ ' : ''}${esc(m.titulo)}</span>${
+        m.editado ? '<span class="tag">editado</span>' : m.propio ? '<span class="tag">mío</span>' : ''}</span>` +
+      `<span class="cm-e">${esc(NOMBRE_ETAPA[m.etapa] || '')}</span><span class="cm-p">${aHTML(ps)}</span></button></li>`).join('');
+  }
+
+  /* ---------- Cliente actual: formulario ---------- */
+  function renderCliOpciones() {
+    $('#cPaq').innerHTML = '<option value="">Sin elegir</option>' + conf().paquetes.map((p, i) =>
+      `<option value="${i}">${esc(p.nombre)}${p.precio > 0 ? ' · ' + dinero(p.precio) : ''}</option>`).join('');
+    $('#cExtras').innerHTML = conf().extras.map((x, i) => (limpia(x.nombre)
+      ? `<label class="opt"><input type="checkbox" name="cExtra" value="${i}"><span class="b">${esc(x.nombre)}<small>${x.precio > 0 ? '+' + dinero(x.precio) : ''}</small></span></label>` : '')).join('');
+    pintarCli();
+  }
+  function pintarCli() {
+    $('#cNombre').value = cli.nombre;
+    $('#cTel').value = cli.telefono;
+    $('#cEvento').value = cli.evento;
+    $('#cFest').value = cli.festejado;
+    $('#cPaq').value = cli.paquete;
+    $$('input[name="cExtra"]').forEach(i => { i.checked = cli.extras.indexOf(+i.value) !== -1; });
+    $('#cTotal').value = cli.total;
+    $$('input[name="cAnt"]').forEach(i => { i.checked = (i.value === 'si') === cli.anticipoPagado; });
+    $('#cFecha').value = cli.fechaEntrega;
+    pintarResumenCli();
+  }
+  function pintarResumenCli() {
+    const partesR = [limpia(cli.nombre), limpia(cli.evento), totalNum() > 0 ? dinero(totalNum()) : ''].filter(Boolean);
+    $('#cliRes').textContent = partesR.length ? partesR.join(' · ') : 'Sin cliente: los datos que falten se marcan';
+    const t = tel();
+    $('#cTelH').textContent = !digitos(cli.telefono) ? 'Si lo pones, se abre directo su chat.'
+      : t.length === 10 ? '✓ Se abre directo su chat.' : 'Escribe 10 dígitos para abrir su chat directo.';
+    $('#cTelH').classList.toggle('ojo', !!digitos(cli.telefono) && t.length !== 10);
+    $('#cTotalH').textContent = totalNum() > 0
+      ? `Anticipo ${dinero(anticipoNum())} · Saldo ${dinero(saldoNum())}${cli.totalManual ? ' · lo escribiste tú' : ''}`
+      : 'Se calcula con paquete + extras. Puedes cambiarlo.';
+  }
+  function recalcularTotal() {
+    if (cli.totalManual) return;
+    const t = totalAuto();
+    cli.total = t > 0 ? miles(t, Number.isInteger(t) ? 0 : 2) : '';
+    $('#cTotal').value = cli.total;
+  }
+  function cambioCli() { pintarResumenCli(); renderLista(); }
+
+  $('#cli').addEventListener('input', e => {
+    const t = e.target;
+    const mapa = { cNombre: 'nombre', cTel: 'telefono', cEvento: 'evento', cFest: 'festejado', cFecha: 'fechaEntrega' };
+    if (mapa[t.id]) cli[mapa[t.id]] = t.value;
+    else if (t.id === 'cTotal') { cli.total = t.value; cli.totalManual = !!limpia(t.value); if (!cli.totalManual) recalcularTotal(); }
+    else return;
+    cambioCli();
+  });
+  $('#cli').addEventListener('change', e => {
+    const t = e.target;
+    if (t.id === 'cPaq') { cli.paquete = t.value; cli.totalManual = false; recalcularTotal(); }
+    else if (t.name === 'cExtra') { cli.extras = $$('input[name="cExtra"]:checked').map(i => +i.value); cli.totalManual = false; recalcularTotal(); }
+    else if (t.name === 'cAnt') cli.anticipoPagado = t.value === 'si';
+    else if (t.id === 'cFecha') cli.fechaEntrega = t.value;
+    else return;
+    cambioCli();
+  });
+  $('#cli').addEventListener('toggle', () => { D.clienteAbierto = $('#cli').open; guardar(); });
+
+  $('#btnNuevo').addEventListener('click', () => {
+    cli = cliVacio();
+    $('#pTxt').value = '';
+    $('#cliAviso').hidden = true;
+    pintarCli();
+    renderLista();
+    $('#cNombre').focus();
+    toast('Listo: cliente borrado 🆕');
+  });
+
+  /* ---------- Pegar cotización (usa leerCotizacion de documentos.html) ---------- */
+  const cfgLector = () => ({ paquetes: conf().paquetes, extras: conf().extras, urg2: conf().urg2, urg3: conf().urg3, anticipoPct: conf().anticipoPct });
+  $('#btnPegar').addEventListener('click', () => { $('#pErr').textContent = ''; abrirHoja('hPegar'); setTimeout(() => $('#pTxt').focus(), 50); });
+  $('#pLlenar').addEventListener('click', () => {
+    const r = leerCotizacion($('#pTxt').value, cfgLector());
+    if (!r.ok) { $('#pErr').textContent = r.mensaje; return; }
+    cli = cliVacio();
+    cli.nombre = r.cli.nombre;
+    cli.telefono = r.cli.telefono;
+    cli.evento = r.cli.evento;
+    cli.festejado = r.cli.festejado;
+    const ip = conf().paquetes.findIndex(p => mismoTexto(p.nombre, r.ped.paquete));
+    cli.paquete = ip >= 0 ? String(ip) : '';
+    cli.extras = r.ped.extras.map(x => conf().extras.findIndex(c => mismoTexto(c.nombre, x.nombre))).filter(i => i >= 0);
+    cli.fechaEntrega = r.ped.entrega;
+    // El total del lector ya trae la urgencia, si la hubo
+    if (r.totalCalculado > 0) { cli.total = miles(r.totalCalculado, Number.isInteger(r.totalCalculado) ? 0 : 2); cli.totalManual = r.ped.urgencia !== 'normal'; }
+    else recalcularTotal();
+    $('#pTxt').value = '';
+    const avisos = (r.porDefinir ? ['El cliente pidió ayuda para elegir paquete.'] : []).concat(r.avisos);
+    $('#cliAviso').textContent = avisos.join(' ');
+    $('#cliAviso').hidden = !avisos.length;
+    $('#cli').open = true;
+    pintarCli();
+    renderLista();
+    cerrarHoja();
+    toast(r.resumen);
+  });
+
+  /* ---------- Hojas con historial (el botón Atrás del celular las cierra) ---------- */
+  const pila = [];
+  function abrirHoja(id) {
+    $('#' + id).hidden = false;
+    pila.push(id);
+    document.body.classList.add('con-hoja');
+    history.pushState({ hojas: pila.length }, '');
+    const h = $('#' + id + ' h2');
+    if (h) h.focus({ preventScroll: true });
+  }
+  function cerrarHoja(n) { history.go(-(n || 1)); }
+  window.addEventListener('popstate', e => {
+    const quedan = (e.state && e.state.hojas) || 0;
+    while (pila.length > quedan) {
+      const id = pila.pop();
+      $('#' + id).hidden = true;
+      if (id === 'hDet') detId = null;
+    }
+    document.body.classList.toggle('con-hoja', pila.length > 0);
+    if (!pila.length) renderLista();
+  });
+  document.addEventListener('click', e => { if (e.target.closest('[data-cerrar]')) cerrarHoja(); });
+
+  /* ---------- Mensaje abierto ---------- */
+  let detId = null;
+  const ed = $('#ed');
+  try { ed.contentEditable = 'plaintext-only'; } catch (e) { ed.contentEditable = 'true'; }
+  if (ed.contentEditable !== 'plaintext-only') ed.contentEditable = 'true';
+  ed.addEventListener('paste', e => {
+    if (ed.contentEditable === 'plaintext-only') return;
+    e.preventDefault();
+    document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text'));
+  });
+  ed.addEventListener('input', pintarFaltan);
+
+  function abrirDetalle(id) { detId = id; pintarDetalle(true); abrirHoja('hDet'); }
+  function pintarDetalle(rellenar) {
+    const m = porId(detId);
+    if (!m) return;
+    $('#detT').textContent = m.titulo;
+    $('#detMeta').textContent = [NOMBRE_ETAPA[m.etapa], m.editado ? 'editado' : '', m.propio ? 'mío' : ''].filter(Boolean).join(' · ');
+    if (rellenar) ed.innerHTML = aHTML(partes(m.texto));
+    $('#btnFav').setAttribute('aria-pressed', esFav(m.id));
+    $('#btnFav').textContent = esFav(m.id) ? '⭐ Favorito' : '☆ Favorito';
+    $('#btnOriginal').hidden = !m.editado;
+    $('#btnEditar').textContent = m.propio ? 'Editar mensaje' : 'Editar plantilla';
+    const t = tel(), n = limpia(cli.nombre);
+    $('#para').textContent = t.length === 10 ? `Se abre el chat de ${n || 'tu cliente'} (${telBonito(t)}).` : 'Sin número: en WhatsApp eliges a quién mandárselo.';
+    pintarFaltan();
+  }
+  // innerText respeta los saltos de línea del área editable
+  const textoEditor = () => ed.innerText.replace(/ /g, ' ').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  function pintarFaltan() {
+    const f = faltanEn(textoEditor());
+    $('#faltan').hidden = !f.length;
+    $('#faltan').textContent = f.length ? `Te falta: ${f.join(', ')}. Llénalo en “Cliente actual” o en ⚙, o escríbelo aquí.` : '';
+  }
+  async function listoParaUsar(accion) {
+    const txt = textoEditor();
+    if (!txt) { toast('El mensaje está vacío'); return null; }
+    const f = faltanEn(txt);
+    if (f.length && !(await confirmar(`Te falta: ${f.join(', ')}. ¿Lo ${accion === 'wa' ? 'mando' : 'copio'} así?`, accion === 'wa' ? 'Mandarlo así' : 'Copiarlo así', 'Mejor lo completo'))) return null;
+    return txt;
+  }
+  // api.whatsapp.com conserva emojis, acentos y saltos de línea (wa.me los rompe en la redirección)
+  const urlWA = txt => 'https://api.whatsapp.com/send?' + (tel().length === 10 ? 'phone=52' + tel() + '&' : '') + 'text=' + encodeURIComponent(txt);
+
+  $('#btnWA').addEventListener('click', async () => {
+    const id = detId, txt = await listoParaUsar('wa');
+    if (txt == null) return;
+    const url = urlWA(txt);
+    sumarUso(id);
+    const w = window.open(url, '_blank', 'noopener');
+    if (!w) location.href = url;
+  });
+  $('#btnCopiar').addEventListener('click', async () => {
+    const id = detId, txt = await listoParaUsar('copiar');
+    if (txt == null) return;
+    copiar(txt, ok => { if (ok) sumarUso(id); toast(ok ? 'Copiado ✓' : 'No se pudo copiar 😕'); });
+  });
+  $('#btnFav').addEventListener('click', () => {
+    const i = D.favs.indexOf(detId);
+    if (i === -1) D.favs.push(detId); else D.favs.splice(i, 1);
+    guardar();
+    pintarDetalle(false);
+    toast(i === -1 ? '⭐ En favoritos' : 'Quitado de favoritos');
+  });
+  $('#btnRellenar').addEventListener('click', () => { pintarDetalle(true); toast('Mensaje llenado de nuevo'); });
+  $('#btnOriginal').addEventListener('click', async () => {
+    if (!(await confirmar('¿Volver al texto original de este mensaje? Se borra tu versión editada.', 'Volver al original'))) return;
+    delete D.edits[detId];
+    guardar();
+    pintarDetalle(true);
+    toast('Listo: texto original');
+  });
+  $('#btnEditar').addEventListener('click', () => abrirEditor(detId));
+
+  /* ---------- Editar plantilla / mensaje propio ---------- */
+  let edId = null;   // null = mensaje propio nuevo
+  $('#tEtapa').innerHTML = ETAPAS.map(([k, n]) => `<option value="${k}">${esc(n)}</option>`).join('');
+  $('#tVars').innerHTML = VARS.map(([k, label]) => `<button type="button" class="var" data-var="${k}">${esc(label)}</button>`).join('');
+
+  function abrirEditor(id) {
+    edId = id || null;
+    const m = id ? porId(id) : null;
+    const base = !!(m && !m.propio);
+    $('#edT').textContent = !m ? 'Nuevo mensaje' : base ? 'Editar plantilla' : 'Editar mensaje';
+    $('#tNotaBase').hidden = !base;
+    $('#tCampos').hidden = base;
+    $('#tTitulo').value = m ? m.titulo : '';
+    $('#tEtapa').value = m ? m.etapa : (NOMBRE_ETAPA[D.etapa] ? D.etapa : 'cotizar');
+    $('#tTexto').value = m ? m.texto : '';
+    $('#tOriginal').hidden = !(m && m.editado);
+    $('#tBorrar').hidden = !(m && m.propio);
+    $('#tErr').textContent = '';
+    previa();
+    abrirHoja('hEdit');
+  }
+  function previa() {
+    const ps = partes($('#tTexto').value);
+    $('#tPrev').innerHTML = ps.length ? aHTML(ps) : '<span class="opc">Aquí verás tu mensaje.</span>';
+  }
+  $('#tTexto').addEventListener('input', previa);
+  $('#tVars').addEventListener('click', e => {
+    const b = e.target.closest('[data-var]');
+    if (!b) return;
+    const ta = $('#tTexto'), s = ta.selectionStart, f = ta.selectionEnd;
+    ta.setRangeText('{' + b.dataset.var + '}', s, f, 'end');
+    ta.focus();
+    previa();
+  });
+  $('#tGuardar').addEventListener('click', () => {
+    const texto = $('#tTexto').value.replace(/\r/g, '').trim();
+    if (!texto) { $('#tErr').textContent = 'Escribe el texto del mensaje.'; return; }
+    const m = edId ? porId(edId) : null;
+    if (m && !m.propio) {
+      if (texto === BASE_POR_ID[m.id].texto) delete D.edits[m.id]; else D.edits[m.id] = texto;
+    } else {
+      const titulo = limpia($('#tTitulo').value);
+      if (!titulo) { $('#tErr').textContent = 'Ponle un título corto para encontrarlo.'; $('#tTitulo').focus(); return; }
+      const datos = { titulo, etapa: $('#tEtapa').value, texto };
+      if (m) Object.assign(D.mios.find(x => x.id === m.id), datos);
+      else D.mios.push(Object.assign({ id: 'm' + Date.now().toString(36) }, datos));
+    }
+    guardar();
+    cerrarHoja();
+    if (detId) pintarDetalle(true);
+    toast('Guardado ✓');
+  });
+  $('#tOriginal').addEventListener('click', async () => {
+    if (!(await confirmar('¿Volver al texto original? Se borra tu versión editada.', 'Volver al original'))) return;
+    delete D.edits[edId];
+    guardar();
+    cerrarHoja();
+    if (detId) pintarDetalle(true);
+    toast('Listo: texto original');
+  });
+  $('#tBorrar').addEventListener('click', async () => {
+    const m = porId(edId);
+    if (!m || !(await confirmar(`¿Borrar “${m.titulo}”? No se puede deshacer.`, 'Borrar'))) return;
+    D.mios = D.mios.filter(x => x.id !== m.id);
+    D.favs = D.favs.filter(x => x !== m.id);
+    delete D.usos[m.id];
+    guardar();
+    cerrarHoja(pila.length);
+    toast('Mensaje borrado');
+  });
+  $('#btnNuevoMsg').addEventListener('click', () => abrirEditor(null));
+
+  /* ---------- Configuración ---------- */
+  const campoCfg = (ruta, etiqueta, o) => {
+    o = o || {};
+    const id = 'cf-' + ruta.replace(/\./g, '-');
+    const v = ruta.split('.').reduce((a, k) => (a == null ? a : a[k]), conf());
+    const input = `<input class="in" id="${id}" data-c="${ruta}"${o.num ? ' data-num' : ''} type="${o.tipo || 'text'}" inputmode="${o.num ? 'decimal' : o.modo || 'text'}" autocomplete="off" value="${esc(v)}"${o.ph ? ` placeholder="${esc(o.ph)}"` : ''}>`;
+    return `<div class="field"><label class="lbl" for="${id}">${etiqueta}${o.opc ? ' <span class="opc">(opcional)</span>' : ''}</label>${
+      o.pre === '$' ? `<div class="pesos">${input}</div>` : o.pre === '%' ? `<div class="pct">${input}</div>` : input}${o.ayuda ? `<p class="hint"${o.ayudaId ? ` id="${o.ayudaId}"` : ''}>${o.ayuda}</p>` : ''}</div>`;
+  };
+  function renderCfg() {
+    const c = conf();
+    $('#cfgForm').innerHTML =
+      `<section class="sec"><h3>Negocio</h3>` +
+        campoCfg('negocio', 'Nombre del negocio') + campoCfg('firma', 'Quién firma') +
+        campoCfg('instagram', 'Instagram', { ph: 'sin @', ayuda: 'Sale como @' + esc(limpia(c.instagram).replace(/^@/, '') || 'tucuenta') + '.' }) +
+        campoCfg('linkPagina', 'Link de la página', { tipo: 'url', modo: 'url', ph: 'https://…' }) +
+        campoCfg('linkCotizador', 'Link del cotizador', { tipo: 'url', modo: 'url', ph: 'https://…' }) +
+        campoCfg('linkDatos', 'Link de “Datos de tu evento”', { tipo: 'url', modo: 'url', ph: 'https://…', opc: true, ayuda: 'Si está vacío, los mensajes no lo mencionan.' }) +
+      `</section><section class="sec"><h3>Paquetes</h3>` +
+        c.paquetes.map((p, i) => `<div class="grupo"><h4>${i === 0 ? 'Esencial · {precio_esencial}' : 'Interactiva · {precio_interactiva}'}</h4>` +
+          campoCfg(`paquetes.${i}.nombre`, 'Nombre') +
+          `<div class="duo">${campoCfg(`paquetes.${i}.precio`, 'Precio', { num: true, pre: '$' })}${campoCfg(`paquetes.${i}.sesiones`, 'Sesiones', { num: true })}</div>` +
+          campoCfg(`paquetes.${i}.formato`, 'Formato') + `</div>`).join('') +
+      `</section><section class="sec"><h3>Extras</h3>` +
+        c.extras.map((x, i) => `<div class="ext"><div><label class="sr" for="cf-extras-${i}-nombre">Nombre del extra</label><input class="in" id="cf-extras-${i}-nombre" data-c="extras.${i}.nombre" type="text" autocomplete="off" value="${esc(x.nombre)}" placeholder="Nombre"></div>` +
+          `<div class="pesos"><label class="sr" for="cf-extras-${i}-precio">Precio de ${esc(x.nombre)}</label><input class="in" id="cf-extras-${i}-precio" data-c="extras.${i}.precio" data-num inputmode="decimal" type="text" autocomplete="off" value="${esc(x.precio)}"></div>` +
+          `<button type="button" class="quitar" data-quitar-extra="${i}" aria-label="Quitar ${esc(x.nombre || 'extra')}">✕</button></div>`).join('') +
+        `<button type="button" class="link" id="cfAgregarExtra">＋ Agregar extra</button>` +
+      `</section><section class="sec"><h3>Reglas</h3>` +
+        `<div class="duo">${campoCfg('anticipoPct', 'Anticipo', { num: true, pre: '%' })}${campoCfg('cambioExtra', 'Sesión extra', { num: true, pre: '$' })}</div>` +
+        `<div class="duo">${campoCfg('urg3', 'Urgencia 3 días', { num: true, pre: '%' })}${campoCfg('urg2', '2 días o menos', { num: true, pre: '%' })}</div>` +
+        campoCfg('entregaNormal', 'Entrega normal', { ph: '3 a 5 días' }) +
+      `</section><section class="sec"><h3>Datos de pago</h3>` +
+        `<p class="hint" style="margin:-4px 0 12px">Con banco, titular y CLABE se arma {datos_pago}. Si falta alguno, los mensajes lo marcan como faltante.</p>` +
+        campoCfg('banco', 'Banco', { ph: 'Ej. BBVA' }) + campoCfg('titular', 'Titular', { ph: 'Nombre completo' }) +
+        campoCfg('clabe', 'CLABE', { modo: 'numeric', ph: '18 dígitos', ayuda: ' ', ayudaId: 'clabeH' }) +
+      `</section><section class="sec"><h3>Plantillas</h3>` +
+        `<div class="acc" style="margin-top:0">` +
+        `<button type="button" class="btn btn-ghost btn-full" id="cfRestablecer">Restablecer los mensajes originales</button>` +
+        `<button type="button" class="btn btn-ghost btn-full" id="cfDescargar">⬇ Descargar respaldo (.json)</button>` +
+        `<button type="button" class="btn btn-ghost btn-full" id="cfCargar">⬆ Cargar respaldo</button></div>` +
+        `<p class="hint">El respaldo trae configuración, favoritos, tus mensajes y tus ediciones. Nunca datos de clientes.</p></section>`;
+    pintarClabe();
+  }
+  function pintarClabe() {
+    const h = $('#clabeH');
+    if (!h) return;
+    const n = digitos(conf().clabe).length;
+    h.textContent = !n ? 'Vacía: no se manda ninguna CLABE.' : n === 18 ? '✓ 18 dígitos' : `Lleva ${n} de 18 dígitos.`;
+    h.classList.toggle('ojo', n > 0 && n !== 18);
+  }
+  let tCfg = null;
+  function cfgCambio() {
+    clearTimeout(tCfg);
+    $('#guardado').textContent = 'Guardando…';
+    $('#guardado').classList.remove('error');
+    tCfg = setTimeout(() => {
+      const ok = guardar();
+      $('#guardado').textContent = ok ? '✓ Guardado' : '⚠ Sin guardar: este navegador no deja guardar';
+      $('#guardado').classList.toggle('error', !ok);
+    }, 350);
+    const sel = cli.extras;
+    renderCliOpciones();
+    cli.extras = sel;
+    recalcularTotal();
+    pintarCli();
+    if (detId) pintarDetalle(true);
+  }
+  $('#cfgForm').addEventListener('input', e => {
+    const t = e.target, ruta = t.dataset.c;
+    if (!ruta) return;
+    const ks = ruta.split('.'), ult = ks.pop();
+    const obj = ks.reduce((a, k) => a[k], conf());
+    obj[ult] = t.hasAttribute('data-num') ? Math.max(0, aNumero(t.value)) : t.value;
+    if (ruta === 'paquetes.0.sesiones' || ruta === 'paquetes.1.sesiones') obj[ult] = Math.round(obj[ult]);
+    if (ruta === 'anticipoPct') obj[ult] = Math.min(100, obj[ult]);
+    if (ruta === 'clabe') pintarClabe();
+    cfgCambio();
+  });
+  $('#cfgForm').addEventListener('click', async e => {
+    const q = e.target.closest('[data-quitar-extra]');
+    if (q) {
+      const i = +q.dataset.quitarExtra;
+      conf().extras.splice(i, 1);
+      cli.extras = cli.extras.filter(x => x !== i).map(x => (x > i ? x - 1 : x));
+      renderCfg(); cfgCambio();
+      return;
+    }
+    if (e.target.id === 'cfAgregarExtra') {
+      conf().extras.push({ nombre: '', precio: 0 });
+      renderCfg(); cfgCambio();
+      $(`#cf-extras-${conf().extras.length - 1}-nombre`).focus();
+    } else if (e.target.id === 'cfRestablecer') {
+      const n = Object.keys(D.edits).length;
+      if (!n) { toast('Tus mensajes ya están como los originales'); return; }
+      if (!(await confirmar(`Se borran tus cambios a ${n === 1 ? '1 mensaje base' : n + ' mensajes base'}. Tus mensajes propios y favoritos se quedan. ¿Restablecer?`, 'Restablecer'))) return;
+      D.edits = {};
+      guardar();
+      toast('Mensajes originales restablecidos');
+    } else if (e.target.id === 'cfDescargar') descargarRespaldo();
+    else if (e.target.id === 'cfCargar') $('#archivo').click();
+  });
+  $('#btnCfg').addEventListener('click', () => { renderCfg(); $('#guardado').textContent = ''; abrirHoja('hCfg'); });
+
+  /* ---------- Respaldo .json ---------- */
+  function descargarRespaldo() {
+    const datos = { app: APP_ID, version: 1, fecha: hoyISO(), config: D.config, favs: D.favs, edits: D.edits, mios: D.mios, usos: D.usos };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `respaldo-mensajes-invitia-${hoyISO()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    toast('Respaldo descargado ✓');
+  }
+  $('#archivo').addEventListener('change', () => {
+    const f = $('#archivo').files[0];
+    $('#archivo').value = '';
+    if (!f) return;
+    const lector = new FileReader();
+    lector.onload = async () => {
+      let obj;
+      try { obj = JSON.parse(lector.result); } catch (e) { obj = null; }
+      if (!obj || obj.app !== APP_ID || !obj.config || typeof obj.config !== 'object') {
+        await confirmar('Este archivo no es un respaldo de Mensajes de Invitia. No se cambió nada.', 'Entendido', '');
+        return;
+      }
+      const n = Array.isArray(obj.mios) ? obj.mios.length : 0;
+      if (!(await confirmar(`¿Cargar el respaldo del ${fechaLarga(obj.fecha) || 'archivo'}? Reemplaza tu configuración, favoritos, ediciones y mensajes propios (${n}).`, 'Cargar respaldo'))) return;
+      D = normDatos(Object.assign({}, obj, { etapa: D.etapa, clienteAbierto: D.clienteAbierto }));
+      const ok = guardar();
+      cli.extras = [];
+      renderCliOpciones();
+      recalcularTotal();
+      pintarCli();
+      renderCfg();
+      renderChips();
+      renderLista();
+      toast(ok ? 'Respaldo cargado ✓' : 'Cargado, pero este navegador no deja guardar');
+    };
+    lector.readAsText(f);
+  });
+
+  /* ---------- Copiar (con alternativa para navegadores internos) ---------- */
+  function copiarViejo(txt) {
+    const ta = document.createElement('textarea');
+    ta.value = txt; ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select(); ta.setSelectionRange(0, txt.length);
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function copiar(txt, listo) {
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(txt).then(() => listo(true), () => listo(copiarViejo(txt)));
+    else listo(copiarViejo(txt));
+  }
+
+  /* ---------- Aviso flotante y confirmación ---------- */
+  let tToast = null;
+  function toast(msg) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('on');
+    clearTimeout(tToast);
+    tToast = setTimeout(() => t.classList.remove('on'), 2400);
+  }
+  function confirmar(msg, si, no) {
+    return new Promise(res => {
+      const m = $('#modal'), antes = document.activeElement;
+      $('#mTxt').textContent = msg;
+      $('#mSi').textContent = si || 'Sí';
+      $('#mNo').textContent = no || '';
+      $('#mNo').hidden = no === '';
+      if (no === undefined) { $('#mNo').textContent = 'Cancelar'; $('#mNo').hidden = false; }
+      m.hidden = false;
+      $('#mSi').focus();
+      const fin = v => {
+        m.hidden = true;
+        $('#mSi').onclick = $('#mNo').onclick = m.onkeydown = m.onclick = null;
+        if (antes && antes.focus) antes.focus({ preventScroll: true });
+        res(v);
+      };
+      $('#mSi').onclick = () => fin(true);
+      $('#mNo').onclick = () => fin(false);
+      m.onclick = e => { if (e.target === m) fin(false); };
+      m.onkeydown = e => { if (e.key === 'Escape') fin(false); };
+    });
+  }
+
+  /* ---------- Lista: búsqueda, etapas y abrir ---------- */
+  $('#q').addEventListener('input', renderLista);
+  $('#chips').addEventListener('click', e => {
+    const b = e.target.closest('[data-f]');
+    if (!b) return;
+    D.etapa = b.dataset.f;
+    guardar();
+    $$('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
+    renderLista();
+  });
+  $('#lista').addEventListener('click', e => { const b = e.target.closest('[data-abrir]'); if (b) abrirDetalle(b.dataset.abrir); });
+
+  /* ---------- Arranque ---------- */
+  $('#logo').src = ISOTIPO;
+  (function favicon() {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const c = document.createElement('canvas'), x = c.getContext('2d');
+        c.width = c.height = 64;
+        const h = 60, w = img.width * h / img.height;
+        x.drawImage(img, (64 - w) / 2, 2, w, h);
+        $('#favicon').href = c.toDataURL('image/png');
+      } catch (e) { /* se queda el isotipo tal cual */ }
+    };
+    img.src = ISOTIPO;
+  })();
+  cargar();
+  $('#avisoAlmacen').hidden = almacenOk;
+  $('#cli').open = D.clienteAbierto;
+  history.replaceState({ hojas: 0 }, '');
+  renderChips();
+  renderCliOpciones();
+  renderLista();
+  const chipSel = $('.chip[aria-pressed="true"]');
+  if (chipSel) $('#chips').scrollLeft = Math.max(0, chipSel.offsetLeft - 16);
+})();
+</script>
+</body>
+</html>
