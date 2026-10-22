@@ -238,7 +238,7 @@ const PAQUETES = [
 ];
 const EXTRAS = [
   { id: "monograma",  nombre: "Diseño de monograma", detalle: "Tus iniciales en un sello único", precio: 400 },
-  { id: "multipases", nombre: "Multipases",          detalle: "Pases personalizados de 2 a 5 personas", precio: 200 },
+  { id: "multipases", nombre: "Multipases",          detalle: "La misma invitación en varias versiones, cada una con el número de personas de su pase", precio: 200 },
   { id: "galeria",    nombre: "Galería",             detalle: "De 4 a 7 fotografías", precio: 400 }
 ];
 const URGENCIA = [            // de menor a mayor número de días
@@ -248,7 +248,6 @@ const URGENCIA = [            // de menor a mayor número de días
 const ANTICIPO = 0.5;
 const ENTREGA_NORMAL = "3 a 5 días";
 const EVENTOS = ["XV años", "Boda", "Baby shower", "Graduación", "Cumpleaños", "Otro"];
-const PASES = ["Menos de 50", "50 a 100", "100 a 200", "Más de 200", "Aún no lo sé"];
 const ESTILOS = ["Elegante y clásico", "Minimalista", "Floral / acuarela", "Vintage / barroco", "Moderno", "Divertido / infantil", "Aún no lo sé"];
 const ORIGEN = ["Instagram", "Facebook", "TikTok", "Me recomendaron", "Google", "Otro"];
 const MAX_ESTILOS = 2;
@@ -303,16 +302,15 @@ function construirFicha(estado, calc, config) {
   const evento = estado.evento === "Otro" && estado.eventoOtro.trim() ? estado.eventoOtro.trim() : estado.evento;
   const origen = estado.origen === "Otro" && estado.origenOtro.trim() ? estado.origenOtro.trim() : estado.origen;
   const l = [
-    "Hola " + config.negocio + " 👋 Quiero cotizar una invitación.",
+    "✉️ Hola " + config.negocio + " ✨ Quiero cotizar una invitación.",
     "",
-    "FICHA DE COTIZACIÓN · " + config.negocio.toUpperCase(),
+    "🎉 FICHA DE COTIZACIÓN · " + config.negocio.toUpperCase() + " 🎊",
     "Cliente: " + o(estado.nombre),
     "Evento: " + o(evento),
     "Festejado(a): " + o(estado.festejado),
     "Fecha del evento: " + fmtFecha(estado.fechaEvento),
     "Paquete: " + (paq ? paq.nombre : estado.paquete === "ayuda" ? "Por definir (ayúdame a elegir)" : "—"),
     "Extras: " + (extras.length ? extras.join("; ") : "Ninguno"),
-    "Pases/invitados: " + o(estado.pases),
     "Entrega deseada: " + fmtFecha(estado.fechaEntrega),
     "Urgencia: " + (calc.urgencia ? calc.urgencia.etiqueta : "Normal"),
     "Estilo: " + (estado.estilos.length ? estado.estilos.join("; ") : "—"),
@@ -352,7 +350,7 @@ if (!WA) console.warn("[Cotizador] Falta MARCA.whatsapp: el botón de WhatsApp s
 
 const estado = {
   evento: "", eventoOtro: "", festejado: "", fechaEvento: "",
-  paquete: "", extras: [], pases: "",
+  paquete: "", extras: [],
   entrega: "", fechaEntrega: "", fechaOtra: "",
   estilos: [], colores: "", foto: "",
   nombre: "", origen: "", origenOtro: "",
@@ -395,14 +393,13 @@ const PASOS_HTML = [
   '<p class="err" id="err2" role="alert"></p>' +
   '<p class="ayuda-l">¿Solo la quieres mandar por WhatsApp? Esencial. ¿Quieres mapa, confirmación y mesa de regalos a un toque? Interactiva.</p>',
 
-/* 3 */ titulo(3, "Extras y pases") +
+/* 3 */ titulo(3, "Extras") +
   '<p class="lead">Todo es opcional. Actívalo solo si lo quieres.</p>' +
   '<fieldset><legend>Extras <span class="opc">(opcional)</span></legend>' +
   EXTRAS.map(x => '<label class="sw" data-extra="' + x.id + '"><input type="checkbox" role="switch" name="extra" value="' + x.id + '">' +
     '<span class="sw-t"><b>' + esc(x.nombre) + '</b><small>' + esc(x.detalle) + '</small></span>' +
     '<span class="sw-p">' + (tienePrecio(x.precio) ? "+" + dinero(x.precio) : "A cotizar") + '</span><span class="track" aria-hidden="true"></span></label>').join("") +
-  '</fieldset>' +
-  '<fieldset><legend>¿Cuántos invitados o pases, más o menos? <span class="opc">(opcional)</span></legend>' + radios("pases", PASES) + '</fieldset>',
+  '</fieldset>',
 
 /* 4 */ titulo(4, "¿Para cuándo la necesitas?") +
   '<p class="lead">La entrega normal es de ' + ENTREGA_NORMAL + '. Si no tienes prisa, puedes saltar este paso.</p>' +
@@ -455,7 +452,6 @@ document.addEventListener("change", e => {
   }
   if (n === "paquete") { estado.paquete = t.value; errorEn("err2"); }
   if (n === "extra") estado.extras = vals("extra");
-  if (n === "pases") estado.pases = t.value;
   if (n === "entrega") {
     estado.entrega = t.value;
     $("#fechaOtraW").hidden = t.value !== "otra";
@@ -590,7 +586,7 @@ $("#btnAtras").addEventListener("click", () => {
 
 /* ---------- Resumen ---------- */
 function ficha() { return construirFicha(estado, calcular(estado, CFG), CFG); }
-function waUrl() { return "https://wa.me/" + WA + "?text=" + encodeURIComponent(ficha()); }
+function waUrl() { return "https://api.whatsapp.com/send?phone=" + WA + "&text=" + encodeURIComponent(ficha()); }  // api.whatsapp.com conserva los emojis (wa.me los rompe en la redirección)
 
 function renderResumen() {
   completo = true;
@@ -612,7 +608,7 @@ function renderResumen() {
   const det = [
     [1, "Tu evento", une([evento, estado.festejado.trim(), estado.fechaEvento && fmtFecha(estado.fechaEvento)])],
     [2, "Formato", paq ? paq.nombre : "Ayúdame a elegir"],
-    [3, "Extras y pases", une([extras.join(", ") || "Sin extras", estado.pases && "Pases: " + estado.pases])],
+    [3, "Extras", extras.join(", ") || "Sin extras"],
     [4, "Entrega", estado.fechaEntrega ? fmtFecha(estado.fechaEntrega) + " · " + (c.urgencia ? "exprés " + c.urgencia.etiqueta : "normal") : "Normal (" + ENTREGA_NORMAL + ")"],
     [5, "Estilo", une([estado.estilos.join(", "), estado.colores.trim(), estado.foto && "Foto: " + estado.foto])],
     [6, "Tus datos", une([estado.nombre.trim(), origen])]
