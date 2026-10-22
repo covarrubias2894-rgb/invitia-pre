@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Pruebas con marca de agua · Invitia atelier</title>
+<meta name="theme-color" content="#F1EBE0">
+<link rel="icon" id="favicon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAABECAYAAACxiwTbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGFSURBVFhH7Ze/LgRRFMb3ISgoFbrNFPP/7xMoJNOsYqPjAYiohI1gExQknkMhPMHWPAOC9Sdq1fi+O+cmg3UzncI9yS/3zDnfd+fM3GmmEwTBehzHr77v3wp3qN2DB+SP4An5GLyAtyiKPrBudhhIzrIsq1CswjD8FWqw0YEy6UDhOE3TCpv8gCbpDUReh+M4U1xhPvpubph2qEmSZIarChgu0NhjjvWQQj0ec/S3RXeC/hVzFSjc5HlOwYZcD7FzRSDcYg3roCgKaq55rQLFUUOo3pjruvO4nmMO8S7vLP0Rayow0qkeD0fD5jnEi1hLcCkGNTa1YlPGrj4KCmjWE8hGqieartjq8DxvjTuySWET1tijRuRfA6IViMYUNUHtGaOvimxy8Ewh7IN9jDUEy8inpf2/Ag8+CxbwqltBLT08gj6/Ux50G6ilh8ae/qTaINqeNU7AGg1YowFrNGCNBqzRgDUasEYD1mjgD434n1jivwX/ZNpALT28Y4ld3rG2otYG5SfwLQwlD1P22gAAAABJRU5ErkJggg==">
+<style>
+  :root{
+    --beige:#F1EBE0;
+    --beige-2:#E6DDCD;
+    --tan:#B3A288;
+    --cream:#D1C8B8;
+    --paper:#FAF7F1;
+    --ink:#2F2F2E;
+    --ink-2:#57544E;
+    --muted:#8A857B;
+    --line:#DBD1C0;
+    --moss:#5F6B45;
+    --moss-d:#4A5435;
+    --mustard:#C79A2E;
+    --mustard-l:#EAD7A4;
+    --serif: Georgia, "Times New Roman", "Iowan Old Style", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --r: 18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--beige);color:var(--ink);line-height:1.5;font-size:16px;overflow-x:hidden;min-height:100vh}
+  button,input{font:inherit;color:inherit}
+  button{cursor:pointer;border:0;background:none}
+  a{color:inherit}
+  [hidden]{display:none!important}
+  :focus-visible{outline:3px solid var(--moss);outline-offset:2px}
+  .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px}
+
+  .app{max-width:560px;margin:0 auto;padding:0 16px calc(32px + env(safe-area-inset-bottom))}
+  @media (min-width:960px){
+    .app{max-width:1040px}
+    /* En celular va 1-2-3-4 de arriba abajo; en Mac: subir y ajustes a la izquierda, vista y listo a la derecha */
+    .cols{display:grid;grid-template-columns:minmax(0,1fr) 400px;column-gap:32px;align-items:start}
+    .s1{grid-column:1;grid-row:1}
+    .s3{grid-column:1;grid-row:2 / span 2}
+    .s2{grid-column:2;grid-row:1 / span 2}
+    .s4{grid-column:2;grid-row:3}
+    .vista .marco{max-height:calc(100vh - 240px)}
+  }
+
+  /* ---------- Encabezado ---------- */
+  .top{display:flex;align-items:center;gap:12px;padding:20px 0 4px}
+  .top img{height:34px;width:auto}
+  .top .t{font-family:var(--serif);font-size:1.15rem;line-height:1.2}
+  .h{font-family:var(--serif);font-weight:400;font-size:1.8rem;line-height:1.15;letter-spacing:-.01em;margin:20px 0 6px}
+  .lead{color:var(--ink-2);margin-bottom:20px}
+  .sec{margin-bottom:28px}
+  .sec-t{display:flex;align-items:baseline;gap:10px;font-family:var(--serif);font-weight:400;font-size:1.3rem;line-height:1.2;margin-bottom:12px}
+  .sec-t .n{flex:none;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--moss);color:#fff;font-family:var(--sans);font-size:.85rem;font-weight:600;transform:translateY(-2px)}
+
+  fieldset{border:0;margin:0 0 22px;min-width:0}
+  legend,.lbl{display:block;font-weight:600;font-size:1rem;margin-bottom:10px;padding:0}
+  .opc{font-weight:400;color:var(--muted);font-size:.85rem}
+  .opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .opt{position:relative;display:block}
+  .opt input{position:absolute;opacity:0;width:1px;height:1px;left:12px;top:12px}
+  .opt .b{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:52px;height:100%;padding:11px 40px 11px 14px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;cursor:pointer;transition:border-color .15s,background .15s;line-height:1.3}
+  .opt .b::after{content:"";position:absolute;right:13px;top:50%;width:18px;height:18px;margin-top:-9px;border:1.5px solid var(--tan);border-radius:50%;background:var(--paper) center/12px no-repeat}
+  .opt input:checked + .b{border-color:var(--moss);background:var(--mustard-l)}
+  .opt input:checked + .b::after{border-color:var(--moss);background-color:var(--moss);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+  .opt input:focus-visible + .b{outline:3px solid var(--moss);outline-offset:2px}
+  /* Opciones compactas (estilo y color): palomita arriba, texto centrado */
+  .opts.mini .b{align-items:center;text-align:center;padding:30px 6px 10px;font-size:.9rem}
+  .opts.mini .b::after{right:auto;left:50%;top:8px;margin:0 0 0 -9px}
+  .muestra{display:block;width:40px;height:30px;margin:0 auto 6px;border-radius:6px;border:1px solid var(--line);background:#fff}
+
+  .field{margin:0 0 22px}
+  .in{display:block;width:100%;min-height:50px;padding:12px 14px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;font-size:1rem;-webkit-appearance:none;appearance:none}
+  .in:focus{border-color:var(--moss);outline:none;box-shadow:0 0 0 3px rgba(95,107,69,.25)}
+  .hint{font-size:.85rem;color:var(--ink-2);margin-top:8px}
+
+  /* Interruptores */
+  .sw{position:relative;display:flex;align-items:center;gap:12px;min-height:64px;padding:12px 14px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,background .15s}
+  .sw input{position:absolute;opacity:0;width:1px;height:1px}
+  .sw-t{flex:1;min-width:0;line-height:1.3}
+  .sw-t b{font-weight:600}
+  .sw-t small{display:block;font-size:.82rem;color:var(--ink-2);margin-top:2px}
+  .track{flex:none;position:relative;width:46px;height:28px;border-radius:99px;background:var(--cream);transition:background .2s}
+  .track::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+  .sw:has(input:checked){border-color:var(--moss);background:var(--mustard-l)}
+  .sw input:checked ~ .track{background:var(--moss)}
+  .sw input:checked ~ .track::after{transform:translateX(18px)}
+  .sw:has(input:focus-visible){outline:3px solid var(--moss);outline-offset:2px}
+
+  /* Deslizadores (misma pista y perilla que los interruptores) */
+  .rg{padding:12px 14px 6px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px}
+  .rg-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .rg-top b{font-weight:600}
+  .rg-top output{font-size:.9rem;color:var(--moss-d);font-weight:600}
+  .rg input{display:block;width:100%;height:48px;margin:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer;--p:50%}
+  .rg input:focus{outline:none}
+  .rg input::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:linear-gradient(to right,var(--moss) var(--p),var(--cream) var(--p))}
+  .rg input::-moz-range-track{height:8px;border-radius:99px;background:var(--cream)}
+  .rg input::-moz-range-progress{height:8px;border-radius:99px;background:var(--moss)}
+  .rg input::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-10px;border-radius:50%;background:#fff;border:0;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+  .rg input::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#fff;border:0;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+  .rg input:focus-visible::-webkit-slider-thumb{outline:3px solid var(--moss);outline-offset:2px}
+  .rg input:focus-visible::-moz-range-thumb{outline:3px solid var(--moss);outline-offset:2px}
+  .rg-ext{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:-8px}
+
+  /* Botones */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:52px;padding:0 22px;border-radius:999px;font-weight:600;font-size:1rem;text-decoration:none;text-align:center;line-height:1.2;transition:background .2s,transform .15s,opacity .2s}
+  .btn:active{transform:scale(.97)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  .btn-moss{background:var(--moss);color:#fff}
+  .btn-moss:hover:not(:disabled){background:var(--moss-d)}
+  .btn-ghost{border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+  .btn-full{display:flex;width:100%}
+  .btn-big{min-height:60px;font-size:1.08rem}
+  .acciones{display:grid;gap:10px}
+
+  /* Subir */
+  .zona{border:2px dashed transparent;border-radius:var(--r);transition:border-color .15s,background .15s}
+  .zona-txt{display:none;text-align:center;font-size:.9rem;color:var(--ink-2);padding:10px 0 4px}
+  @media (hover:hover) and (pointer:fine){
+    .zona{border-color:var(--tan);padding:14px;background:rgba(250,247,241,.5)}
+    .zona-txt{display:block}
+  }
+  .zona.encima{border-color:var(--moss);background:var(--mustard-l)}
+  .tiras{display:flex;gap:10px;overflow-x:auto;padding:14px 2px 6px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .mini-i{position:relative;flex:none;scroll-snap-align:start}
+  .mini-i > button.ver{display:block;width:76px;height:96px;border-radius:12px;overflow:hidden;background:var(--paper);border:2px solid var(--line);padding:0}
+  .mini-i > button.ver img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+  .mini-i.on > button.ver{border-color:var(--moss);box-shadow:0 0 0 2px var(--moss)}
+  .mini-i .n{position:absolute;left:6px;bottom:6px;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:rgba(47,47,46,.75);color:#fff;font-size:.75rem;font-weight:600;line-height:22px;text-align:center;pointer-events:none}
+  .mini-i .quita{position:absolute;top:-10px;right:-10px;width:48px;height:48px;display:flex;align-items:flex-start;justify-content:flex-end;padding:6px}
+  .mini-i .quita span{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:.8rem;line-height:1;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+
+  /* Avisos */
+  .avisos{display:grid;gap:8px;margin-top:12px}
+  .avisos:empty{display:none}
+  .aviso{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;padding:12px 14px;border-radius:14px;background:var(--paper);border:1px solid var(--mustard);border-left-width:4px}
+  .aviso p{flex:1;min-width:0}
+  .aviso button{flex:none;width:48px;height:48px;margin:-12px -14px -12px 0;color:var(--ink-2)}
+
+  /* Vista previa */
+  .marco{position:relative;max-height:72vh;overflow-y:auto;overflow-x:hidden;border-radius:14px;background:var(--paper) repeating-conic-gradient(var(--beige-2) 0 25%,var(--paper) 0 50%) 0 0/20px 20px;border:1px solid var(--line);-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  .marco canvas{display:block;width:100%;height:auto}
+  .pie-v{display:flex;justify-content:space-between;gap:10px;font-size:.82rem;color:var(--ink-2);margin-top:8px}
+  .pie-v span:last-child{text-align:right}
+
+  /* Ajustes */
+  details.mas{margin-bottom:22px}
+  details.mas > summary{display:flex;align-items:center;min-height:52px;padding:0 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);cursor:pointer;color:var(--moss-d);font-weight:600;list-style:none}
+  details.mas > summary::-webkit-details-marker{display:none}
+  details.mas > summary::after{content:"+";margin-left:auto;font-size:1.2rem}
+  details.mas[open] > summary{margin-bottom:14px}
+  details.mas[open] > summary::after{content:"–"}
+  .restablecer{min-height:48px;color:var(--moss-d);font-weight:600;text-decoration:underline;text-underline-offset:3px;font-size:.92rem}
+
+  /* Listo */
+  .estado{display:flex;align-items:center;gap:10px;min-height:48px;font-size:.95rem;color:var(--ink-2);margin-bottom:10px}
+  .estado .bar{flex:1;height:6px;background:var(--beige-2);border-radius:99px;overflow:hidden}
+  .estado .bar i{display:block;height:100%;width:0;background:var(--mustard);border-radius:99px;transition:width .25s ease}
+  .nota{font-size:.9rem;color:var(--ink-2);margin:4px 2px 0}
+  .candado{text-align:center;font-size:.88rem;color:var(--ink-2);padding:22px 8px 8px;border-top:1px solid var(--line);margin-top:8px}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <img id="logo" alt="Invitia atelier" width="14" height="68">
+    <span class="t">Pruebas con marca de agua</span>
+  </header>
+  <h1 class="h">Protege tu diseño</h1>
+  <p class="lead">Elige la imagen, revisa y toca “Compartir”. Tu cliente la puede revisar, pero no mandar como invitación final.</p>
+
+  <div class="cols">
+      <!-- 1 -->
+      <section class="sec s1" aria-labelledby="t1">
+        <h2 class="sec-t" id="t1"><span class="n">1</span>Sube tus pruebas</h2>
+        <div class="zona" id="zona">
+          <input type="file" id="archivos" class="sr" accept="image/jpeg,image/png,image/webp" multiple tabindex="-1">
+          <button type="button" class="btn btn-moss btn-full btn-big" id="elegir">📎 Elegir imágenes</button>
+          <p class="zona-txt">o arrástralas aquí desde tu carpeta</p>
+        </div>
+        <div class="tiras" id="tiras" role="list" aria-label="Imágenes elegidas" hidden></div>
+        <div class="avisos" id="avisos" aria-live="polite"></div>
+      </section>
+
+      <!-- 2 -->
+      <section class="sec s2 vista con-img" aria-labelledby="t2" hidden>
+        <h2 class="sec-t" id="t2"><span class="n">2</span>Vista previa</h2>
+        <div class="marco" id="marco"><canvas id="lienzo" role="img" aria-label="Vista previa con marca de agua"></canvas></div>
+        <p class="pie-v"><span id="vistaN"></span><span id="vistaTam"></span></p>
+      </section>
+
+        <section class="sec s3 con-img" aria-labelledby="t3" hidden>
+          <h2 class="sec-t" id="t3"><span class="n">3</span>Ajustes</h2>
+          <div class="field">
+            <label class="lbl" for="cliente">Nombre del cliente <span class="opc">(opcional)</span></label>
+            <input class="in" id="cliente" type="text" maxlength="40" placeholder="Ej. Ana Lucía" autocomplete="off" autocapitalize="words">
+            <p class="hint" id="clienteHint">Si lo escribes, se agrega “Prueba para … · fecha”.</p>
+          </div>
+          <fieldset>
+            <legend>Estilo</legend>
+            <div class="opts mini" id="opEstilo"></div>
+          </fieldset>
+          <details class="mas" id="mas">
+            <summary>Más ajustes</summary>
+            <div class="field">
+              <label class="lbl" for="texto">Texto</label>
+              <input class="in" id="texto" type="text" maxlength="40" autocomplete="off">
+            </div>
+            <label class="sw"><input type="checkbox" role="switch" id="iso">
+              <span class="sw-t"><b>Incluir isotipo</b><small>La “i” de Invitia junto al texto</small></span><span class="track" aria-hidden="true"></span></label>
+            <div class="rg"><div class="rg-top"><b><label for="opacidad">Opacidad</label></b><output id="opacidadV" for="opacidad"></output></div>
+              <input type="range" id="opacidad" min="10" max="60" step="1"><div class="rg-ext" aria-hidden="true"><span>Suave</span><span>Fuerte</span></div></div>
+            <div class="rg"><div class="rg-top"><b><label for="tamano">Tamaño</label></b><output id="tamanoV" for="tamano"></output></div>
+              <input type="range" id="tamano" min="1" max="5" step="1"><div class="rg-ext" aria-hidden="true"><span>Chico</span><span>Grande</span></div></div>
+            <fieldset style="margin-top:12px">
+              <legend>Color</legend>
+              <div class="opts mini" id="opColor"></div>
+            </fieldset>
+            <label class="sw"><input type="checkbox" role="switch" id="calidad">
+              <span class="sw-t"><b>Bajar calidad</b><small>Máximo 1080 px (en tiras largas, 720 de ancho). Sirve para revisar, no para imprimir ni mandar a invitados.</small></span><span class="track" aria-hidden="true"></span></label>
+            <button type="button" class="restablecer" id="restablecer">Volver a los valores de siempre</button>
+          </details>
+        </section>
+
+      <!-- 4 -->
+      <section class="sec s4 con-img" aria-labelledby="t4" hidden>
+        <h2 class="sec-t" id="t4"><span class="n">4</span>Listo</h2>
+        <div class="estado" aria-live="polite"><span id="estadoTxt">Preparando…</span><span class="bar" aria-hidden="true"><i id="estadoBar"></i></span></div>
+        <div class="acciones">
+          <button type="button" class="btn btn-moss btn-full btn-big" id="compartir" hidden disabled>Compartir</button>
+          <button type="button" class="btn btn-full" id="descargar" disabled>Descargar</button>
+          <p class="nota" id="notaCompartir" hidden>Después mándalas por WhatsApp desde tu galería o tus archivos.</p>
+          <button type="button" class="btn btn-ghost btn-full" id="nuevas">🆕 Nuevas pruebas</button>
+        </div>
+      </section>
+  </div>
+
+  <p class="candado">🔒 Tus diseños no se suben a internet: todo pasa en tu celular.</p>
+</div>
+
+<script>
+/* ===== MARCA ===== */
+const MARCA = {
+  negocio: "Invitia atelier",
+  logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAABECAYAAACxiwTbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGFSURBVFhH7Ze/LgRRFMb3ISgoFbrNFPP/7xMoJNOsYqPjAYiohI1gExQknkMhPMHWPAOC9Sdq1fi+O+cmg3UzncI9yS/3zDnfd+fM3GmmEwTBehzHr77v3wp3qN2DB+SP4An5GLyAtyiKPrBudhhIzrIsq1CswjD8FWqw0YEy6UDhOE3TCpv8gCbpDUReh+M4U1xhPvpubph2qEmSZIarChgu0NhjjvWQQj0ec/S3RXeC/hVzFSjc5HlOwYZcD7FzRSDcYg3roCgKaq55rQLFUUOo3pjruvO4nmMO8S7vLP0Rayow0qkeD0fD5jnEi1hLcCkGNTa1YlPGrj4KCmjWE8hGqieartjq8DxvjTuySWET1tijRuRfA6IViMYUNUHtGaOvimxy8Ewh7IN9jDUEy8inpf2/Ag8+CxbwqltBLT08gj6/Ux50G6ilh8ae/qTaINqeNU7AGg1YowFrNGCNBqzRgDUasEYD1mjgD434n1jivwX/ZNpALT28Y4ld3rG2otYG5SfwLQwlD1P22gAAAABJRU5ErkJggg=="
+};
+
+/* ===== CONFIG ===== */
+const CLAVE = "invitia_prueba_v1";
+const DEF = { estilo: "mosaico", texto: "PRUEBA · Invitia atelier", iso: true, opacidad: 28, tamano: 3, color: "auto", calidad: true };
+const ESTILOS = [{ v: "mosaico", t: "Mosaico" }, { v: "centro", t: "Centro grande" }, { v: "franja", t: "Franja abajo" }];
+const COLORES = [{ v: "auto", t: "Automático" }, { v: "claro", t: "Claro" }, { v: "oscuro", t: "Oscuro" }];
+const TAMANOS = ["Chico", "Mediano chico", "Medio", "Mediano grande", "Grande"];
+const BAJA = { lado: 1080, tira: 720, q: 0.72 }; // "Bajar calidad"
+const ALTA_Q = 0.9;                             // sin bajar calidad
+const MAX_PX = 16e6;                            // límite de canvas del iPhone
+const VISTA_ANCHO = 900, VISTA_PX = 3e6;        // vista previa ligera
+const TINTA = "#2F2F2E", BLANCO = "#FFFFFF";
+
+/* ============================================================
+   DIBUJO DE LA MARCA — no depende de la pantalla, solo de la imagen
+   ============================================================ */
+const FUENTE = 'bold {F}px Georgia, "Times New Roman", serif';
+const fuente = F => FUENTE.replace("{F}", F.toFixed(1));
+const pad2 = n => String(n).padStart(2, "0");
+const hoyTxt = () => { const d = new Date(); return pad2(d.getDate()) + "/" + pad2(d.getMonth() + 1) + "/" + d.getFullYear(); };
+
+/* Isotipo dibujado con trazos (nítido a cualquier tamaño y de cualquier color).
+   Medidas tomadas de Assets/isotipo.jpeg (lienzo de 1600): ocupa x 728–872, y 451–1149. */
+const ISO_W = 144, ISO_H = 698;
+function isotipo(ctx, x, y, alto, color) {
+  const s = alto / ISO_H;
+  ctx.save();
+  ctx.translate(x - 728 * s, y - 451 * s);
+  ctx.scale(s, s);
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.moveTo(728, 451); ctx.lineTo(872, 451); ctx.lineTo(800, 523); ctx.closePath(); ctx.fill();   // sobre
+  ctx.save();
+  ctx.beginPath(); ctx.moveTo(700, 440); ctx.lineTo(800, 540); ctx.lineTo(900, 440); ctx.lineTo(900, 600); ctx.lineTo(700, 600); ctx.closePath(); ctx.clip();
+  ctx.beginPath(); ctx.arc(800, 510, 60, 0, Math.PI * 2); ctx.fill();                                              // punto
+  ctx.restore();
+  ctx.fillRect(734, 623, 132, 526);                                                                                // palito
+  ctx.restore();
+}
+
+/* Sello: isotipo + texto (+ línea del cliente) en un canvas aparte, con sombra suave.
+   Se dibuja una vez y se repite; la opacidad se aplica al pegarlo. */
+function hacerSello(o, F, tono) {
+  const l1 = (o.texto || "").trim() || DEF.texto;
+  const l2 = o.cliente ? "Prueba para " + o.cliente + " · " + o.fecha : "";
+  const F2 = F * 0.6;
+  const m = document.createElement("canvas").getContext("2d");
+  m.font = fuente(F); const w1 = m.measureText(l1).width;
+  m.font = fuente(F2); const w2 = l2 ? m.measureText(l2).width : 0;
+  const altoTxt = F * 0.95 + (l2 ? F2 * 1.45 : 0);
+  const isoH = o.iso ? Math.max(F * 1.3, altoTxt) : 0, isoW = isoH * ISO_W / ISO_H, sep = o.iso ? F * 0.45 : 0;
+  const pad = Math.ceil(F * 0.35);
+  const c = document.createElement("canvas");
+  c.width = Math.ceil(pad * 2 + isoW + sep + Math.max(w1, w2));
+  c.height = Math.ceil(pad * 2 + Math.max(isoH, altoTxt));
+  const x = c.getContext("2d");
+  x.textBaseline = "alphabetic";
+  const y0 = pad + (c.height - pad * 2 - altoTxt) / 2, tx = pad + isoW + sep;
+  const isoY = pad + (c.height - pad * 2 - isoH) / 2;
+  const lineas = [[l1, F, y0 + F * 0.78], [l2, F2, y0 + F * 0.95 + F2 * 1.15]].filter(l => l[0]);
+  // 1) Halo de contraste con sombra suave: se lee sobre fondos claros, oscuros y medios
+  x.shadowColor = tono.sombra; x.shadowBlur = F * 0.22; x.shadowOffsetY = F * 0.03;
+  x.strokeStyle = tono.halo; x.lineJoin = "round";
+  if (o.iso) { isotipo(x, pad, isoY, isoH, tono.halo); }
+  lineas.forEach(l => { x.font = fuente(l[1]); x.lineWidth = l[1] * 0.14; x.strokeText(l[0], tx, l[2]); });
+  // 2) Letra encima
+  x.shadowColor = "transparent";
+  if (o.iso) isotipo(x, pad, isoY, isoH, tono.tinta);
+  x.fillStyle = tono.tinta;
+  lineas.forEach(l => { x.font = fuente(l[1]); x.fillText(l[0], tx, l[2]); });
+  return c;
+}
+
+function tonos(color, luz) {
+  const claro = color === "claro" || (color === "auto" && luz < 0.55);
+  return claro
+    ? { tinta: BLANCO, halo: "rgba(47,47,46,.5)", sombra: "rgba(47,47,46,.6)", fondo: "rgba(47,47,46,1)", claro: true }
+    : { tinta: TINTA, halo: "rgba(255,255,255,.55)", sombra: "rgba(255,255,255,.7)", fondo: "rgba(250,247,241,1)", claro: false };
+}
+
+/* Brillo promedio (0 oscuro – 1 claro) de lo que ya está dibujado */
+function brillo(fuenteImg) {
+  const c = document.createElement("canvas"); c.width = c.height = 32;
+  const x = c.getContext("2d", { willReadFrequently: true });
+  x.fillStyle = "#fff"; x.fillRect(0, 0, 32, 32);
+  x.drawImage(fuenteImg, 0, 0, 32, 32);
+  const d = x.getImageData(0, 0, 32, 32).data; let s = 0;
+  for (let i = 0; i < d.length; i += 4) s += 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
+  return s / (d.length / 4) / 255;
+}
+
+const FRAC = [0.032, 0.04, 0.05, 0.062, 0.076];   // alto de letra / ancho de imagen
+function marcar(ctx, W, H, o, luz) {
+  const tono = tonos(o.color, luz);
+  const nivel = Math.min(5, Math.max(1, Math.round(o.tamano))) - 1;
+  const a = o.opacidad / 100;
+  ctx.save();
+  if (o.estilo === "centro") {
+    const ang = -Math.PI / 6, cos = Math.cos(ang), sin = Math.abs(Math.sin(ang));
+    let sello = hacerSello(o, 100, tono);
+    const objetivo = W * [0.62, 0.7, 0.8, 0.88, 0.95][nivel];
+    const esc = objetivo / (sello.width * cos + sello.height * sin);
+    sello = hacerSello(o, 100 * esc, tono);
+    // En imágenes largas se repite para que ninguna página quede limpia
+    const n = H > W * 2 ? Math.max(2, Math.round(H / (W * 1.4))) : 1;
+    ctx.globalAlpha = a;
+    for (let i = 0; i < n; i++) {
+      ctx.save(); ctx.translate(W / 2, H * (i + 0.5) / n); ctx.rotate(ang);
+      ctx.drawImage(sello, -sello.width / 2, -sello.height / 2); ctx.restore();
+    }
+  } else if (o.estilo === "franja") {
+    const F = W * FRAC[nivel] * 1.1;
+    const sello = hacerSello(o, F, tono);
+    const esc = Math.min(1, (W * 0.94) / sello.width);
+    const bandaH = sello.height * esc + F * 0.9;
+    const n = H > W * 2.2 ? Math.round(H / (W * 1.78)) : 1;       // tiras: una franja por página
+    for (let i = 1; i <= n; i++) {
+      const y = H * i / n - bandaH;
+      ctx.globalAlpha = Math.min(0.85, a + 0.3);
+      ctx.fillStyle = tono.fondo; ctx.fillRect(0, y, W, bandaH);
+      ctx.globalAlpha = Math.min(1, a + 0.55);
+      const w = sello.width * esc, h = sello.height * esc;
+      ctx.drawImage(sello, (W - w) / 2, y + (bandaH - h) / 2, w, h);
+    }
+  } else {
+    // Mosaico: cuadrícula girada 30° que cubre la diagonal completa, con filas desfasadas
+    const F = W * FRAC[nivel];
+    const sello = hacerSello(o, F, tono);
+    const pasoX = sello.width + F * 1.6, pasoY = sello.height + F * 1.5;
+    const R = Math.hypot(W, H) / 2 + Math.max(pasoX, pasoY);
+    ctx.globalAlpha = a;
+    ctx.translate(W / 2, H / 2); ctx.rotate(-Math.PI / 6);
+    const filas = Math.ceil(R / pasoY), cols = Math.ceil(R / pasoX) + 1;
+    for (let f = -filas; f <= filas; f++) {
+      const des = (f & 1) ? pasoX / 2 : 0;
+      for (let k = -cols; k <= cols; k++) ctx.drawImage(sello, k * pasoX + des - sello.width / 2, f * pasoY - sello.height / 2);
+    }
+  }
+  ctx.restore();
+  return tono;
+}
+
+/* ============================================================
+   ESTADO Y PREFERENCIAS
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function leerPrefs() {
+  try {
+    const p = JSON.parse(localStorage.getItem(CLAVE) || "{}") || {};
+    const o = Object.assign({}, DEF);
+    if (ESTILOS.some(e => e.v === p.estilo)) o.estilo = p.estilo;
+    if (typeof p.texto === "string" && p.texto.trim()) o.texto = p.texto.slice(0, 40);
+    if (typeof p.iso === "boolean") o.iso = p.iso;
+    if (p.opacidad >= 10 && p.opacidad <= 60) o.opacidad = Math.round(p.opacidad);
+    if (p.tamano >= 1 && p.tamano <= 5) o.tamano = Math.round(p.tamano);
+    if (COLORES.some(e => e.v === p.color)) o.color = p.color;
+    if (typeof p.calidad === "boolean") o.calidad = p.calidad;
+    return o;
+  } catch (e) { return Object.assign({}, DEF); }
+}
+function guardarPrefs() {
+  // Solo preferencias: nunca imágenes ni el nombre del cliente
+  const p = { estilo: prefs.estilo, texto: prefs.texto, iso: prefs.iso, opacidad: prefs.opacidad, tamano: prefs.tamano, color: prefs.color, calidad: prefs.calidad };
+  try { localStorage.setItem(CLAVE, JSON.stringify(p)); } catch (e) { /* modo privado: no pasa nada */ }
+}
+
+let prefs = leerPrefs();
+let cliente = "";
+const items = [];          // { id, file, nombre, w, h, mini, luz, grande }
+let actual = -1, sigId = 1;
+let vista = null;          // { id, base (canvas reducido) }
+let listos = [];           // archivos finales, en orden
+let gen = 0;               // cambia cada vez que algo cambia: invalida lo preparado
+const opciones = () => Object.assign({}, prefs, { cliente: cliente.trim(), fecha: hoyTxt() });
+
+/* ============================================================
+   LECTURA DE IMÁGENES
+   ============================================================ */
+const ext = f => (/\.([a-z0-9]+)$/i.exec(f.name || "") || [, ""])[1].toLowerCase();
+const esPDF = f => f.type === "application/pdf" || ext(f) === "pdf";
+const esHEIC = f => /hei[cf]/i.test(f.type) || ext(f) === "heic" || ext(f) === "heif";
+
+async function decodificar(file) {
+  if (window.createImageBitmap) {
+    try { return await createImageBitmap(file, { imageOrientation: "from-image" }); } catch (e) { /* siguiente intento */ }
+    try { return await createImageBitmap(file); } catch (e) { /* siguiente intento */ }
+  }
+  const url = await new Promise((ok, mal) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = mal; r.readAsDataURL(file); });
+  return await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = mal; i.src = url; });
+}
+const anchoDe = b => b.naturalWidth || b.width, altoDe = b => b.naturalHeight || b.height;
+const cerrar = b => { if (b && b.close) try { b.close(); } catch (e) {} };
+
+/* Dibuja la imagen sobre blanco (aplana PNG transparentes) en un canvas de w×h */
+function lienzo(bmp, w, h, canvas) {
+  const c = canvas || document.createElement("canvas");
+  c.width = w; c.height = h;
+  const x = c.getContext("2d");
+  x.fillStyle = "#fff"; x.fillRect(0, 0, w, h);
+  x.imageSmoothingEnabled = true; x.imageSmoothingQuality = "high";
+  x.drawImage(bmp, 0, 0, w, h);
+  return c;
+}
+function medidaFinal(w, h, bajar) {
+  let s = 1, grande = false;
+  if (w * h > MAX_PX) { s = Math.sqrt(MAX_PX / (w * h)) * 0.999; grande = true; }
+  // Tiras (alto > 2× ancho): se limita el ancho; con el lado largo en 1080 quedarían ilegibles (1080×5326 → 219 px)
+  if (bajar) s = Math.min(s, Math.max(w, h) > 2 * Math.min(w, h) ? BAJA.tira / Math.min(w, h) : BAJA.lado / Math.max(w, h));
+  return { w: Math.max(1, Math.floor(w * s)), h: Math.max(1, Math.floor(h * s)), grande };
+}
+function medidaVista(w, h) {
+  const s = Math.min(1, VISTA_ANCHO / w, Math.sqrt(VISTA_PX / (w * h)));
+  return { w: Math.max(1, Math.round(w * s)), h: Math.max(1, Math.round(h * s)) };
+}
+
+/* ============================================================
+   INTERFAZ
+   ============================================================ */
+const avisos = $("#avisos");
+function avisar(txt) {
+  const d = document.createElement("div");
+  d.className = "aviso"; d.setAttribute("role", "status");
+  d.innerHTML = '<p>' + esc(txt) + '</p><button type="button" aria-label="Cerrar aviso">✕</button>';
+  d.querySelector("button").addEventListener("click", () => d.remove());
+  avisos.appendChild(d);
+}
+
+async function agregar(lista) {
+  const files = Array.prototype.slice.call(lista || []);
+  let pdf = false;
+  for (const f of files) {
+    if (esPDF(f)) { pdf = true; continue; }
+    let bmp;
+    try { bmp = await decodificar(f); }
+    catch (e) {
+      avisar(esHEIC(f) ? "Esa imagen está en formato HEIC. Mándatela por WhatsApp o expórtala como JPG y vuelve a intentar."
+        : "No pude abrir “" + (f.name || "esa imagen") + "”. Prueba exportándola como JPG o PNG.");
+      continue;
+    }
+    const w = anchoDe(bmp), h = altoDe(bmp);
+    const m = medidaVista(w, h);
+    const prev = lienzo(bmp, m.w, m.h);
+    const t = 160 / m.w, mc = lienzo(prev, 160, Math.max(1, Math.round(m.h * t)));
+    const it = { id: sigId++, file: f, nombre: f.name || "imagen", w, h, mini: mc.toDataURL("image/jpeg", 0.7), luz: brillo(prev), grande: w * h > MAX_PX };
+    mc.width = 0;
+    items.push(it);
+    if (actual < 0 || !vista) { actual = items.length - 1; vista = { id: it.id, base: prev }; } else prev.width = 0;
+    cerrar(bmp);
+  }
+  if (pdf) avisar("Por ahora funciona con imágenes. Exporta las páginas de tu PDF como JPG o PNG desde Affinity y súbelas aquí.");
+  pintarTodo();
+}
+
+function quitar(id) {
+  const i = items.findIndex(it => it.id === id);
+  if (i < 0) return;
+  items.splice(i, 1);
+  if (actual >= items.length) actual = items.length - 1;
+  else if (i < actual) actual--;
+  if (vista && vista.id === id) { vista.base.width = 0; vista = null; }
+  pintarTodo();
+}
+
+async function elegir(i) {
+  actual = i;
+  const it = items[i];
+  pintarTiras();
+  if (vista && vista.id === it.id) return pintarVista();
+  try {
+    const bmp = await decodificar(it.file);
+    const m = medidaVista(anchoDe(bmp), altoDe(bmp));
+    if (vista) vista.base.width = 0;
+    vista = { id: it.id, base: lienzo(bmp, m.w, m.h) };
+    cerrar(bmp);
+  } catch (e) { return; }
+  if (items[actual] === it) { pintarVista(); $("#marco").scrollTop = 0; }
+}
+
+function pintarTiras() {
+  const t = $("#tiras");
+  t.hidden = !items.length;
+  t.innerHTML = items.map((it, i) =>
+    '<div class="mini-i' + (i === actual ? " on" : "") + '" role="listitem">' +
+    '<button type="button" class="ver" data-ver="' + i + '" aria-label="Ver imagen ' + (i + 1) + '"' + (i === actual ? ' aria-current="true"' : "") + '><img src="' + it.mini + '" alt=""></button>' +
+    '<span class="n" aria-hidden="true">' + (i + 1) + '</span>' +
+    '<button type="button" class="quita" data-quita="' + it.id + '" aria-label="Quitar imagen ' + (i + 1) + '"><span aria-hidden="true">✕</span></button></div>').join("");
+}
+
+function pintarVista() {
+  const c = $("#lienzo");
+  if (!vista || actual < 0) return;
+  const it = items[actual], b = vista.base;
+  if (c.width !== b.width || c.height !== b.height) { c.width = b.width; c.height = b.height; }
+  const x = c.getContext("2d");
+  x.drawImage(b, 0, 0);
+  const tono = marcar(x, b.width, b.height, opciones(), it.luz);
+  const f = medidaFinal(it.w, it.h, prefs.calidad);
+  $("#vistaN").textContent = items.length > 1 ? "Imagen " + (actual + 1) + " de " + items.length : "";
+  $("#vistaTam").textContent = "Se manda en " + f.w + " × " + f.h + " px" + (prefs.color === "auto" ? " · letra " + (tono.claro ? "clara" : "oscura") : "");
+}
+
+function pintarAjustes() {
+  $("#opEstilo").innerHTML = ESTILOS.map(e => '<label class="opt"><input type="radio" name="estilo" value="' + e.v + '"' + (prefs.estilo === e.v ? " checked" : "") + '><span class="b">' + e.t + '</span></label>').join("");
+  $("#opColor").innerHTML = COLORES.map(e => '<label class="opt"><input type="radio" name="color" value="' + e.v + '"' + (prefs.color === e.v ? " checked" : "") + '><span class="b">' + e.t + '</span></label>').join("");
+  $("#texto").value = prefs.texto;
+  $("#iso").checked = prefs.iso;
+  $("#calidad").checked = prefs.calidad;
+  $("#opacidad").value = prefs.opacidad;
+  $("#tamano").value = prefs.tamano;
+  pintarRangos();
+}
+function pintarRangos() {
+  const r = (el, min, max) => el.style.setProperty("--p", ((el.value - min) / (max - min) * 100) + "%");
+  r($("#opacidad"), 10, 60); r($("#tamano"), 1, 5);
+  $("#opacidadV").textContent = prefs.opacidad + "%";
+  $("#tamanoV").textContent = TAMANOS[prefs.tamano - 1];
+}
+
+function pintarTodo() {
+  const hay = items.length > 0;
+  document.querySelectorAll(".con-img").forEach(s => { s.hidden = !hay; });
+  $("#elegir").textContent = hay ? "📎 Agregar más imágenes" : "📎 Elegir imágenes";
+  pintarTiras();
+  if (hay) {
+    if (!vista || vista.id !== items[actual].id) elegir(actual); else pintarVista();
+    if (items.some(it => it.grande) && !prefs.calidad && !avisos.querySelector("[data-grande]")) {
+      avisar("La reduje un poco para que tu celular la pueda procesar.");
+      avisos.lastChild.dataset.grande = "1";
+    }
+  }
+  preparar();
+}
+
+/* ============================================================
+   ARCHIVOS FINALES — uno por uno, en tamaño real
+   ============================================================ */
+const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30);
+const nombreArchivo = n => "prueba-" + (slug(cliente) || "invitia") + "-" + n + ".jpg";
+let espera = 0;
+
+function preparar() {
+  const mi = ++gen;
+  listos = [];
+  botones(false);
+  clearTimeout(espera);
+  if (!items.length) return;
+  estado("Preparando…", 0);
+  espera = setTimeout(() => procesar(mi), 450);   // espera a que deje de mover los controles
+}
+
+async function procesar(mi) {
+  const o = opciones(), lista = items.slice(), salida = [];
+  for (let i = 0; i < lista.length; i++) {
+    if (mi !== gen) return;
+    estado(lista.length > 1 ? "Preparando " + (i + 1) + " de " + lista.length + "…" : "Preparando tu prueba…", i / lista.length);
+    await new Promise(r => setTimeout(r, 30));     // deja respirar a la página
+    let bmp, c;
+    try {
+      bmp = await decodificar(lista[i].file);
+      const m = medidaFinal(anchoDe(bmp), altoDe(bmp), o.calidad);
+      c = lienzo(bmp, m.w, m.h);
+      cerrar(bmp); bmp = null;
+      marcar(c.getContext("2d"), m.w, m.h, o, lista[i].luz);
+      const blob = await new Promise(r => c.toBlob(r, "image/jpeg", o.calidad ? BAJA.q : ALTA_Q));
+      if (!blob) throw new Error("toBlob");
+      salida.push(new File([blob], nombreArchivo(i + 1), { type: "image/jpeg" }));
+    } catch (e) {
+      if (mi !== gen) return;
+      estado("No pude preparar la imagen " + (i + 1) + ". Quítala e inténtalo de nuevo.", 0);
+      return;
+    } finally { cerrar(bmp); if (c) { c.width = c.height = 0; } }
+  }
+  if (mi !== gen) return;
+  listos = salida;
+  estado(salida.length === 1 ? "✓ Tu prueba está lista" : "✓ Tus " + salida.length + " pruebas están listas", 1);
+  botones(true);
+}
+
+function estado(txt, p) { $("#estadoTxt").textContent = txt; $("#estadoBar").style.width = Math.round(p * 100) + "%"; }
+
+const puedeCompartir = (() => {
+  try { return !!(navigator.canShare && navigator.share && navigator.canShare({ files: [new File([new Uint8Array(1)], "x.jpg", { type: "image/jpeg" })] })); }
+  catch (e) { return false; }
+})();
+function botones(ok) {
+  $("#compartir").hidden = !puedeCompartir;
+  $("#notaCompartir").hidden = puedeCompartir;
+  $("#descargar").className = "btn btn-full " + (puedeCompartir ? "btn-ghost" : "btn-moss btn-big");
+  $("#compartir").disabled = $("#descargar").disabled = !ok;
+}
+
+$("#compartir").addEventListener("click", async () => {
+  if (!listos.length) return;
+  const files = listos.slice();
+  try {
+    if (navigator.canShare && !navigator.canShare({ files })) throw new Error("no");
+    await navigator.share({ files });
+  } catch (e) {
+    if (e && e.name === "AbortError") return;   // canceló la hoja de compartir
+    estado("No se pudo abrir “Compartir”. Usa “Descargar”.", 1);
+  }
+});
+
+$("#descargar").addEventListener("click", async () => {
+  const files = listos.slice();
+  for (let i = 0; i < files.length; i++) {
+    const a = document.createElement("a"), url = URL.createObjectURL(files[i]);
+    a.href = url; a.download = files[i].name; a.rel = "noopener";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    if (i < files.length - 1) await new Promise(r => setTimeout(r, 400));
+  }
+});
+
+$("#nuevas").addEventListener("click", () => {
+  gen++; clearTimeout(espera);
+  items.length = 0; actual = -1; listos = [];
+  if (vista) vista.base.width = 0; vista = null;
+  cliente = ""; $("#cliente").value = "";
+  avisos.innerHTML = "";
+  const c = $("#lienzo"); c.width = c.height = 0;
+  pintarTodo();
+  window.scrollTo(0, 0);
+  $("#elegir").focus();
+});
+
+/* ---------- Subir: botón y arrastrar ---------- */
+$("#elegir").addEventListener("click", () => $("#archivos").click());
+$("#archivos").addEventListener("change", e => { const f = e.target.files; agregar(f).then(() => { e.target.value = ""; }); });
+const zona = $("#zona");
+["dragenter", "dragover"].forEach(t => document.addEventListener(t, e => { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], "Files") !== -1) { e.preventDefault(); zona.classList.add("encima"); } }));
+["dragleave", "dragend"].forEach(t => document.addEventListener(t, e => { if (!e.relatedTarget) zona.classList.remove("encima"); }));
+document.addEventListener("drop", e => { e.preventDefault(); zona.classList.remove("encima"); if (e.dataTransfer && e.dataTransfer.files.length) agregar(e.dataTransfer.files); });
+
+$("#tiras").addEventListener("click", e => {
+  const q = e.target.closest("[data-quita]"); if (q) { quitar(+q.dataset.quita); return; }
+  const v = e.target.closest("[data-ver]"); if (v) elegir(+v.dataset.ver);
+});
+
+/* ---------- Ajustes ---------- */
+let rafVista = 0;
+function cambio(guardar) {
+  if (guardar) guardarPrefs();
+  cancelAnimationFrame(rafVista);
+  rafVista = requestAnimationFrame(pintarVista);
+  preparar();
+}
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.name === "estilo") prefs.estilo = t.value;
+  else if (t.name === "color") prefs.color = t.value;
+  else if (t.id === "iso") prefs.iso = t.checked;
+  else if (t.id === "calidad") { prefs.calidad = t.checked; if (!t.checked && items.some(it => it.grande)) pintarTodo(); }
+  else return;
+  cambio(true);
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.id === "opacidad") { prefs.opacidad = +t.value; pintarRangos(); }
+  else if (t.id === "tamano") { prefs.tamano = +t.value; pintarRangos(); }
+  else if (t.id === "texto") prefs.texto = t.value;
+  else if (t.id === "cliente") { cliente = t.value; cambio(false); return; }
+  else return;
+  cambio(true);
+});
+$("#texto").addEventListener("blur", () => { if (!prefs.texto.trim()) { prefs.texto = DEF.texto; $("#texto").value = DEF.texto; cambio(true); } });
+$("#restablecer").addEventListener("click", () => { prefs = Object.assign({}, DEF); pintarAjustes(); cambio(true); });
+
+/* ---------- Arranque ---------- */
+$("#logo").src = MARCA.logo;
+(function favicon() {
+  const img = new Image();
+  img.onload = () => {
+    try {
+      const c = document.createElement("canvas"), x = c.getContext("2d");
+      c.width = c.height = 64;
+      const h = 60, w = img.width * h / img.height;
+      x.drawImage(img, (64 - w) / 2, 2, w, h);
+      $("#favicon").href = c.toDataURL("image/png");
+    } catch (e) { /* se queda el isotipo tal cual */ }
+  };
+  img.src = MARCA.logo;
+})();
+pintarAjustes();
+botones(false);
+</script>
+</body>
+</html>
